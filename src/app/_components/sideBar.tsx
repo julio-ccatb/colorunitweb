@@ -19,9 +19,15 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const session = useSession();
 
   return (
-    <aside className="h-screen bg-gradient-to-b from-[#382750] to-[#15162c] outline-none ">
+    <aside className="bg-graySecondary h-screen outline-none ">
       <nav className="flex h-full flex-col shadow-md  ">
-        <div className="bg-purpleDark flex items-center justify-between  p-4 ">
+        <div
+          className={`bg-graySecondary flex items-center justify-between p-4 ${
+            expanded
+              ? "from-whitePrimary text-grayPrimary bg-gradient-to-t to-white"
+              : ""
+          }`}
+        >
           <div className="flex items-center justify-center ">
             <Image
               src={Icon}
@@ -31,17 +37,17 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
               alt=""
             />
             <span
-              className={`text-md overflow-hidden font-extrabold tracking-tight transition-all ${
-                expanded ? "ml-3 w-16" : "w-0"
+              className={`text-md border-l-graySecondary flex flex-col overflow-hidden border-l-2 border-solid pl-2 font-extrabold tracking-tight transition-all ${
+                expanded ? "ml-3 w-16" : "w-0 pl-0"
               }`}
             >
-              Color <span className="text-[hsl(280,100%,70%)]">Unit</span>
+              Color <span className="text-greenAccent">Unit</span>
             </span>
           </div>
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className={`hover:bg-purpleAccent  rounded-lg  p-2 ${
-              expanded ? " " : "bg-indigo-400"
+            className={`hover:bg-greenAccent  rounded-lg  p-2 ${
+              expanded ? " " : "bg-greenLight text-grayPrimary"
             }`}
           >
             {expanded ? <ChevronFirst /> : <ChevronLast />}
@@ -70,7 +76,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
               <h4 className="text-sm font-semibold">
                 {session?.data?.user.name}
               </h4>
-              <span className="text-white-600 text-xs">
+              <span className="text-greenLight text-xs">
                 {session?.data?.user.email}
               </span>
             </div>
