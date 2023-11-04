@@ -5,6 +5,6 @@
 await import("./src/env.mjs");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = { images: { domains: ["lh3.googleusercontent.com"] } };
 
 export default config;
