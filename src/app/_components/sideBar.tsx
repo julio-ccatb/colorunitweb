@@ -38,7 +38,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             />
             <span
               className={`text-md border-l-graySecondary flex flex-col overflow-hidden border-l-2 border-solid pl-2 font-extrabold tracking-tight transition-all ${
-                expanded ? "ml-3 w-16" : "w-0 pl-0"
+                expanded ? "ml-3 w-16" : "hidden"
               }`}
             >
               Color <span className="text-greenAccent">Unit</span>
@@ -46,11 +46,11 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           </div>
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className={`hover:bg-greenAccent  rounded-lg  p-2 ${
-              expanded ? " " : "bg-greenLight text-grayPrimary"
+            className={`hover:bg-greenAccent  rounded-lg  p-2 transition-transform duration-500 ${
+              expanded ? "rotate-180" : "bg-greenLight text-grayPrimary"
             }`}
           >
-            {expanded ? <ChevronFirst /> : <ChevronLast />}
+            <ChevronFirst />
           </button>
         </div>
 

@@ -8,7 +8,7 @@ export default async function Layaout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="bg-whitePrimary/50 flex min-h-screen items-start justify-start   text-white">
+    <main className="bg-whitePrimary/50 text-graySecondary flex min-h-screen items-start   justify-start">
       <Sidebar>
         <SidebarItem
           icon={<BarChart3 size={20} />}
@@ -19,7 +19,7 @@ export default async function Layaout({
           active={true}
           icon={<FlaskConical size={20} />}
           text="Laboratory"
-          href="/laboratory"
+          href="/dashboard/laboratory"
         />
       </Sidebar>
       {children}
