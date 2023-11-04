@@ -14,18 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -62,7 +50,6 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
 }
 
 model VerificationToken {
@@ -71,4 +58,142 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+// The provided code appears to be a definition of a data model for a database, 
+// presumably used to store information related to colorants, bases, and color formulations. 
+// Here's a documentation of each model in the schema:
+
+// Colorant:
+
+// id: An auto-incremented integer used as the primary key.
+// description: A string field for describing the colorant.
+// shortcode: A string field for a short code representing the colorant.
+// basecodi: An integer field that seems to represent a code for the base of the colorant.
+// gramUP: A floating-point number field representing a value in grams (possibly an upper limit).
+// gramUG: A floating-point number field representing a value in grams (possibly a lower limit).
+// regColColorants: A relation to the RegColColorants model, indicating a one-to-many relationship.
+// createdAt: A timestamp field representing the creation date of the record.
+// updatedAt: A timestamp field representing the last update date of the record.
+// TBase:
+
+// id: An auto-incremented integer used as the primary key.
+// description: A string field for describing the TBase.
+// shortcode: A string field for a short code representing the TBase.
+// peso1, peso2, peso3, peso4, peso5: Nullable floating-point number fields, possibly representing different weights.
+// bases: A relation to the Base model, indicating a one-to-many relationship.
+// createdAt: A timestamp field representing the creation date of the record.
+// updatedAt: A timestamp field representing the last update date of the record.
+// Base:
+
+// id: An auto-incremented integer used as the primary key.
+// reforiginal: A string field possibly representing the reference original.
+// tbaseId: An integer field representing the ID of the associated TBase.
+// slang: A string field.
+// tbase: A relation to the TBase model, indicating a many-to-one relationship.
+// regColBases: A relation to the RegColBases model, indicating a one-to-many relationship.
+// createdAt: A timestamp field representing the creation date of the record.
+// updatedAt: A timestamp field representing the last update date of the record.
+// RegCol:
+
+// id: An auto-incremented integer used as the primary key.
+// description: A string field for describing the RegCol.
+// carta: An integer field, possibly related to a color chart.
+// R, G, B: Integer fields representing RGB color values.
+// pesopromedio: A floating-point number field representing an average weight.
+// brillo: A floating-point number field representing brightness.
+// active: A boolean field indicating whether the record is active.
+// coeficienteG: A floating-point number field representing a coefficient.
+// regColColorants: A relation to the RegColColorants model, indicating a one-to-many relationship.
+// regColBases: A relation to the RegColBases model, indicating a one-to-many relationship.
+// createdAt: A timestamp field representing the creation date of the record.
+// updatedAt: A timestamp field representing the last update date of the record.
+// RegColColorants:
+
+// id: An auto-incremented integer used as the primary key.
+// regColId: An integer field representing the ID of the associated RegCol.
+// colorantId: An integer field representing the ID of the associated Colorant.
+// amount: A floating-point number field representing the amount of colorant in the formulation.
+// regCol: A relation to the RegCol model, indicating a many-to-one relationship.
+// colorant: A relation to the Colorant model, indicating a many-to-one relationship.
+// RegColBases:
+
+// id: An auto-incremented integer used as the primary key.
+// regColId: An integer field representing the ID of the associated RegCol.
+// baseId: An integer field representing the ID of the associated Base.
+// amount: A floating-point number field representing the amount of the base in the formulation.
+// regCol: A relation to the RegCol model, indicating a many-to-one relationship.
+// base: A relation to the Base model, indicating a many-to-one relationship.
+// This data model appears to be used to represent color formulations where colorants and bases are combined in various proportions to create different colors. The model also includes fields to store additional attributes like descriptions, codes, and other relevant data for each entity.
+
+model Colorant {
+    id              Int               @id @default(autoincrement())
+    description     String
+    shortcode       String
+    basecodi        Int
+    gramUP          Float
+    gramUG          Float
+    regColColorants RegColColorants[]
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+}
+
+model TBase {
+    id          Int      @id @default(autoincrement())
+    description String
+    shortcode   String
+    peso1       Float?
+    peso2       Float?
+    peso3       Float?
+    peso4       Float?
+    peso5       Float?
+    bases       Base[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+model Base {
+    id          Int           @id @default(autoincrement())
+    reforiginal String?
+    tbaseId     Int
+    slang       String?
+    tbase       TBase         @relation(fields: [tbaseId], references: [id])
+    regColBases RegColBases[]
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+}
+
+model RegCol {
+    id              Int               @id @default(autoincrement())
+    description     String?
+    carta           Int?
+    R               Int
+    G               Int
+    B               Int
+    pesopromedio    Float?
+    brillo          Float?
+    active          Boolean?
+    coeficienteG    Float?
+    regColColorants RegColColorants[]
+    regColBases     RegColBases[]
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+}
+
+model RegColColorants {
+    id         Int      @id @default(autoincrement())
+    regColId   Int
+    colorantId Int
+    amount     Float
+    regCol     RegCol   @relation(fields: [regColId], references: [id])
+    colorant   Colorant @relation(fields: [colorantId], references: [id])
+}
+
+model RegColBases {
+    id       Int    @id @default(autoincrement())
+    regColId Int
+    baseId   Int
+    amount   Float
+    regCol   RegCol @relation(fields: [regColId], references: [id])
+    base     Base   @relation(fields: [baseId], references: [id])
 }
