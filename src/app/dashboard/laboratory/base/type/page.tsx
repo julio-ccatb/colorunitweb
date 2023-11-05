@@ -1,11 +1,25 @@
 "use client";
+import { Prisma } from "@prisma/client";
 import { ClipboardEdit, FilePlus2, Trash } from "lucide-react";
 import { useState } from "react";
+import { useFormState } from "react-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { api } from "~/trpc/react";
+// import { TBaseUncheckedCreateWithoutBasesInputSchema } from "prisma/generated/zod";
 
 export default function TipoDeBasePage() {
   const itemsPerPage = 5; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
+
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Prisma.TBaseUncheckedCreateInput>({
+    // resolver: zodResolver(TBaseUncheckedCreateWithoutBasesInputSchema),
+  });
 
   const [newTipoDeBase, setNewTipoDeBase] = useState({
     description: "",
@@ -32,34 +46,31 @@ export default function TipoDeBasePage() {
     setCurrentPage(newPage);
   };
 
-  if (result === undefined) return <>No Data</>;
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
-
-  // Function to submit the new Tipo de Base
-  const handleAddTipoDeBase = () => {
-    // You can implement the logic to add the new Tipo de Base here
-    // Use the values in newTipoDeBase to create a new Tipo de Base
-    // and update the list accordingly
+  const onSubmit: SubmitHandler<Prisma.TBaseUncheckedCreateInput> = (data) => {
+    console.log(data);
   };
-  // Function to format a date as a string (e.g., "yyyy-mm-dd HH:MM:SS")
+
+  if (result === undefined) return <>No Data</>;
 
   return (
     <div className="m-4 flex flex-col">
       <div className="mt-4 flex justify-between">
         <h1 className="mb-4 text-2xl font-bold">Tipos de Bases</h1>
-        <button className=" hover:bg-whitePrimary hover:text-greenAccent bg-greenAccent text-greenLight border-1 border-greenAccent m-4 flex items-center justify-center gap-2 rounded-md border  px-4 py-2 font-semibold shadow-md transition-colors duration-200">
+        <button className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent">
           <span>Add</span> <FilePlus2 size={15} />
         </button>
       </div>
       {/* Form to add a new Tipo de Base */}
-      <div className="mb-4 flex w-1/2 flex-col items-start justify-center gap-2">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mb-4 flex w-1/2 flex-col items-start justify-center gap-2"
+      >
         <div>
           <input
             type="text"
             name="description"
             value={newTipoDeBase.description}
-            onChange={handleInputChange}
+            {...register("description")}
             placeholder="Description"
             className="mr-2 rounded-md border p-2"
           />
@@ -67,7 +78,6 @@ export default function TipoDeBasePage() {
             type="text"
             name="shortcode"
             value={newTipoDeBase.shortcode}
-            onChange={handleInputChange}
             placeholder="Shortcode"
             className="mr-2 rounded-md border p-2"
           />
@@ -77,7 +87,6 @@ export default function TipoDeBasePage() {
             type="text"
             name="pesos1"
             value={newTipoDeBase.pesos1}
-            onChange={handleInputChange}
             placeholder="Pesos 1"
             className="mr-2 rounded-md border p-2"
           />
@@ -85,7 +94,6 @@ export default function TipoDeBasePage() {
             type="text"
             name="pesos2"
             value={newTipoDeBase.pesos2}
-            onChange={handleInputChange}
             placeholder="Pesos 2"
             className="mr-2 rounded-md border p-2"
           />
@@ -95,7 +103,6 @@ export default function TipoDeBasePage() {
             type="text"
             name="pesos3"
             value={newTipoDeBase.pesos3}
-            onChange={handleInputChange}
             placeholder="Pesos 3"
             className="mr-2 rounded-md border p-2"
           />
@@ -103,7 +110,6 @@ export default function TipoDeBasePage() {
             type="text"
             name="pesos4"
             value={newTipoDeBase.pesos4}
-            onChange={handleInputChange}
             placeholder="Pesos 4"
             className="mr-2 rounded-md border p-2"
           />
@@ -111,24 +117,23 @@ export default function TipoDeBasePage() {
             type="text"
             name="pesos5"
             value={newTipoDeBase.pesos5}
-            onChange={handleInputChange}
             placeholder="Pesos 5"
             className="mr-2 rounded-md border p-2"
           />
         </div>
-      </div>
+      </form>
       <div className="flex-1 overflow-x-auto">
         <table className="w-full max-w-full  border-collapse border">
           <thead>
             <tr>
-              <th className="bg-graySecondary text-greenLight p-2">
+              <th className="bg-graySecondary p-2 text-greenLight">
                 Description
               </th>
-              <th className="bg-graySecondary text-greenLight p-2">
+              <th className="bg-graySecondary p-2 text-greenLight">
                 Shortcode
               </th>
 
-              <th className="bg-graySecondary text-greenLight p-2">Actions</th>
+              <th className="bg-graySecondary p-2 text-greenLight">Actions</th>
             </tr>
           </thead>
           <tbody className="">
@@ -153,14 +158,14 @@ export default function TipoDeBasePage() {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="hover:bg-whitePrimary hover:text-greenAccent bg-greenAccent text-greenLight border-1 border-greenAccent mr-2 rounded-md border   px-4 py-2 font-semibold shadow-md transition-colors duration-200"
+          className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold   text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
         >
           Previous Page
         </button>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={endIndex >= result.length}
-          className="hover:bg-whitePrimary hover:text-greenAccent bg-greenAccent text-greenLight border-1 border-greenAccent rounded-md border  px-4 py-2 font-semibold shadow-md transition-colors duration-200"
+          className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
         >
           Next Page
         </button>
