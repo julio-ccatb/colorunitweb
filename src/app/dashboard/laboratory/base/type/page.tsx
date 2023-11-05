@@ -17,9 +17,7 @@ export default function TipoDeBasePage() {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<Prisma.TBaseUncheckedCreateInput>({
-    // resolver: zodResolver(TBaseUncheckedCreateWithoutBasesInputSchema),
-  });
+  } = useForm<Prisma.TBaseUncheckedCreateInput>({});
 
   const [newTipoDeBase, setNewTipoDeBase] = useState({
     description: "",
