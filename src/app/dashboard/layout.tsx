@@ -2,13 +2,13 @@ import { BarChart3, FlaskConical } from "lucide-react";
 import Sidebar from "../_components/sideBar";
 import SidebarItem from "../_components/sideBarItem";
 
-export default async function Layaout({
+export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <main className="bg-whitePrimary/50 text-graySecondary flex min-h-screen items-start   justify-start">
+    <main className="bg-whitePrimary/50 text-graySecondary flex">
       <Sidebar>
         <SidebarItem
           icon={<BarChart3 size={20} />}
@@ -22,7 +22,7 @@ export default async function Layaout({
           href="/dashboard/laboratory"
         />
       </Sidebar>
-      {children}
+      <div className="flex-1 overflow-y-auto">{children}</div>
     </main>
   );
 }

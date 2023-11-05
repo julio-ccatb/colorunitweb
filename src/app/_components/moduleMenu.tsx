@@ -34,7 +34,7 @@ export default function ModuleMenu({
         {modules.map((module, index) => (
           <li
             key={index}
-            className={`rounded-md px-2 py-1 font-semibold ${
+            className={`rounded-md px-2 py-1 font-semibold shadow-md ${
               module === activeModule
                 ? "bg-greenAccent text-whitePrimary font-semibold"
                 : "hover:bg-whitePrimary hover:text-greenAccent"

@@ -19,7 +19,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const session = useSession();
 
   return (
-    <aside className="bg-graySecondary h-screen outline-none ">
+    <aside className="bg-graySecondary h-screen outline-none">
       <nav className="flex h-full flex-col shadow-md  ">
         <div
           className={`bg-graySecondary flex items-center justify-between p-4 ${
@@ -47,10 +47,10 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           <button
             onClick={() => setExpanded((curr) => !curr)}
             className={`hover:bg-greenAccent  rounded-lg  p-2 transition-transform duration-500 ${
-              expanded ? "rotate-180" : "bg-greenLight text-grayPrimary"
+              expanded ? "rotate-[-180deg]" : "bg-greenLight text-grayPrimary"
             }`}
           >
-            <ChevronFirst />
+            <ChevronLast />
           </button>
         </div>
 
@@ -72,13 +72,11 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
               overflow-hidden transition-all ${expanded ? "ml-3 w-52" : "w-0"}
           `}
           >
-            <div className="leading-4">
+            <div className="text-greenLight leading-4">
               <h4 className="text-sm font-semibold">
                 {session?.data?.user.name}
               </h4>
-              <span className="text-greenLight text-xs">
-                {session?.data?.user.email}
-              </span>
+              <span className=" text-xs">{session?.data?.user.email}</span>
             </div>
             <MoreVertical size={20} />
           </div>

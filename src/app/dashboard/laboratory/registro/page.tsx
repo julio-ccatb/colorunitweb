@@ -1,3 +1,3 @@
-export default function ColorantePage() {
-  return <h1>Colorante Page</h1>;
+export default function Registropage() {
+  return <h1>Registro Page</h1>;
 }

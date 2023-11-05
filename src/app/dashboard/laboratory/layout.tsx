@@ -1,16 +1,21 @@
 "use client";
 // In your main component or page file
-import { Children, SetStateAction, useState } from "react";
+import { SetStateAction, useState } from "react";
 import ModuleMenu, { ModuleMenuProps } from "~/app/_components/moduleMenu";
 
 const initialModules = [
+  {
+    action: "Tipos de Bases",
+    url: "/dashboard/laboratory/base/type",
+    active: false,
+  },
   { action: "Bases", url: "/dashboard/laboratory/base", active: false },
   {
     action: "Colorantes",
     url: "/dashboard/laboratory/colorante",
-    active: true,
+    active: false,
   },
-  { action: "Registros", url: "/dashboard/laboratory/registro", active: true },
+  { action: "Registros", url: "/dashboard/laboratory/registro", active: false },
   // Add more dynamic modules as needed
 ];
 
@@ -42,7 +47,7 @@ export default function LaboratoryPage({
   };
 
   return (
-    <div className="ml-8 mt-8 flex flex-col gap-4 rounded-md">
+    <div className="ml-8 mt-8 flex max-h-screen flex-col gap-4 rounded-md">
       <ModuleMenu {...moduleMenuProps} />
       {children}
     </div>
