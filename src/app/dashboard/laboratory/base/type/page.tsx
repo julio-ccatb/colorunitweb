@@ -6,7 +6,7 @@ import { useFormState } from "react-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { api } from "~/trpc/react";
-// import { TBaseUncheckedCreateWithoutBasesInputSchema } from "prisma/generated/zod";
+import { TbaseCReateInput } from "pg/generated-zod-schemas/schemas/objects/TBaseCreateInput.schema";
 
 export default function TipoDeBasePage() {
   const itemsPerPage = 5; // Number of items to display per page
@@ -17,17 +17,7 @@ export default function TipoDeBasePage() {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<Prisma.TBaseUncheckedCreateInput>({});
-
-  const [newTipoDeBase, setNewTipoDeBase] = useState({
-    description: "",
-    shortcode: "",
-    pesos1: "",
-    pesos2: "",
-    pesos3: "",
-    pesos4: "",
-    pesos5: "",
-  });
+  } = useForm<TbaseCReateInput>({});
 
   const { data: result, status } = api.base.listTypeBase.useQuery();
 
@@ -44,7 +34,7 @@ export default function TipoDeBasePage() {
     setCurrentPage(newPage);
   };
 
-  const onSubmit: SubmitHandler<Prisma.TBaseUncheckedCreateInput> = (data) => {
+  const onSubmit: SubmitHandler<TbaseCReateInput> = (data) => {
     console.log(data);
   };
 
@@ -54,20 +44,22 @@ export default function TipoDeBasePage() {
     <div className="m-4 flex flex-col">
       <div className="mt-4 flex justify-between">
         <h1 className="mb-4 text-2xl font-bold">Tipos de Bases</h1>
-        <button className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent">
-          <span>Add</span> <FilePlus2 size={15} />
-        </button>
       </div>
       {/* Form to add a new Tipo de Base */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mb-4 flex w-1/2 flex-col items-start justify-center gap-2"
       >
+        <button
+          type="submit"
+          className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
+        >
+          <span>Add</span> <FilePlus2 size={15} />
+        </button>
         <div>
           <input
             type="text"
             name="description"
-            value={newTipoDeBase.description}
             {...register("description")}
             placeholder="Description"
             className="mr-2 rounded-md border p-2"
@@ -75,7 +67,7 @@ export default function TipoDeBasePage() {
           <input
             type="text"
             name="shortcode"
-            value={newTipoDeBase.shortcode}
+            {...register("shortcode")}
             placeholder="Shortcode"
             className="mr-2 rounded-md border p-2"
           />
@@ -83,15 +75,15 @@ export default function TipoDeBasePage() {
         <div>
           <input
             type="text"
-            name="pesos1"
-            value={newTipoDeBase.pesos1}
+            name="peso1"
+            {...register("peso1")}
             placeholder="Pesos 1"
             className="mr-2 rounded-md border p-2"
           />
           <input
             type="text"
-            name="pesos2"
-            value={newTipoDeBase.pesos2}
+            name="peso2"
+            {...register("peso2")}
             placeholder="Pesos 2"
             className="mr-2 rounded-md border p-2"
           />
@@ -99,22 +91,22 @@ export default function TipoDeBasePage() {
         <div>
           <input
             type="text"
-            name="pesos3"
-            value={newTipoDeBase.pesos3}
+            name="peso3"
+            {...register("peso3")}
             placeholder="Pesos 3"
             className="mr-2 rounded-md border p-2"
           />
           <input
             type="text"
-            name="pesos4"
-            value={newTipoDeBase.pesos4}
+            name="peso4"
+            {...register("peso4")}
             placeholder="Pesos 4"
             className="mr-2 rounded-md border p-2"
           />
           <input
             type="text"
-            name="pesos5"
-            value={newTipoDeBase.pesos5}
+            name="peso5"
+            {...register("peso5")}
             placeholder="Pesos 5"
             className="mr-2 rounded-md border p-2"
           />
