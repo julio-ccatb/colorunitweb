@@ -1,35 +1,12 @@
 "use client";
-import { Prisma } from "@prisma/client";
-import { ClipboardEdit, FilePlus2, Trash } from "lucide-react";
+import { ClipboardEdit, Trash } from "lucide-react";
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, SubmitHandler, useForm } from "react-hook-form";
+import TbaseCreateForm from "~/app/_components/forms/TbaseForm";
 import { api } from "~/trpc/react";
-import { z } from "zod";
 
-const Schema: z.ZodType<Prisma.TBaseCreateInput> = z.object({
-  description: z.string(),
-  shortcode: z.string(),
-  peso1: z.number().optional().nullable(),
-  peso2: z.number().optional().nullable(),
-  peso3: z.number().optional().nullable(),
-  peso4: z.number().optional().nullable(),
-  peso5: z.number().optional().nullable(),
-});
-
-type Input = z.infer<typeof Schema>;
 export default function TipoDeBasePage() {
   const itemsPerPage = 5; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
-
-  const x: Input = { description: "", shortcode: "" };
-  const resolver = zodResolver(Schema);
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<{ description: string; shortcode: string }>({ resolver });
 
   const { data: result, status } = api.base.listTypeBase.useQuery();
 
@@ -46,10 +23,6 @@ export default function TipoDeBasePage() {
     setCurrentPage(newPage);
   };
 
-  const onSubmit: SubmitHandler<Input> = (data) => {
-    console.log(data);
-  };
-
   if (result === undefined) return <>No Data</>;
 
   return (
@@ -58,72 +31,7 @@ export default function TipoDeBasePage() {
         <h1 className="mb-4 text-2xl font-bold">Tipos de Bases</h1>
       </div>
       {/* Form to add a new Tipo de Base */}
-      <Form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mb-4 flex w-1/2 flex-col items-start justify-center gap-2"
-      >
-        <button
-          type="submit"
-          className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
-        >
-          <span>Add</span> <FilePlus2 size={15} />
-        </button>
-        <div>
-          <input
-            type="text"
-            id="description"
-            {...register("description")}
-            placeholder="Description"
-            className="mr-2 rounded-md border p-2"
-          />
-          <input
-            type="text"
-            id="shortcode"
-            {...register("shortcode")}
-            placeholder="Shortcode"
-            className="mr-2 rounded-md border p-2"
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            id="peso1"
-            {...register("peso1")}
-            placeholder="Pesos 1"
-            className="mr-2 rounded-md border p-2"
-          />
-          <input
-            type="text"
-            id="peso2"
-            {...register("peso2")}
-            placeholder="Pesos 2"
-            className="mr-2 rounded-md border p-2"
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            id="peso3"
-            {...register("peso3")}
-            placeholder="Pesos 3"
-            className="mr-2 rounded-md border p-2"
-          />
-          <input
-            type="text"
-            id="peso4"
-            {...register("peso4")}
-            placeholder="Pesos 4"
-            className="mr-2 rounded-md border p-2"
-          />
-          <input
-            type="text"
-            id="peso5"
-            {...register("peso5")}
-            placeholder="Pesos 5"
-            className="mr-2 rounded-md border p-2"
-          />
-        </div>
-      </Form>
+      <TbaseCreateForm />
       <div className="flex-1 overflow-x-auto">
         <table className="w-full max-w-full  border-collapse border">
           <thead>
