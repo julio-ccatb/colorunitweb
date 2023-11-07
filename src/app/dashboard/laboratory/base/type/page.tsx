@@ -2,22 +2,34 @@
 import { Prisma } from "@prisma/client";
 import { ClipboardEdit, FilePlus2, Trash } from "lucide-react";
 import { useState } from "react";
-import { useFormState } from "react-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Form, SubmitHandler, useForm } from "react-hook-form";
 import { api } from "~/trpc/react";
-import { TbaseCReateInput } from "pg/generated-zod-schemas/schemas/objects/TBaseCreateInput.schema";
+import { z } from "zod";
 
+const Schema: z.ZodType<Prisma.TBaseCreateInput> = z.object({
+  description: z.string(),
+  shortcode: z.string(),
+  peso1: z.number().optional().nullable(),
+  peso2: z.number().optional().nullable(),
+  peso3: z.number().optional().nullable(),
+  peso4: z.number().optional().nullable(),
+  peso5: z.number().optional().nullable(),
+});
+
+type Input = z.infer<typeof Schema>;
 export default function TipoDeBasePage() {
   const itemsPerPage = 5; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
+  const x: Input = { description: "", shortcode: "" };
+  const resolver = zodResolver(Schema);
   const {
     register,
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<TbaseCReateInput>({});
+  } = useForm<{ description: string; shortcode: string }>({ resolver });
 
   const { data: result, status } = api.base.listTypeBase.useQuery();
 
@@ -34,7 +46,7 @@ export default function TipoDeBasePage() {
     setCurrentPage(newPage);
   };
 
-  const onSubmit: SubmitHandler<TbaseCReateInput> = (data) => {
+  const onSubmit: SubmitHandler<Input> = (data) => {
     console.log(data);
   };
 
@@ -46,7 +58,7 @@ export default function TipoDeBasePage() {
         <h1 className="mb-4 text-2xl font-bold">Tipos de Bases</h1>
       </div>
       {/* Form to add a new Tipo de Base */}
-      <form
+      <Form
         onSubmit={handleSubmit(onSubmit)}
         className="mb-4 flex w-1/2 flex-col items-start justify-center gap-2"
       >
@@ -59,14 +71,14 @@ export default function TipoDeBasePage() {
         <div>
           <input
             type="text"
-            name="description"
+            id="description"
             {...register("description")}
             placeholder="Description"
             className="mr-2 rounded-md border p-2"
           />
           <input
             type="text"
-            name="shortcode"
+            id="shortcode"
             {...register("shortcode")}
             placeholder="Shortcode"
             className="mr-2 rounded-md border p-2"
@@ -75,14 +87,14 @@ export default function TipoDeBasePage() {
         <div>
           <input
             type="text"
-            name="peso1"
+            id="peso1"
             {...register("peso1")}
             placeholder="Pesos 1"
             className="mr-2 rounded-md border p-2"
           />
           <input
             type="text"
-            name="peso2"
+            id="peso2"
             {...register("peso2")}
             placeholder="Pesos 2"
             className="mr-2 rounded-md border p-2"
@@ -91,27 +103,27 @@ export default function TipoDeBasePage() {
         <div>
           <input
             type="text"
-            name="peso3"
+            id="peso3"
             {...register("peso3")}
             placeholder="Pesos 3"
             className="mr-2 rounded-md border p-2"
           />
           <input
             type="text"
-            name="peso4"
+            id="peso4"
             {...register("peso4")}
             placeholder="Pesos 4"
             className="mr-2 rounded-md border p-2"
           />
           <input
             type="text"
-            name="peso5"
+            id="peso5"
             {...register("peso5")}
             placeholder="Pesos 5"
             className="mr-2 rounded-md border p-2"
           />
         </div>
-      </form>
+      </Form>
       <div className="flex-1 overflow-x-auto">
         <table className="w-full max-w-full  border-collapse border">
           <thead>
