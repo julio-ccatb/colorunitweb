@@ -1,9 +1,9 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import {
-  tbaseCreateInputSchema,
-  tbaseCreateWithoutBaseInputSchema,
-  tbaseDeleteArgsSchema,
+  TbaseCreateInputSchema,
+  TbaseCreateWithoutBaseInputSchema,
+  TbaseDeleteArgsSchema,
 } from "pg/generated/zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
@@ -25,12 +25,12 @@ export const baseRouter = createTRPCRouter({
   }),
 
   createTypeBase: protectedProcedure
-    .input(tbaseCreateWithoutBaseInputSchema)
+    .input(TbaseCreateWithoutBaseInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const validated = tbaseCreateInputSchema.parse(input);
         // Attempt to create a new TBase record
-        const createdTBase = await ctx.db.tbase.create({ data: validated });
+        const validate = TbaseCreateInputSchema.parse(input);
+        const createdTBase = await ctx.db.tbase.create({ data: validate });
 
         if (!createdTBase) throw new Error("issues");
         return createdTBase; // Return the created object
@@ -43,7 +43,7 @@ export const baseRouter = createTRPCRouter({
       }
     }),
   deleteTypeBase: protectedProcedure
-    .input(tbaseDeleteArgsSchema)
+    .input(TbaseDeleteArgsSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const deletedTbase = await ctx.db.tbase.delete(input);

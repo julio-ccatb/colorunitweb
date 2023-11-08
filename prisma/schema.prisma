@@ -3,8 +3,8 @@ generator client {
 }
 
 generator zod {
-  provider       = "npx zod-prisma-types"
-  useMultipleFiles  = true
+  provider         = "npx zod-prisma-types"
+  useMultipleFiles = "true"
 }
 
 datasource db {
@@ -13,7 +13,7 @@ datasource db {
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String  @id
   userId            String
   type              String
   provider          String
@@ -25,39 +25,23 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Account_userId_fkey")
 
-  @@unique([provider, providerAccountId])
-  @@index([userId])
+  @@unique([provider, providerAccountId], map: "Account_provider_providerAccountId_key")
+  @@index([userId], map: "Account_userId_idx")
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Base {
+  id          Int           @id @default(autoincrement())
+  reforiginal String?
+  tbaseId     Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime
+  slang       String?
+  tbase       Tbase         @relation(fields: [tbaseId], references: [id], map: "Base_tbaseId_fkey")
+  regcolbases Regcolbases[]
 
-  @@index([userId], map: "Session_userId_fkey")
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  Post          Post[]
-  sessions      Session[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+  @@index([tbaseId], map: "Base_tbaseId_fkey")
 }
 
 model Colorant {
@@ -68,76 +52,8 @@ model Colorant {
   gramUP          Decimal
   gramUG          Decimal
   createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
-  regColColorants RegColColorants[]
-}
-
-model TBase {
-  id          Int      @id @default(autoincrement())
-  description String
-  shortcode   String
-  peso1       Decimal?
-  peso2       Decimal?
-  peso3       Decimal?
-  peso4       Decimal?
-  peso5       Decimal?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  bases       Base[]
-}
-
-model Base {
-  id          Int           @id @default(autoincrement())
-  reforiginal String?
-  tbaseId     Int
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  slang       String?
-  tbase       TBase         @relation(fields: [tbaseId], references: [id])
-  regColBases RegColBases[]
-
-  @@index([tbaseId], map: "Base_tbaseId_fkey")
-}
-
-model RegCol {
-  id              Int               @id @default(autoincrement())
-  description     String?
-  carta           Int?
-  R               Int
-  G               Int
-  B               Int
-  pesopromedio    Decimal?
-  brillo          Decimal?
-  active          Boolean?
-  coeficienteG    Decimal?
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  regColBases     RegColBases[]
-  regColColorants RegColColorants[]
-}
-
-model RegColColorants {
-  id         Int      @id @default(autoincrement())
-  regColId   Int
-  colorantId Int
-  amount     Float
-  colorant   Colorant @relation(fields: [colorantId], references: [id])
-  regCol     RegCol   @relation(fields: [regColId], references: [id])
-
-  @@index([colorantId], map: "RegColColorants_colorantId_fkey")
-  @@index([regColId], map: "RegColColorants_regColId_fkey")
-}
-
-model RegColBases {
-  id       Int    @id @default(autoincrement())
-  regColId Int
-  baseId   Int
-  amount   Float
-  base     Base   @relation(fields: [baseId], references: [id])
-  regCol   RegCol @relation(fields: [regColId], references: [id])
-
-  @@index([baseId], map: "RegColBases_baseId_fkey")
-  @@index([regColId], map: "RegColBases_regColId_fkey")
+  updatedAt       DateTime          @default(now())
+  regcolcolorants Regcolcolorants[]
 }
 
 model Post {
@@ -146,8 +62,92 @@ model Post {
   createdAt   DateTime @default(now())
   updatedAt   DateTime
   createdById String
-  User        User     @relation(fields: [createdById], references: [id])
+  user        User     @relation(fields: [createdById], references: [id], map: "Post_createdById_fkey")
 
   @@index([createdById], map: "Post_createdById_fkey")
-  @@index([name])
+  @@index([name], map: "Post_name_idx")
+}
+
+model Regcol {
+  id              Int               @id @default(autoincrement())
+  description     String?
+  carta           Int?
+  R               Int
+  G               Int
+  B               Int
+  pesopromedio    Decimal?          @db.Decimal(65, 2)
+  brillo          Decimal?          @db.Decimal(65, 2)
+  active          Boolean?
+  coeficienteG    Decimal?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime
+  regcolbases     Regcolbases[]
+  regcolcolorants Regcolcolorants[]
+}
+
+model Regcolbases {
+  id       Int    @id @default(autoincrement())
+  regColId Int
+  baseId   Int
+  amount   Float
+  base     Base   @relation(fields: [baseId], references: [id], map: "RegColBases_baseId_fkey")
+  regcol   Regcol @relation(fields: [regColId], references: [id], map: "RegColBases_regColId_fkey")
+
+  @@index([baseId], map: "RegColBases_baseId_fkey")
+  @@index([regColId], map: "RegColBases_regColId_fkey")
+}
+
+model Regcolcolorants {
+  id         Int      @id @default(autoincrement())
+  regColId   Int
+  colorantId Int
+  amount     Float
+  colorant   Colorant @relation(fields: [colorantId], references: [id], map: "RegColColorants_colorantId_fkey")
+  regcol     Regcol   @relation(fields: [regColId], references: [id], map: "RegColColorants_regColId_fkey")
+
+  @@index([colorantId], map: "RegColColorants_colorantId_fkey")
+  @@index([regColId], map: "RegColColorants_regColId_fkey")
+}
+
+model Session {
+  id           String   @id
+  sessionToken String   @unique(map: "Session_sessionToken_key")
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Session_userId_fkey")
+
+  @@index([userId], map: "Session_userId_fkey")
+}
+
+model Tbase {
+  id          Int      @id @default(autoincrement())
+  description String
+  shortcode   String   @unique(map: "TBase_shortcode_key")
+  peso1       Decimal? @db.Decimal(65, 2)
+  peso2       Decimal? @db.Decimal(65, 2)
+  peso3       Decimal? @db.Decimal(65, 2)
+  peso4       Decimal? @db.Decimal(65, 2)
+  peso5       Decimal? @db.Decimal(65, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  base        Base[]
+}
+
+model User {
+  id            String    @id
+  name          String?
+  email         String?   @unique(map: "User_email_key")
+  emailVerified DateTime?
+  image         String?
+  account       Account[]
+  post          Post[]
+  session       Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique(map: "VerificationToken_token_key")
+  expires    DateTime
+
+  @@unique([identifier, token], map: "VerificationToken_identifier_token_key")
 }
