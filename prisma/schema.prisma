@@ -3,9 +3,8 @@ generator client {
 }
 
 generator zod {
-  provider         = "prisma-zod-generator"
-  output           = "./generated-zod-schemas"
-  isGenerateSelect = true
+  provider       = "npx zod-prisma-types"
+  useMultipleFiles  = true
 }
 
 datasource db {
@@ -66,8 +65,8 @@ model Colorant {
   description     String
   shortcode       String
   basecodi        Int
-  gramUP          Float
-  gramUG          Float
+  gramUP          Decimal
+  gramUG          Decimal
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
   regColColorants RegColColorants[]
@@ -77,11 +76,11 @@ model TBase {
   id          Int      @id @default(autoincrement())
   description String
   shortcode   String
-  peso1       Float?
-  peso2       Float?
-  peso3       Float?
-  peso4       Float?
-  peso5       Float?
+  peso1       Decimal?
+  peso2       Decimal?
+  peso3       Decimal?
+  peso4       Decimal?
+  peso5       Decimal?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   bases       Base[]
@@ -107,10 +106,10 @@ model RegCol {
   R               Int
   G               Int
   B               Int
-  pesopromedio    Float?
-  brillo          Float?
+  pesopromedio    Decimal?
+  brillo          Decimal?
   active          Boolean?
-  coeficienteG    Float?
+  coeficienteG    Decimal?
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   regColBases     RegColBases[]

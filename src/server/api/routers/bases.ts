@@ -1,10 +1,8 @@
-import { z } from "zod";
-
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { Prisma } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
+import { TBaseCreateWithoutBasesInputSchema } from "pg/generated/zod";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
 
 export const baseRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -21,4 +19,20 @@ export const baseRouter = createTRPCRouter({
     });
     return tiposBase;
   }),
+
+  createTypeBase: protectedProcedure
+    .input(TBaseCreateWithoutBasesInputSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        // Attempt to create a new TBase record
+        const createdTBase = await ctx.db.tBase.create({ data: input });
+
+        return createdTBase; // Return the created object
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          const errorResponse = mapPrismaErrorToTrpcError(error);
+          throw new TRPCError(errorResponse);
+        }
+      }
+    }),
 });

@@ -1,0 +1,15 @@
+-- AlterTable
+ALTER TABLE `Colorant` MODIFY `gramUP` DECIMAL(65, 30) NOT NULL,
+    MODIFY `gramUG` DECIMAL(65, 30) NOT NULL;
+
+-- AlterTable
+ALTER TABLE `RegCol` MODIFY `pesopromedio` DECIMAL(65, 30) NULL,
+    MODIFY `brillo` DECIMAL(65, 30) NULL,
+    MODIFY `coeficienteG` DECIMAL(65, 30) NULL;
+
+-- AlterTable
+ALTER TABLE `TBase` MODIFY `peso1` DECIMAL(65, 30) NULL,
+    MODIFY `peso2` DECIMAL(65, 30) NULL,
+    MODIFY `peso3` DECIMAL(65, 30) NULL,
+    MODIFY `peso4` DECIMAL(65, 30) NULL,
+    MODIFY `peso5` DECIMAL(65, 30) NULL;

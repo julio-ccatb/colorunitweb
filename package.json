@@ -22,16 +22,17 @@
     "@trpc/react-query": "^10.37.1",
     "@trpc/server": "^10.37.1",
     "@types/lodash": "^4.14.200",
+    "decimal.js": "^10.4.3",
     "lodash": "^4.17.21",
     "lucide-react": "^0.292.0",
     "next": "^13.5.4",
     "next-auth": "^4.23.0",
-    "prisma-zod-generator": "^0.8.13",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.48.1",
     "superjson": "^1.13.1",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zod-prisma-types": "^3.0.0"
   },
   "devDependencies": {
     "@types/eslint": "^8.44.2",
