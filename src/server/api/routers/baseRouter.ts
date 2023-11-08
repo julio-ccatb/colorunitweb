@@ -4,9 +4,11 @@ import {
   TbaseCreateInputSchema,
   TbaseCreateWithoutBaseInputSchema,
   TbaseDeleteArgsSchema,
+  TbaseUpdateWithoutBaseInputSchema,
 } from "pg/generated/zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
+import TbaseUpdateArgsSchema from "../../../../prisma/generated/zod/outputTypeSchemas/TbaseUpdateArgsSchema";
 
 export const baseRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -29,6 +31,7 @@ export const baseRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         // Attempt to create a new TBase record
+        console.log(input);
         const validate = TbaseCreateInputSchema.parse(input);
         const createdTBase = await ctx.db.tbase.create({ data: validate });
 
@@ -55,5 +58,10 @@ export const baseRouter = createTRPCRouter({
         }
       }
       throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    }),
+  updateTypeBase: protectedProcedure
+    .input(TbaseUpdateArgsSchema)
+    .mutation(async ({ ctx, input }) => {
+      const updatedTbase = await ctx.db.tbase.update(input);
     }),
 });
