@@ -31,7 +31,7 @@ export default function TipoDeBasePage() {
   if (result === undefined) return <>No Data</>;
 
   return (
-    <div className="m-4 flex flex-col">
+    <div className="m-4 flex flex-col rounded-md border bg-white p-4">
       <div className="mt-4 flex justify-between">
         <h1 className="mb-4 text-2xl font-bold">Tipos de Bases</h1>
       </div>
@@ -55,7 +55,10 @@ export default function TipoDeBasePage() {
           </thead>
           <tbody className="">
             {itemsToDisplay.map((item) => (
-              <tr key={item.id} className="border">
+              <tr
+                key={item.id}
+                className="border font-semibold hover:bg-greenAccent/25"
+              >
                 <td className="border p-2">{item.shortcode}</td>
                 <td className="border p-2">{item.description}</td>
                 <td className="flex justify-start p-2">

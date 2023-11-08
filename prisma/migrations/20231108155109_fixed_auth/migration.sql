@@ -5,7 +5,7 @@
 
 */
 -- DropForeignKey
-ALTER TABLE `post` DROP FOREIGN KEY `Post_createdById_fkey`;
+ALTER TABLE `Post` DROP FOREIGN KEY `Post_createdById_fkey`;
 
 -- DropTable
-DROP TABLE `post`;
+DROP TABLE `Post`;

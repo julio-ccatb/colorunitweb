@@ -108,7 +108,7 @@ export default function TbaseCreateForm() {
         <button
           disabled={isLoading}
           type="submit"
-          className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
+          className=" border-1 my-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
         >
           <span>{isLoading ? "Prcesando..." : "Add"}</span>{" "}
           {isLoading ? (

@@ -1,7 +1,7 @@
 "use client";
 // In your main component or page file
-import { SetStateAction, useState } from "react";
-import ModuleMenu, { ModuleMenuProps } from "~/app/_components/moduleMenu";
+import { type SetStateAction, useState } from "react";
+import ModuleMenu, { type ModuleMenuProps } from "~/app/_components/moduleMenu";
 
 const initialModules = [
   {
@@ -32,7 +32,7 @@ export default function LaboratoryPage({
     module: SetStateAction<
       { action: string; url: string; active: boolean } | undefined
     >,
-  ) => {
+  ): void => {
     setActiveModule(module);
   };
 

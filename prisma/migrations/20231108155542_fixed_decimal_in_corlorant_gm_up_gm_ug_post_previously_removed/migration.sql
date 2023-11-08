@@ -6,5 +6,5 @@
 
 */
 -- AlterTable
-ALTER TABLE `colorant` MODIFY `gramUP` DECIMAL(65, 2) NOT NULL,
+ALTER TABLE `Colorant` MODIFY `gramUP` DECIMAL(65, 2) NOT NULL,
     MODIFY `gramUG` DECIMAL(65, 2) NOT NULL;

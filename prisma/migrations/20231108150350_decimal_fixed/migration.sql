@@ -11,11 +11,11 @@
 
 */
 -- AlterTable
-ALTER TABLE `regcol` MODIFY `pesopromedio` DECIMAL(65, 2) NULL,
+ALTER TABLE `RegCol` MODIFY `pesopromedio` DECIMAL(65, 2) NULL,
     MODIFY `brillo` DECIMAL(65, 2) NULL;
 
 -- AlterTable
-ALTER TABLE `tbase` MODIFY `peso1` DECIMAL(65, 2) NULL,
+ALTER TABLE `TBase` MODIFY `peso1` DECIMAL(65, 2) NULL,
     MODIFY `peso2` DECIMAL(65, 2) NULL,
     MODIFY `peso3` DECIMAL(65, 2) NULL,
     MODIFY `peso4` DECIMAL(65, 2) NULL,

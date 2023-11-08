@@ -10,9 +10,9 @@ import {
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { type z } from "zod";
 import { api } from "~/trpc/react";
-import { useEffect } from "react";
 import { TbaseUpdateWithoutBaseInputSchema } from "pg/generated/zod";
 import { type Tbase } from "@prisma/client";
+import { omit } from "lodash";
 
 type UpdateFormProps = {
   initialData: Tbase;
@@ -21,15 +21,18 @@ type UpdateFormProps = {
 export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
   type Input = z.infer<typeof TbaseUpdateWithoutBaseInputSchema>;
   const resolver = zodResolver(TbaseUpdateWithoutBaseInputSchema);
+  const defaultValues = omit(initialData, "id");
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Input>({ resolver, defaultValues: initialData });
+  } = useForm<Input>({ resolver, defaultValues });
 
   const { mutate, isLoading, isSuccess, error } =
     api.base.updateTypeBase.useMutation();
+
+  console.log(errors);
 
   const onSubmit: SubmitHandler<Input> = (data) => {
     console.log(data);
@@ -105,7 +108,7 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
         <button
           disabled={isLoading}
           type="submit"
-          className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
+          className=" border-1 my-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
         >
           <span>{isLoading ? "Prcesando..." : "Update"}</span>{" "}
           {isLoading ? (
