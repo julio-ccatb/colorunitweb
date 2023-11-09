@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState } from "react";
-import { MoreVertical, ChevronLast, ChevronFirst } from "lucide-react";
+import { MoreVertical, ChevronLast } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Icon from "/public/logo.svg";
 import Image from "next/image";
