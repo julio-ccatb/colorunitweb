@@ -39,10 +39,10 @@ export default function ColorantesCreateForm() {
   };
 
   return (
-    <div className="flex rounded-md bg-white p-4 shadow-lg">
+    <div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={`mb-4 flex w-2/3 flex-col items-start justify-center gap-2`}
+        className={`flex w-2/3 flex-col items-start justify-center gap-2`}
       >
         <div className="flex ">
           <input
