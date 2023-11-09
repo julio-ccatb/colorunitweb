@@ -1,3 +1,4 @@
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CheckCircle,
@@ -22,16 +23,21 @@ export default function BaseCreateForm() {
   const {
     register,
     handleSubmit,
-    reset,
-    clearErrors,
     setValue,
     formState: { errors },
   } = useForm<Input>({ resolver });
 
   const { mutate, isLoading, isSuccess, error } = api.base.create.useMutation();
-  const { data: listBases } = api.base.listTypeBase.useQuery();
+  const { data: listBases, status } = api.base.listTypeBase.useQuery();
 
   const [selected, setSelected] = useState<Tbase>();
+
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const itemsToDisplay =
+    status === "success" ? listBases.slice(startIndex, endIndex) : [];
 
   if (errors) {
     console.log(errors);
@@ -41,6 +47,19 @@ export default function BaseCreateForm() {
     if (selected) mutate({ data });
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  if (status == "loading")
+    return <Loader2 size={50} className="animate-spin text-greenAccent" />;
+
+  if (status == "error")
+    return (
+      <p className="text-xl font-semibold text-red-500">
+        <XCircle /> No se pudo cargar la el formulario, intente mas tarde
+      </p>
+    );
   return (
     <div className="flex">
       <form
@@ -75,7 +94,7 @@ export default function BaseCreateForm() {
               </th>
             </tr>
             <tbody className="">
-              {listBases?.map((item) => (
+              {itemsToDisplay?.map((item) => (
                 <tr
                   key={item.id}
                   className={`w-full border font-semibold hover:cursor-pointer hover:bg-greenAccent/25 ${
@@ -95,7 +114,22 @@ export default function BaseCreateForm() {
             </tbody>
           </thead>
         </table>
-
+        <div className="mt-4 flex justify-center">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold   text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
+          >
+            Previous Page
+          </button>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={endIndex >= listBases.length}
+            className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
+          >
+            Next Page
+          </button>
+        </div>
         <button
           disabled={isLoading}
           type="submit"

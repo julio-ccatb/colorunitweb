@@ -21,6 +21,7 @@ export default function BasesPage() {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
+  const { mutate } = api.base.delete.useMutation();
 
   if (result === undefined) return <>No Data</>;
 
@@ -102,7 +103,10 @@ export default function BasesPage() {
                   <button className="mr-2 rounded-md bg-blue-500 px-2 py-2 text-white">
                     <ClipboardEdit size={15} />
                   </button>
-                  <button className="rounded-md bg-red-500 px-2 py-2 text-white">
+                  <button
+                    onClick={() => mutate({ where: { id: item.id } })}
+                    className="rounded-md bg-red-500 px-2 py-2 text-white"
+                  >
                     <Trash size={15} />
                   </button>
                 </td>
