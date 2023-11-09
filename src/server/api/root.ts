@@ -1,5 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { baseRouter } from "./routers/bases";
+import { colorantesRouter } from "./routers/colorantes";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +9,7 @@ import { baseRouter } from "./routers/bases";
  */
 export const appRouter = createTRPCRouter({
   base: baseRouter,
+  colorante: colorantesRouter,
 });
 
 // export type definition of API

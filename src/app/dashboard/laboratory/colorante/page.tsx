@@ -1,3 +1,9 @@
+import ColorantesCreateForm from "~/app/_components/forms/colorantes/ColorantesCreateForm";
+
 export default function ColorantePage() {
-  return <h1>Colorante Page</h1>;
+  return (
+    <div>
+      <ColorantesCreateForm />
+    </div>
+  );
 }
