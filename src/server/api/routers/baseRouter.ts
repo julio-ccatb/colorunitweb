@@ -1,14 +1,14 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import {
+  BaseCreateArgsSchema,
   TbaseCreateInputSchema,
   TbaseCreateWithoutBaseInputSchema,
   TbaseDeleteArgsSchema,
-  TbaseUpdateWithoutBaseInputSchema,
+  TbaseUpdateArgsSchema,
 } from "pg/generated/zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
-import TbaseUpdateArgsSchema from "../../../../prisma/generated/zod/outputTypeSchemas/TbaseUpdateArgsSchema";
 
 export const baseRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -62,6 +62,30 @@ export const baseRouter = createTRPCRouter({
   updateTypeBase: protectedProcedure
     .input(TbaseUpdateArgsSchema)
     .mutation(async ({ ctx, input }) => {
-      const updatedTbase = await ctx.db.tbase.update(input);
+      try {
+        const updatedTbase = await ctx.db.tbase.update(input);
+        return updatedTbase;
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          const errorResponse = mapPrismaErrorToTrpcError(error);
+          throw new TRPCError(errorResponse);
+        }
+      }
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    }),
+
+  create: protectedProcedure
+    .input(BaseCreateArgsSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const createdBase = await ctx.db.base.create(input);
+        return createdBase;
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          const errorResponse = mapPrismaErrorToTrpcError(error);
+          throw new TRPCError(errorResponse);
+        }
+      }
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
     }),
 });

@@ -24,32 +24,30 @@ export default function BasesPage() {
 
   if (result === undefined) return <>No Data</>;
 
-  // Function to format a date as a string (e.g., "yyyy-mm-dd HH:MM:SS")
-
   return (
     <div className="flex flex-col rounded-md bg-white p-4 shadow-sm">
       <div className="flex-1 overflow-x-auto">
         <div className="mt-4 flex justify-between">
           <h1 className="mb-4 text-2xl font-bold">Bases</h1>
-          <button className=" hover:bg-whitePrimary hover:text-greenAccent bg-greenAccent text-greenLight border-1 border-greenAccent m-4 flex items-center justify-center gap-2 rounded-md border  px-4 py-2 font-semibold shadow-md transition-colors duration-200">
+          <button className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent">
             <span>Add</span> <FilePlus2 size={15} />
           </button>
         </div>
         <table className="w-full max-w-full border-collapse border">
           <thead className="text-left">
             <tr>
-              <th className="bg-graySecondary  text-greenLight p-2">Ref</th>
-              <th className="bg-graySecondary  text-greenLight p-2">Tipo</th>
-              <th className="bg-graySecondary  text-greenLight p-2">Slang</th>
-              <th className="bg-graySecondary  text-greenLight p-2">Peso</th>
-              <th className="bg-graySecondary  text-greenLight p-2">Actions</th>
+              <th className="bg-graySecondary  p-2 text-greenLight">Ref</th>
+              <th className="bg-graySecondary  p-2 text-greenLight">Tipo</th>
+              <th className="bg-graySecondary  p-2 text-greenLight">Slang</th>
+              <th className="bg-graySecondary  p-2 text-greenLight">Peso</th>
+              <th className="bg-graySecondary  p-2 text-greenLight">Actions</th>
             </tr>
           </thead>
           <tbody className="">
             {itemsToDisplay.map((item) => (
               <tr
                 key={item.id}
-                className="hover:bg-greenAccent/25 border font-semibold"
+                className="border font-semibold hover:bg-greenAccent/25"
               >
                 <td className=" justify-start p-2">
                   {item.reforiginal ?? "N/A"}
@@ -59,7 +57,7 @@ export default function BasesPage() {
                 <td className=" justify-start p-2">
                   <div className="flex gap-2">
                     <div className="flex">
-                      <span className="bg-greenAccent inline-block rounded-l-full px-[0.65em] pb-[0.25em] pt-[0.35em] align-baseline text-[0.75em] font-bold leading-none ">
+                      <span className="inline-block rounded-l-full bg-greenAccent px-[0.65em] pb-[0.25em] pt-[0.35em] align-baseline text-[0.75em] font-bold leading-none ">
                         P1
                       </span>
                       <span className="inline-block  rounded-r-full bg-neutral-800 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-neutral-50 dark:bg-neutral-900">
@@ -117,14 +115,14 @@ export default function BasesPage() {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="hover:bg-whitePrimary hover:text-greenAccent bg-greenAccent text-greenLight border-1 border-greenAccent mr-2 rounded-md border   px-4 py-2 font-semibold shadow-md transition-colors duration-200"
+          className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold   text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
         >
           Previous Page
         </button>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={endIndex >= result.length}
-          className="hover:bg-whitePrimary hover:text-greenAccent bg-greenAccent text-greenLight border-1 border-greenAccent rounded-md border  px-4 py-2 font-semibold shadow-md transition-colors duration-200"
+          className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
         >
           Next Page
         </button>
