@@ -1,6 +1,8 @@
 "use client";
 import { ClipboardEdit, FilePlus2, Trash } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
+import HandleStatus from "~/app/_components/handleStatus";
 import { api } from "~/trpc/react";
 
 export default function BasesPage() {
@@ -23,6 +25,7 @@ export default function BasesPage() {
   };
   const { mutate } = api.base.delete.useMutation();
 
+  if (status != "success") return HandleStatus({ status: "loading" });
   if (result === undefined) return <>No Data</>;
 
   return (
@@ -30,9 +33,13 @@ export default function BasesPage() {
       <div className="flex-1 overflow-x-auto">
         <div className="mt-4 flex justify-between">
           <h1 className="mb-4 text-2xl font-bold">Bases</h1>
-          <button className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent">
-            <span>Add</span> <FilePlus2 size={15} />
-          </button>
+          <Link
+            className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
+            href={"/dashboard/laboratory/base/create/"}
+          >
+            Add
+            <FilePlus2 size={15} />
+          </Link>{" "}
         </div>
         <table className="w-full max-w-full border-collapse border">
           <thead className="text-left">

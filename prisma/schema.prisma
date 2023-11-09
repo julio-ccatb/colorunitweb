@@ -75,7 +75,7 @@ model Base {
 model Colorant {
   id              Int               @id @default(autoincrement())
   description     String
-  shortcode       String
+  shortcode       String            @unique
   basecodi        Int
   gramUP          Decimal           @db.Decimal(65, 2)
   gramUG          Decimal           @db.Decimal(65, 2)

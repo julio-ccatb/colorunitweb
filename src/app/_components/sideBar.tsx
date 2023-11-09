@@ -19,12 +19,12 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
   const session = useSession();
 
   return (
-    <aside className="bg-graySecondary h-screen outline-none">
+    <aside className="h-screen bg-graySecondary outline-none">
       <nav className="flex h-full flex-col shadow-md  ">
         <div
-          className={`bg-graySecondary flex items-center justify-between p-4 ${
+          className={`flex items-center justify-between bg-graySecondary p-4 ${
             expanded
-              ? "from-whitePrimary text-grayPrimary bg-gradient-to-t to-white"
+              ? "bg-gradient-to-t from-whitePrimary to-white text-grayPrimary"
               : ""
           }`}
         >
@@ -37,7 +37,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
               alt=""
             />
             <span
-              className={`text-md border-l-graySecondary flex flex-col overflow-hidden border-l-2 border-solid pl-2 font-extrabold tracking-tight transition-all ${
+              className={`text-md flex flex-col overflow-hidden border-l-2 border-solid border-l-graySecondary pl-2 font-extrabold tracking-tight transition-all ${
                 expanded ? "ml-3 w-16" : "hidden"
               }`}
             >
@@ -46,7 +46,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           </div>
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className={`hover:bg-greenAccent  rounded-lg  p-2 transition-transform duration-500 ${
+            className={`rounded-lg  p-2  transition-transform duration-500 hover:bg-greenAccent ${
               expanded ? "rotate-[-180deg]" : "bg-greenLight text-grayPrimary"
             }`}
           >
@@ -72,7 +72,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
               overflow-hidden transition-all ${expanded ? "ml-3 w-52" : "w-0"}
           `}
           >
-            <div className="text-greenLight leading-4">
+            <div className="leading-4 text-greenLight">
               <h4 className="text-sm font-semibold">
                 {session?.data?.user.name}
               </h4>

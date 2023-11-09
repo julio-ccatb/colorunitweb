@@ -41,13 +41,14 @@ export default function LaboratoryPage({
       title: "Laboratory",
       modules: initialModules,
       moduleName: "Laboratory",
+      url: "/dashboard/laboratory",
     },
     activeModule: activeModule,
     onModuleClick: handleModuleClick,
   };
 
   return (
-    <div className="ml-8 mt-8 flex max-h-screen flex-col gap-4 rounded-md">
+    <div className="flex max-h-screen flex-col gap-4 rounded-md">
       <ModuleMenu {...moduleMenuProps} />
       {children}
     </div>

@@ -11,8 +11,9 @@ import { BaseUncheckedCreateWithoutRegcolbasesInputSchema } from "pg/generated/z
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { type z } from "zod";
 import { api } from "~/trpc/react";
-import { type Tbase } from "../../../../prisma/generated/zod/modelSchema/TbaseSchema";
+import { type Tbase } from "../../../../../prisma/generated/zod/modelSchema/TbaseSchema";
 import { useState } from "react";
+import HandleStatus from "../../handleStatus";
 
 export default function BaseCreateForm() {
   type Input = z.infer<typeof BaseUncheckedCreateWithoutRegcolbasesInputSchema>;
@@ -32,104 +33,65 @@ export default function BaseCreateForm() {
 
   const [selected, setSelected] = useState<Tbase>();
 
-  const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const itemsToDisplay =
-    status === "success" ? listBases.slice(startIndex, endIndex) : [];
-
   if (errors) {
     console.log(errors);
   }
 
   const onSubmit: SubmitHandler<Input> = (data) => {
-    if (selected) mutate({ data });
+    if (selected && data.reforiginal && data.slang) mutate({ data });
   };
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
-
-  if (status == "loading")
-    return <Loader2 size={50} className="animate-spin text-greenAccent" />;
-
-  if (status == "error")
-    return (
-      <p className="text-xl font-semibold text-red-500">
-        <XCircle /> No se pudo cargar la el formulario, intente mas tarde
-      </p>
-    );
+  if (status != "success") return HandleStatus({ status });
   return (
     <div className="flex">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={`mb-4 flex w-1/2 flex-col items-start justify-center gap-2`}
+        className={`mb-4 flex w-2/3 flex-col items-start justify-center gap-2`}
       >
-        <div>
+        <input
+          type="text"
+          id="slang"
+          {...register("slang", { required: true })}
+          placeholder="Codigo"
+          className="mr-2 rounded-md border p-2"
+        />
+        <div className="flex">
           <input
             type="text"
             id="reforiginal"
-            {...register("reforiginal")}
+            {...register("reforiginal", { required: true })}
             placeholder="Descripccion"
             className="mr-2 rounded-md border p-2"
           />
-          <input
-            type="text"
-            id="slang"
-            {...register("slang")}
-            placeholder="Codigo"
-            className="mr-2 rounded-md border p-2"
-          />
+          <select
+            id="tbaseId"
+            name="tbaseId"
+            value={selected?.id ?? ""}
+            onChange={(e) => {
+              const selectedId = Number(e.target.value);
+              const selectedItem = listBases.find(
+                (item) => item.id === selectedId,
+              );
+              setValue("tbaseId", selectedId);
+              setSelected(selectedItem);
+            }}
+            className=" rounded-md border border-graySecondary/10 p-2 "
+          >
+            <option className="" value="" disabled>
+              Selecciona una base
+            </option>
+            {listBases?.map((item) => (
+              <option
+                className="py-2 text-graySecondary hover:bg-greenAccent "
+                key={item.id}
+                value={item.id}
+              >
+                {item.shortcode} - {item.description}
+              </option>
+            ))}
+          </select>
         </div>
 
-        <table className=" flex border-collapse rounded-md">
-          <thead>
-            <tr>
-              <th className="rounded-tl-md bg-graySecondary p-2 text-greenLight">
-                Codigo
-              </th>
-              <th className="rounded-tr-md bg-graySecondary p-2 text-greenLight">
-                Descripccion
-              </th>
-            </tr>
-            <tbody className="">
-              {itemsToDisplay?.map((item) => (
-                <tr
-                  key={item.id}
-                  className={`w-full border font-semibold hover:cursor-pointer hover:bg-greenAccent/25 ${
-                    selected == item ? "bg-greenAccent" : ""
-                  }`}
-                  onClick={() => {
-                    {
-                      setValue("tbaseId", item.id);
-                      setSelected(item);
-                    }
-                  }}
-                >
-                  <td className="border p-2">{item.shortcode}</td>
-                  <td className="border p-2">{item.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          </thead>
-        </table>
-        <div className="mt-4 flex justify-center">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold   text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
-          >
-            Previous Page
-          </button>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={endIndex >= listBases.length}
-            className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
-          >
-            Next Page
-          </button>
-        </div>
         <button
           disabled={isLoading}
           type="submit"

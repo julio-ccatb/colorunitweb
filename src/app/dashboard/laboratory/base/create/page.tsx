@@ -1,5 +1,5 @@
 "use client";
-import BaseCreateForm from "~/app/_components/forms/BaseCreateForm";
+import BaseCreateForm from "~/app/_components/forms/bases/BaseCreateForm";
 
 export default function BasePage() {
   return (

@@ -1,9 +1,10 @@
 import { Component } from "lucide-react";
 import Link from "next/link";
+import { type SetStateAction } from "react";
 
 interface Module {
   action: string;
-  url?: string;
+  url: string;
   active: boolean;
 }
 
@@ -12,9 +13,10 @@ export interface ModuleMenuProps {
     moduleName: string;
     title: string;
     modules: Module[];
+    url: string;
   };
   activeModule: Module | undefined;
-  onModuleClick: (module: Module) => void;
+  onModuleClick: (module: SetStateAction<Module | undefined>) => void;
 }
 
 export default function ModuleMenu({
@@ -25,30 +27,47 @@ export default function ModuleMenu({
   const { title, modules } = config;
 
   return (
-    <div className="flex-auto rounded-sm bg-white p-4 shadow-sm">
-      <h1 className="flex items-center gap-2 text-xl font-bold">
+    <div className=" flex-auto rounded-md bg-white p-4 shadow-md">
+      <p className="flex items-center gap-2 text-xl font-bold">
         <Component className="text-greenAccent" />
-        {title}
-        {activeModule?.action ? <p>→ {activeModule?.action}</p> : <></>}
-      </h1>
+        <Link href={config.url}>
+          <h1>{title} → </h1>
+        </Link>
+        {activeModule?.url ? (
+          <Link href={activeModule.url}> {activeModule?.action}</Link>
+        ) : (
+          <></>
+        )}
+      </p>
       <nav className="flex list-none gap-6 pt-4">
-        {modules.map((module, index) => (
-          <li
-            key={index}
-            className={`rounded-md px-2 py-1 font-semibold shadow-md ${
-              module === activeModule
-                ? "bg-greenAccent font-semibold text-whitePrimary"
-                : "hover:bg-whitePrimary hover:text-greenAccent"
-            }`}
-            onClick={() => onModuleClick(module)}
-          >
-            {module.url ? (
-              <Link href={module.url}>{module.action}</Link>
-            ) : (
+        {modules.map((module, index) =>
+          module.url ? (
+            <Link
+              href={module.url}
+              key={index}
+              className={`rounded-md px-2 py-1 font-semibold shadow-md ${
+                module === activeModule
+                  ? "bg-greenAccent font-semibold text-whitePrimary"
+                  : "hover:bg-whitePrimary hover:text-greenAccent"
+              }`}
+              onClick={() => onModuleClick(module)}
+            >
               <p>{module.action}</p>
-            )}
-          </li>
-        ))}
+            </Link>
+          ) : (
+            <li
+              key={index}
+              className={`rounded-md px-2 py-1 font-semibold shadow-md ${
+                module === activeModule
+                  ? "bg-greenAccent font-semibold text-whitePrimary"
+                  : "hover:bg-whitePrimary hover:text-greenAccent"
+              }`}
+              onClick={() => onModuleClick(module)}
+            >
+              <p>{module.action}</p>
+            </li>
+          ),
+        )}
       </nav>
     </div>
   );

@@ -2,9 +2,10 @@
 import { type Tbase } from "@prisma/client";
 import { ClipboardEdit, Trash } from "lucide-react";
 import { useState } from "react";
-import TbaseCreateForm from "~/app/_components/forms/TbaseCreateForm";
-import TbaseUpdateForm from "~/app/_components/forms/TbaseUpdateForm";
+import TbaseCreateForm from "~/app/_components/forms/tbases/TbaseCreateForm";
+import TbaseUpdateForm from "~/app/_components/forms/tbases/TbaseUpdateForm";
 import { api } from "~/trpc/react";
+import HandleStatus from "../../../../_components/handleStatus";
 
 export default function TipoDeBasePage() {
   const itemsPerPage = 5; // Number of items to display per page
@@ -28,10 +29,12 @@ export default function TipoDeBasePage() {
 
   const { mutate } = api.base.deleteTypeBase.useMutation();
 
+  if (status != "success") return HandleStatus({ status });
+
   if (result === undefined) return <>No Data</>;
 
   return (
-    <div className="m-4 flex flex-col rounded-md border bg-white p-4">
+    <div className=" flex flex-col rounded-md border bg-white p-4">
       <div className="mt-4 flex justify-between">
         <h1 className="mb-4 text-2xl font-bold">Tipos de Bases</h1>
       </div>

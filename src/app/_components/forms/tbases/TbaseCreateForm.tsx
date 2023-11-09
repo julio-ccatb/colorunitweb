@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Tbase } from "@prisma/client";
 import {
   CheckCircle,
   FilePlus2,
@@ -9,7 +8,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { TbaseCreateWithoutBaseInputSchema } from "pg/generated/zod";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { type z } from "zod";
 import { api } from "~/trpc/react";
 
@@ -25,7 +24,7 @@ export default function TbaseCreateForm() {
     formState: { errors },
   } = useForm<Input>({ resolver });
 
-  const { mutate, isLoading, isSuccess, error } =
+  const { mutate, isLoading, isSuccess, error, status } =
     api.base.createTypeBase.useMutation();
 
   if (isSuccess) {
@@ -37,6 +36,9 @@ export default function TbaseCreateForm() {
     console.log(data);
     mutate(data);
   };
+
+  if (status == "loading")
+    return <Loader2 size={50} className="animate-spin text-greenAccent" />;
 
   return (
     <div className="flex">
