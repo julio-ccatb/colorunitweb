@@ -78,7 +78,7 @@ export default function BaseCreateForm() {
             className=" rounded-md border border-graySecondary/10 p-2 "
           >
             <option className="" value="" disabled>
-              Selecciona una base
+              Tipo de base
             </option>
             {listBases?.map((item) => (
               <option

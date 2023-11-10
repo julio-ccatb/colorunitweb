@@ -37,6 +37,7 @@ export default function ColorantePage() {
               </th>
               <th className="bg-graySecondary  p-2 text-greenLight">Up</th>
               <th className="bg-graySecondary  p-2 text-greenLight">Ug</th>
+              <th className="bg-graySecondary  p-2 text-greenLight">Creado</th>
               <th className="bg-graySecondary  p-2 text-greenLight">
                 Actualizado
               </th>
@@ -56,6 +57,9 @@ export default function ColorantePage() {
                 </td>
                 <td className=" justify-start p-2">
                   {item.gramUG.toString()}g
+                </td>
+                <td className=" justify-start p-2">
+                  {formatDate(item.createdAt)}
                 </td>
                 <td className=" justify-start p-2">
                   {formatDate(item.updatedAt)}

@@ -62,7 +62,7 @@ export default function ColorantesCreateForm() {
             />
           </div>
         </div>
-        <p className="flex gap-2 pb-4 pt-2 font-light italic ">
+        <p className="flex gap-2 pb-2 pt-2 font-light italic ">
           <span className="text-greenAccent">
             <InfoIcon />
           </span>

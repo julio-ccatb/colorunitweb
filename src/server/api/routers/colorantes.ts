@@ -7,7 +7,9 @@ import { ColorantUncheckedCreateWithoutRegcolcolorantsInputSchema } from "pg/gen
 export const colorantesRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
     try {
-      const listColorantes = await ctx.db.colorant.findMany({});
+      const listColorantes = await ctx.db.colorant.findMany({
+        orderBy: { shortcode: "desc" },
+      });
       return listColorantes;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {

@@ -2,11 +2,12 @@
 import { ClipboardEdit, FilePlus2, Trash } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import BaseCreateForm from "~/app/_components/forms/bases/BaseCreateForm";
 import HandleStatus from "~/app/_components/handleStatus";
 import { api } from "~/trpc/react";
 
 export default function BasesPage() {
-  const itemsPerPage = 10; // Number of items to display per page
+  const itemsPerPage = 5; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data: result, status } = api.base.list.useQuery();
@@ -33,14 +34,8 @@ export default function BasesPage() {
       <div className="flex-1 overflow-x-auto">
         <div className="mt-4 flex justify-between">
           <h1 className="mb-4 text-2xl font-bold">Bases</h1>
-          <Link
-            className=" border-1 m-4 flex items-center justify-center gap-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold  text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent"
-            href={"/dashboard/laboratory/base/create/"}
-          >
-            Add
-            <FilePlus2 size={15} />
-          </Link>{" "}
         </div>
+        <BaseCreateForm />
         <table className="w-full max-w-full border-collapse border">
           <thead className="text-left">
             <tr>
