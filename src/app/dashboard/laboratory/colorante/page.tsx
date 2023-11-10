@@ -1,17 +1,24 @@
 "use client";
-import { CheckCircle, CircleOff } from "lucide-react";
+import { type Colorant } from "pg/generated/zod";
+import { useState } from "react";
 import ColorantesCreateForm from "~/app/_components/forms/colorantes/ColorantesCreateForm";
 import HandleStatus from "~/app/_components/handleStatus";
-import { api } from "~/trpc/react";
-import { useState } from "react";
 import { formatDate } from "~/app/_utils/dateFunctions";
+import { api } from "~/trpc/react";
 
 export default function ColorantePage() {
   const itemsPerPage = 5;
-  const { data: listColorantes, status } = api.colorante.list.useQuery();
+  const {
+    data: listColorantes,
+    status,
+    refetch,
+  } = api.colorante.list.useQuery();
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
+
+  const { mutate, status: statusupdate } = api.colorante.update.useMutation();
+  const [colorant, setColorant] = useState<Colorant>({} as Colorant);
 
   // Get the items to display on the current page
   const itemsToDisplay =
@@ -21,6 +28,25 @@ export default function ColorantePage() {
   // Function to handle page changes
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+  };
+
+  const ToggleActivate = (coloante: Colorant) => {
+    // Update colorant state based on the current item
+    setColorant((prevColorant) => ({
+      ...prevColorant,
+      active: !coloante.active,
+    }));
+
+    // Mutate API with the updated colorant
+    mutate(
+      { where: { id: coloante.id }, data: { active: !coloante.active } },
+      {
+        onSuccess: () => {
+          // Refetch the data to get the updated listColorantes
+          void refetch();
+        },
+      },
+    );
   };
 
   return (
@@ -65,18 +91,14 @@ export default function ColorantePage() {
                   {formatDate(item.updatedAt)}
                 </td>
                 <td className="justify-center p-2 font-bold">
-                  <div className="flex gap-4">
-                    <CheckCircle
-                      className={`hover:cursor-pointer hover:text-greenAccent/30 ${
-                        item.active ? "text-greenAccent" : ""
-                      }`}
-                    />{" "}
-                    <CircleOff
-                      className={`hover:cursor-pointer hover:text-red-300 ${
-                        !item.active ? "text-red-500" : ""
-                      }`}
-                    />
-                  </div>
+                  <input
+                    type="checkbox"
+                    className="toggle toggle-success"
+                    onClick={() => {
+                      ToggleActivate(item);
+                    }}
+                    checked={item.active}
+                  />
                 </td>
               </tr>
             ))}

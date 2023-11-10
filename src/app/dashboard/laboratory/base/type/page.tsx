@@ -11,7 +11,7 @@ export default function TipoDeBasePage() {
   const itemsPerPage = 5; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: result, status } = api.base.listTypeBase.useQuery();
+  const { data: result, status, refetch } = api.base.listTypeBase.useQuery();
   const [selected, setSelected] = useState<Tbase>();
 
   // Calculate the starting and ending indices for the current page
@@ -31,7 +31,7 @@ export default function TipoDeBasePage() {
 
   if (status != "success") return HandleStatus({ status });
 
-  if (result === undefined) return <>No Data</>;
+  if (result === undefined) return <h1>No Data</h1>;
 
   return (
     <div className=" flex flex-col rounded-md border bg-white p-4">
@@ -72,7 +72,17 @@ export default function TipoDeBasePage() {
                     <ClipboardEdit size={15} />
                   </button>
                   <button
-                    onClick={() => mutate({ where: { id: item.id } })}
+                    onClick={() =>
+                      mutate(
+                        { where: { id: item.id } },
+                        {
+                          onSuccess: () => {
+                            // Refetch the data to get the updated listColorantes
+                            void refetch();
+                          },
+                        },
+                      )
+                    }
                     className="rounded-md bg-red-500 px-2 py-2 text-white"
                   >
                     <Trash size={15} />

@@ -39,7 +39,7 @@ export default function ColorantesCreateForm() {
   };
 
   return (
-    <div>
+    <div className="flex ">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={`flex w-2/3 flex-col items-start justify-center gap-2`}
@@ -50,7 +50,9 @@ export default function ColorantesCreateForm() {
             id="shortcode"
             {...register("shortcode", { required: true })}
             placeholder="Codigo"
-            className="mr-2 w-1/4 rounded-md border p-2"
+            className={`mr-2 w-1/4 rounded-md border p-2 ${
+              errors.shortcode ? "input-error" : "focus:input-accent"
+            }`}
           />
           <div className="flex">
             <input
@@ -58,12 +60,14 @@ export default function ColorantesCreateForm() {
               id="description"
               {...register("description", { required: true })}
               placeholder="Descripccion"
-              className="mr-2 rounded-md border p-2"
+              className={`mr-2 rounded-md border p-2 ${
+                errors.description ? "input-error" : "focus:input-accent"
+              }`}
             />
           </div>
         </div>
         <p className="flex gap-2 pb-2 pt-2 font-light italic ">
-          <span className="text-greenAccent">
+          <span className="text-info">
             <InfoIcon />
           </span>
           Unidades en gramos
@@ -75,7 +79,9 @@ export default function ColorantesCreateForm() {
               id="gramUG"
               {...register("gramUG", { required: true })}
               placeholder="Unidad Grande"
-              className="mr-2  rounded-md border p-2"
+              className={`mr-2  rounded-md border p-2 ${
+                errors.gramUG ? "input-error" : "focus:input-accent"
+              }`}
             />
           </div>
           <div className="flex">
@@ -84,7 +90,9 @@ export default function ColorantesCreateForm() {
               id="gramUP"
               {...register("gramUP", { required: true })}
               placeholder="Unidad Pqueña"
-              className="mr-2  rounded-md border p-2"
+              className={`mr-2  rounded-md border p-2 ${
+                errors.gramUP ? "input-error" : "focus:input-accent"
+              }`}
             />
           </div>
         </div>
@@ -102,37 +110,28 @@ export default function ColorantesCreateForm() {
           )}
         </button>
       </form>
-      <div className="gap-2` mb-4 flex w-1/2  ">
-        <ul className="flex flex-col gap-2 rounded-md  p-4">
-          {isSuccess ? (
-            <li className="flex  gap-2 rounded-md bg-white p-2 text-greenAccent shadow-md transition-all duration-300">
-              <CheckCircle /> Saved
-            </li>
-          ) : (
-            ""
-          )}
-          {error ? (
-            <li className="flex gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <ServerCrash /> {error.message}
-            </li>
-          ) : (
-            ""
-          )}
-          {errors.shortcode?.message ? (
-            <li className="flex gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.shortcode?.message}
-            </li>
-          ) : (
-            ""
-          )}{" "}
-          {errors.description?.message ? (
-            <li className="flex gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.description?.message}
-            </li>
-          ) : (
-            ""
-          )}
-        </ul>
+      <div className="w-max-sm absolute right-2 top-2 flex flex-col gap-2">
+        {isSuccess ? (
+          <div className="alert alert-success text-white shadow-md">
+            <CheckCircle />
+            <span>Se a guardado Correctamente</span>
+          </div>
+        ) : error ? (
+          <div className="alert alert-error text-white shadow-md">
+            <ServerCrash />
+            <span>{error.message}</span>
+          </div>
+        ) : (
+          ""
+        )}
+        {errors
+          ? Object.keys(errors).map((key) => (
+              <div key={key} className="alert alert-error shadow-md">
+                <XCircle />
+                <span>{errors ? `Datos invalidos ${key}` : ""}</span>
+              </div>
+            ))
+          : ""}
       </div>
     </div>
   );

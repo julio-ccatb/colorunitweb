@@ -61,11 +61,11 @@ model VerificationToken {
 
 model Base {
   id          Int           @id @default(autoincrement())
-  reforiginal String?
+  reforiginal String
   tbaseId     Int
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now()) @updatedAt
-  slang       String?
+  slang       String
   tbase       Tbase         @relation(fields: [tbaseId], references: [id], map: "Base_tbaseId_fkey")
   regcolbases Regcolbases[]
 

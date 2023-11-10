@@ -51,18 +51,23 @@ export default function BaseCreateForm() {
         <input
           type="text"
           id="slang"
-          {...register("slang", { required: true })}
+          {...register("slang")}
           placeholder="Codigo"
-          className="mr-2 rounded-md border p-2"
+          className={`mr-2  rounded-md border p-2 ${
+            errors.slang ? "input-error" : "focus:input-accent"
+          }`}
         />
         <div className="flex">
           <input
             type="text"
             id="reforiginal"
-            {...register("reforiginal", { required: true })}
+            {...register("reforiginal")}
             placeholder="Descripccion"
-            className="mr-2 rounded-md border p-2"
+            className={`mr-2  rounded-md border p-2 ${
+              errors.reforiginal ? "input-error" : "focus:input-accent"
+            }`}
           />
+
           <select
             id="tbaseId"
             name="tbaseId"
@@ -75,14 +80,16 @@ export default function BaseCreateForm() {
               setValue("tbaseId", selectedId);
               setSelected(selectedItem);
             }}
-            className=" rounded-md border border-graySecondary/10 p-2 "
+            className={`select select-accent w-full max-w-xs ${
+              errors.tbaseId ? "select-error" : ""
+            } `}
           >
             <option className="" value="" disabled>
               Tipo de base
             </option>
             {listBases?.map((item) => (
               <option
-                className="py-2 text-graySecondary hover:bg-greenAccent "
+                className="   text-graySecondary hover:bg-greenAccent "
                 key={item.id}
                 value={item.id}
               >

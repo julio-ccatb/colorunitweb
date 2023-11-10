@@ -14,6 +14,7 @@ import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
+import { type UserRole } from "../utils/roles";
 
 /**
  * 1. CONTEXT
@@ -118,6 +119,14 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
     },
   });
 });
+export const VerifyRoles = (admitedRoles: UserRole[]) =>
+  t.middleware(({ ctx, next }) => {
+    // Verification logic
+
+    return next({
+      ctx,
+    });
+  });
 
 /**
  * Protected (authenticated) procedure

@@ -1,6 +1,5 @@
 "use client";
-import { ClipboardEdit, FilePlus2, Trash } from "lucide-react";
-import Link from "next/link";
+import { ClipboardEdit, Trash } from "lucide-react";
 import { useState } from "react";
 import BaseCreateForm from "~/app/_components/forms/bases/BaseCreateForm";
 import HandleStatus from "~/app/_components/handleStatus";
@@ -10,7 +9,7 @@ export default function BasesPage() {
   const itemsPerPage = 5; // Number of items to display per page
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: result, status } = api.base.list.useQuery();
+  const { data: result, status, refetch } = api.base.list.useQuery();
 
   // Calculate the starting and ending indices for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -106,7 +105,17 @@ export default function BasesPage() {
                     <ClipboardEdit size={15} />
                   </button>
                   <button
-                    onClick={() => mutate({ where: { id: item.id } })}
+                    onClick={() =>
+                      mutate(
+                        { where: { id: item.id } },
+                        {
+                          onSuccess: () => {
+                            // Refetch the data to get the updated listColorantes
+                            void refetch();
+                          },
+                        },
+                      )
+                    }
                     className="rounded-md bg-red-500 px-2 py-2 text-white"
                   >
                     <Trash size={15} />
