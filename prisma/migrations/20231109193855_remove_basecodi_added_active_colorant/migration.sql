@@ -5,5 +5,5 @@
 
 */
 -- AlterTable
-ALTER TABLE `colorant` DROP COLUMN `basecodi`,
+ALTER TABLE `Colorant` DROP COLUMN `basecodi`,
     ADD COLUMN `active` BOOLEAN NOT NULL DEFAULT true;

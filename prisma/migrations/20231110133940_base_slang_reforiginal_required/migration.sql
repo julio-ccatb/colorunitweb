@@ -6,5 +6,5 @@
 
 */
 -- AlterTable
-ALTER TABLE `base` MODIFY `reforiginal` VARCHAR(191) NOT NULL,
+ALTER TABLE `Base` MODIFY `reforiginal` VARCHAR(191) NOT NULL,
     MODIFY `slang` VARCHAR(191) NOT NULL;

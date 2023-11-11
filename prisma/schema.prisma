@@ -105,7 +105,7 @@ model Regcolbases {
   id       Int    @id @default(autoincrement())
   regColId Int
   baseId   Int
-  amount   Float
+  amount   Decimal  
   base     Base   @relation(fields: [baseId], references: [id], map: "RegColBases_baseId_fkey")
   regcol   Regcol @relation(fields: [regColId], references: [id], map: "RegColBases_regColId_fkey")
 
@@ -117,7 +117,7 @@ model Regcolcolorants {
   id         Int      @id @default(autoincrement())
   regColId   Int
   colorantId Int
-  amount     Float
+  amount     Decimal
   colorant   Colorant @relation(fields: [colorantId], references: [id], map: "RegColColorants_colorantId_fkey")
   regcol     Regcol   @relation(fields: [regColId], references: [id], map: "RegColColorants_regColId_fkey")
 
