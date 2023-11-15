@@ -39,6 +39,7 @@ export default function RegistroCreateForm() {
   const { data: Listcolorante, status: coloranteStatus } =
     api.colorante.list.useQuery();
 
+  // const { mutate, isLoading } = api.registro.create.useMutation();
   const { mutate, isLoading } = api.registro.create.useMutation();
 
   const [baseSelectedArray, setBaseSelectedArray] = useState<BaseItem[]>([]);
@@ -307,7 +308,7 @@ Bases
               </option>
               {Listbase?.map((base) => (
                 <option key={base.id} value={base.id}>
-                  {base.reforiginal} {base.tbase.description}
+                  {base.reforiginal} {base.tbase.description} {base.slang}
                 </option>
               ))}
             </select>
