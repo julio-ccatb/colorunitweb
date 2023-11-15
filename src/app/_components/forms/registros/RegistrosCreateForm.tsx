@@ -232,7 +232,7 @@ export default function RegistroCreateForm() {
               onChange={handleColorantSelect}
               className="w-full max-w-md rounded-md border p-2 focus:input-accent"
             >
-              <option value="" disabled selected>
+              <option value="" disabled defaultValue={""}>
                 Elige un colorante
               </option>
               {Listcolorante?.map((colorant) => (
@@ -303,7 +303,7 @@ Bases
               onChange={handleBaseSelect}
               className="w-full max-w-md rounded-md border p-2 focus:input-accent"
             >
-              <option value="" disabled selected>
+              <option value="" disabled defaultValue={""}>
                 Elige una base
               </option>
               {Listbase?.map((base) => (

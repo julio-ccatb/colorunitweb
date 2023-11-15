@@ -91,23 +91,25 @@ model Regcol {
   R               Int
   G               Int
   B               Int
+  tbaseId         Int?
   pesopromedio    Decimal?          @db.Decimal(65, 2)
   brillo          Decimal?          @db.Decimal(65, 2)
   active          Boolean?
-  coeficienteG    Decimal?
+  coeficienteG    Decimal?          @db.Decimal(65, 2)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
   regcolbases     Regcolbases[]
   regcolcolorants Regcolcolorants[]
+  Tbase           Tbase?            @relation(fields: [tbaseId], references: [id])
 }
 
 model Regcolbases {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   regColId Int
   baseId   Int
-  amount   Decimal  
-  base     Base   @relation(fields: [baseId], references: [id], map: "RegColBases_baseId_fkey")
-  regcol   Regcol @relation(fields: [regColId], references: [id], map: "RegColBases_regColId_fkey")
+  amount   Decimal @db.Decimal(65, 2)
+  base     Base    @relation(fields: [baseId], references: [id], map: "RegColBases_baseId_fkey")
+  regcol   Regcol  @relation(fields: [regColId], references: [id], map: "RegColBases_regColId_fkey")
 
   @@index([baseId], map: "RegColBases_baseId_fkey")
   @@index([regColId], map: "RegColBases_regColId_fkey")
@@ -117,7 +119,7 @@ model Regcolcolorants {
   id         Int      @id @default(autoincrement())
   regColId   Int
   colorantId Int
-  amount     Decimal
+  amount     Decimal  @db.Decimal(65, 2)
   colorant   Colorant @relation(fields: [colorantId], references: [id], map: "RegColColorants_colorantId_fkey")
   regcol     Regcol   @relation(fields: [regColId], references: [id], map: "RegColColorants_regColId_fkey")
 
@@ -137,4 +139,5 @@ model Tbase {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   base        Base[]
+  regCol      Regcol[]
 }
