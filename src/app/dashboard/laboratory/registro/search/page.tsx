@@ -211,22 +211,24 @@ export default function Registropage() {
                             ✕
                           </button>
                         </form>
-                        <h3 className="text-lg font-bold">
-                          {color.description}
-                        </h3>
+                        <h3 className="text-lg font-bold">Resumen</h3>
                         <div className="card w-full shadow-xl">
                           <div className="flex justify-center gap-4  p-4">
-                            <div className="flex">
+                            <div className="flex gap-4">
                               <div
                                 style={{
                                   backgroundColor: `rgb(${color.R},${color.G},${color.B})`,
                                 }}
                                 className="mask mask-squircle h-24 w-24 shadow-lg"
                               />
-                              <div className="flex">
+                              <div className="flex gap-2">
                                 <div>
                                   <h4>Resumen</h4>
-                                  <div className="text-sm text-graySecondary">
+                                  <div className="text-sm font-light text-graySecondary">
+                                    <p>
+                                      Encontrado: [{color.R},{color.G},{color.B}
+                                      ]
+                                    </p>
                                     <p>
                                       Encontrado: [{color.R},{color.G},{color.B}
                                       ]
@@ -242,45 +244,59 @@ export default function Registropage() {
                                     </p>
                                   </div>
                                 </div>
-                                <div
-                                  style={{
-                                    backgroundColor: `rgb(${getValues(
-                                      "R",
-                                    )},${getValues("G")},${getValues("B")})`,
-                                  }}
-                                  className="mask mask-squircle h-24 w-24 shadow-lg"
-                                />
                               </div>
+                              <div
+                                style={{
+                                  backgroundColor: `rgb(${getValues(
+                                    "R",
+                                  )},${getValues("G")},${getValues("B")})`,
+                                }}
+                                className="mask mask-squircle h-24 w-24 shadow-lg"
+                              />
                             </div>
                           </div>
                           <div className="card-body">
                             <div className="flex w-full">
-                              <div className="card rounded-box flex-grow place-items-center bg-base-200 py-2 ">
+                              <div className="card rounded-box flex-grow place-items-center bg-whitePrimary py-2 ">
                                 <h5>Bases</h5>
-                                {color.regcolbases.map((base) => (
-                                  <p className="font-light " key={base.id}>
-                                    {
-                                      bases?.find((x) => x.id == base.id)
-                                        ?.reforiginal
-                                    }{" "}
-                                    {bases?.find((x) => x.id == base.id)?.slang}{" "}
-                                    {base.amount.toString()} LB
-                                  </p>
-                                ))}
+                                <div className="justify-between">
+                                  {color.regcolbases.map((base) => (
+                                    <p className="font-normal " key={base.id}>
+                                      {
+                                        bases?.find((x) => x.id == base.id)
+                                          ?.reforiginal
+                                      }{" "}
+                                      {
+                                        bases?.find((x) => x.id == base.id)
+                                          ?.slang
+                                      }{" "}
+                                      <span className="badge m-1 rounded-md p-1">
+                                        {base.amount.toString()} LB
+                                      </span>
+                                    </p>
+                                  ))}
+                                </div>
                               </div>
                               <div className="divider divider-horizontal"></div>
-                              <div className="card rounded-box grid flex-grow place-items-center bg-base-200 py-2 ">
+                              <div className="card rounded-box grid flex-grow place-items-center bg-whitePrimary py-2 ">
                                 <h5>Colorantes</h5>
-                                {color.regcolcolorants.map((colorante) => (
-                                  <p className="font-light " key={colorante.id}>
-                                    {
-                                      coloantes?.find(
-                                        (x) => x.id == colorante.colorantId,
-                                      )?.shortcode
-                                    }{" "}
-                                    {colorante.amount.toString()} GR
-                                  </p>
-                                ))}
+                                <div className="justify-between">
+                                  {color.regcolcolorants.map((colorante) => (
+                                    <p
+                                      className="font-normal "
+                                      key={colorante.id}
+                                    >
+                                      {
+                                        coloantes?.find(
+                                          (x) => x.id == colorante.colorantId,
+                                        )?.shortcode
+                                      }{" "}
+                                      <span className="badge m-1 rounded-md p-1">
+                                        {colorante.amount.toString()} GR
+                                      </span>
+                                    </p>
+                                  ))}
+                                </div>
                               </div>
                             </div>
                           </div>
