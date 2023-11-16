@@ -3,7 +3,6 @@ import { RegcolCreateInputSchema } from "pg/generated/zod";
 import { Prisma } from "@prisma/client";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
 import { TRPCError } from "@trpc/server";
-import Decimal from "decimal.js";
 import { z } from "zod";
 import { calcularDistanciaRGB, processRegCol } from "../services/registros";
 
@@ -25,24 +24,26 @@ export const registrosRouter = createTRPCRouter({
         throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
       }
     }),
-  process: protectedProcedure
-    .input(z.number())
-    .mutation(async ({ ctx, input }) => {
-      await processRegCol(input);
-    }),
+  process: protectedProcedure.input(z.number()).mutation(async ({ input }) => {
+    await processRegCol(input);
+  }),
   findColor: protectedProcedure
     .input(
       z.object({
-        R: z.number(),
-        G: z.number(),
-        B: z.number(),
-        tipo: z.number(),
+        R: z.number().optional().default(0),
+        G: z.number().optional().default(0),
+        B: z.number().optional().default(0),
+        tipo: z.number().optional().default(0),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const registros = await ctx.db.regcol.findMany({
-        where: { tbaseId: input.tipo },
-      });
+      const registros =
+        input.tipo == 0
+          ? await ctx.db.regcol.findMany({ include: { Tbase: true } })
+          : await ctx.db.regcol.findMany({
+              where: { tbaseId: input.tipo },
+              include: { Tbase: true },
+            });
 
       let diff = registros.map((registro) => {
         const distancia = calcularDistanciaRGB(
@@ -55,7 +56,5 @@ export const registrosRouter = createTRPCRouter({
       diff = diff.sort((a, b) => a.distancia - b.distancia);
       console.log(diff);
       return diff;
-      // await processRegCol(4);
-      // console.log(diff);
     }),
 });

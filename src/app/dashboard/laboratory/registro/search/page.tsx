@@ -11,10 +11,10 @@ import { FilePlus2, Loader2 } from "lucide-react";
 import { formatDate } from "~/app/_utils/dateFunctions";
 
 const InputSchema = z.object({
-  R: z.number(),
-  G: z.number(),
-  B: z.number(),
-  tipo: z.number(),
+  R: z.number().optional().default(0),
+  G: z.number().optional().default(0),
+  B: z.number().optional().default(0),
+  tipo: z.number().optional().default(0),
 });
 
 export default function Registropage() {
@@ -96,7 +96,7 @@ export default function Registropage() {
                   setValue("tipo", selectedId);
                   setSelected(selectedItem);
                 }}
-                className={`select select-accent w-full max-w-xs ${
+                className={`select select-bordered w-full max-w-xs rounded-none focus:select-accent ${
                   errors.tipo ? "select-error" : ""
                 } `}
               >
@@ -141,6 +141,7 @@ export default function Registropage() {
               </th>
               <th>Distancia</th>
               <th>Nombre / RGB</th>
+              <th>Calidad</th>
               <th>Actualizado</th>
               <th>Peso / Cubeta</th>
               <th></th>
@@ -164,7 +165,11 @@ export default function Registropage() {
                     <div className="flex items-center gap-3">
                       <div className="avatar">
                         <div
-                          className={`mask mask-squircle h-12 w-12 bg-[rgb(${color.R},${color.G},${color.B})]`}
+                          key={color.id}
+                          style={{
+                            backgroundColor: `rgb(${color.R},${color.G},${color.B})`,
+                          }}
+                          className="mask mask-squircle h-12 w-12 shadow-md"
                         ></div>
                       </div>
                       <div>
@@ -175,8 +180,8 @@ export default function Registropage() {
                       </div>
                     </div>
                   </td>
+                  <td>{color.Tbase?.description}</td>
                   <td>
-                    <br />
                     <span className="badge badge-ghost badge-sm p-2">
                       {formatDate(color.updatedAt)}
                     </span>
