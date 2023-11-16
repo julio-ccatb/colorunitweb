@@ -39,10 +39,20 @@ export const registrosRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const registros =
         input.tipo == 0
-          ? await ctx.db.regcol.findMany({ include: { Tbase: true } })
+          ? await ctx.db.regcol.findMany({
+              include: {
+                Tbase: true,
+                regcolbases: true,
+                regcolcolorants: true,
+              },
+            })
           : await ctx.db.regcol.findMany({
               where: { tbaseId: input.tipo },
-              include: { Tbase: true },
+              include: {
+                Tbase: true,
+                regcolbases: true,
+                regcolcolorants: true,
+              },
             });
 
       let diff = registros.map((registro) => {

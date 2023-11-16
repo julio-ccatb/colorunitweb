@@ -23,6 +23,9 @@ export default function Registropage() {
   const [selected, setSelected] = useState<Tbase>();
 
   const { data: tbases, status } = api.base.listTypeBase.useQuery();
+  const { data: bases, status: statusBases } = api.base.list.useQuery();
+  const { data: coloantes, status: statuscoloreantes } =
+    api.colorante.list.useQuery();
   const {
     data: colors,
     mutate,
@@ -32,10 +35,11 @@ export default function Registropage() {
 
   const {
     register,
+    getValues,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<Input>({ resolver });
+  } = useForm<Input>({ resolver, defaultValues: { R: 0, G: 0, B: 0 } });
 
   const onSubmit: SubmitHandler<Input> = (data) => {
     console.log(data);
@@ -169,7 +173,7 @@ export default function Registropage() {
                           style={{
                             backgroundColor: `rgb(${color.R},${color.G},${color.B})`,
                           }}
-                          className="mask mask-squircle h-12 w-12 shadow-md"
+                          className="mask mask-circle h-12 w-12 shadow-md"
                         ></div>
                       </div>
                       <div>
@@ -188,7 +192,101 @@ export default function Registropage() {
                   </td>
                   <td>{color.pesopromedio?.toString()} LB</td>
                   <th>
-                    <button className="btn btn-ghost btn-xs">details</button>
+                    <button
+                      className="btn btn-ghost btn-xs"
+                      onClick={() => {
+                        const dialog = document.getElementById(
+                          "my_modal_1",
+                        ) as HTMLDialogElement;
+                        dialog.showModal();
+                      }}
+                    >
+                      details
+                    </button>
+                    <dialog id="my_modal_1" className="modal">
+                      <div className="modal-box">
+                        <form method="dialog">
+                          {/* if there is a button in form, it will close the modal */}
+                          <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
+                            ✕
+                          </button>
+                        </form>
+                        <h3 className="text-lg font-bold">
+                          {color.description}
+                        </h3>
+                        <div className="card w-full shadow-xl">
+                          <div className="flex justify-center gap-4  p-4">
+                            <div className="flex">
+                              <div
+                                style={{
+                                  backgroundColor: `rgb(${color.R},${color.G},${color.B})`,
+                                }}
+                                className="mask mask-squircle h-24 w-24 shadow-lg"
+                              />
+                              <div className="flex">
+                                <div>
+                                  <h4>Resumen</h4>
+                                  <div className="text-sm text-graySecondary">
+                                    <p>
+                                      Encontrado: [{color.R},{color.G},{color.B}
+                                      ]
+                                    </p>
+                                    <p>
+                                      {`Buscado: [${getValues("R")},${getValues(
+                                        "G",
+                                      )},${getValues("B")}]`}
+                                    </p>
+                                    <p>
+                                      Desviacion: {color.distancia.toFixed(2)}{" "}
+                                      uD
+                                    </p>
+                                  </div>
+                                </div>
+                                <div
+                                  style={{
+                                    backgroundColor: `rgb(${getValues(
+                                      "R",
+                                    )},${getValues("G")},${getValues("B")})`,
+                                  }}
+                                  className="mask mask-squircle h-24 w-24 shadow-lg"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="card-body">
+                            <div className="flex w-full">
+                              <div className="card rounded-box flex-grow place-items-center bg-base-200 py-2 ">
+                                <h5>Bases</h5>
+                                {color.regcolbases.map((base) => (
+                                  <p className="font-light " key={base.id}>
+                                    {
+                                      bases?.find((x) => x.id == base.id)
+                                        ?.reforiginal
+                                    }{" "}
+                                    {bases?.find((x) => x.id == base.id)?.slang}{" "}
+                                    {base.amount.toString()} LB
+                                  </p>
+                                ))}
+                              </div>
+                              <div className="divider divider-horizontal"></div>
+                              <div className="card rounded-box grid flex-grow place-items-center bg-base-200 py-2 ">
+                                <h5>Colorantes</h5>
+                                {color.regcolcolorants.map((colorante) => (
+                                  <p className="font-light " key={colorante.id}>
+                                    {
+                                      coloantes?.find(
+                                        (x) => x.id == colorante.colorantId,
+                                      )?.shortcode
+                                    }{" "}
+                                    {colorante.amount.toString()} GR
+                                  </p>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </dialog>
                   </th>
                 </tr>
               );
