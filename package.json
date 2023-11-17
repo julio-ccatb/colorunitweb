@@ -26,7 +26,7 @@
     "decimal.js": "^10.4.3",
     "lodash": "^4.17.21",
     "lucide-react": "^0.292.0",
-    "next": "^13.5.4",
+    "next": "^14.0.3",
     "next-auth": "^4.23.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

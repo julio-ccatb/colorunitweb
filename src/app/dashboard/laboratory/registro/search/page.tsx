@@ -1,6 +1,6 @@
 "use client";
 import Decimal from "decimal.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type SubmitHandler } from "react-hook-form";
 import SeachColorForm, {
   type SearchColorInput,
@@ -117,6 +117,9 @@ export default function Registropage() {
     console.log(data);
     mutate({ ...data });
   };
+  useEffect(() => {
+    mutate({});
+  }, []);
 
   const [RGB, setRGB] = useState<{ R: number; G: number; B: number }>({
     R: 0,

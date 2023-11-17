@@ -40,20 +40,26 @@ export default function DetalleRegistroModal({
                     color: `rgb(${RGB.R},${RGB.G},${RGB.B})`,
                   }}
                 >
-                  {RGB.R}
-
-                  {RGB.G}
-
-                  {RGB.B}
+                  {RGB.R},{RGB.G},{RGB.B}
                 </span>
               </div>
             </div>
-            <div
-              style={{
-                backgroundColor: `rgb(${color.R},${color.G},${color.B})`,
-              }}
-              className="diff-item-2"
-            />
+            <div className="diff-item-2">
+              <div
+                className="grid place-content-center  text-7xl font-extrabold"
+                style={{
+                  backgroundColor: `rgb(${RGB.R},${RGB.G},${RGB.B})`,
+                }}
+              >
+                <span
+                  style={{
+                    color: `rgb(${color.R},${color.G},${color.B})`,
+                  }}
+                >
+                  {color.R},{color.G},{color.B}
+                </span>
+              </div>
+            </div>
             <div className="grid place-content-center  text-xl   lg:text-9xl"></div>
 
             <div className="diff-resizer" />
