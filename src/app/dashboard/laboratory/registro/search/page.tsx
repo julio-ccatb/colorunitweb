@@ -9,6 +9,7 @@ import { useState } from "react";
 import { type Tbase } from "pg/generated/zod";
 import { FilePlus2, Loader2 } from "lucide-react";
 import { formatDate } from "~/app/_utils/dateFunctions";
+import DetalleRegistroModal from "../../../../_components/forms/registros/DetallesModal";
 
 const InputSchema = z.object({
   R: z.number().optional().default(0),
@@ -22,9 +23,9 @@ export default function Registropage() {
   const resolver = zodResolver(InputSchema);
   const [selected, setSelected] = useState<Tbase>();
 
+  const { data: bases, status: basesStatus } = api.base.list.useQuery();
   const { data: tbases, status } = api.base.listTypeBase.useQuery();
-  const { data: bases, status: statusBases } = api.base.list.useQuery();
-  const { data: coloantes, status: statuscoloreantes } =
+  const { data: coloantes, status: coloantesStatus } =
     api.colorante.list.useQuery();
   const {
     data: colors,
@@ -47,6 +48,8 @@ export default function Registropage() {
   };
 
   if (status != "success") HandleStatus({ status });
+  if (basesStatus != "success") HandleStatus({ status });
+  if (coloantesStatus != "success") HandleStatus({ status });
 
   return (
     <div className="rounded-md bg-white p-4 shadow-md ">
@@ -192,117 +195,16 @@ export default function Registropage() {
                   </td>
                   <td>{color.pesopromedio?.toString()} LB</td>
                   <th>
-                    <button
-                      className="btn btn-ghost btn-xs"
-                      onClick={() => {
-                        const dialog = document.getElementById(
-                          "my_modal_1",
-                        ) as HTMLDialogElement;
-                        dialog.showModal();
-                      }}
-                    >
-                      details
-                    </button>
-                    <dialog id="my_modal_1" className="modal">
-                      <div className="modal-box">
-                        <form method="dialog">
-                          {/* if there is a button in form, it will close the modal */}
-                          <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
-                            ✕
-                          </button>
-                        </form>
-                        <h3 className="text-lg font-bold">Resumen</h3>
-                        <div className="card w-full shadow-xl">
-                          <div className="flex justify-center gap-4  p-4">
-                            <div className="flex gap-4">
-                              <div
-                                style={{
-                                  backgroundColor: `rgb(${color.R},${color.G},${color.B})`,
-                                }}
-                                className="mask mask-squircle h-24 w-24 shadow-lg"
-                              />
-                              <div className="flex gap-2">
-                                <div>
-                                  <h4>Resumen</h4>
-                                  <div className="text-sm font-light text-graySecondary">
-                                    <p>
-                                      Encontrado: [{color.R},{color.G},{color.B}
-                                      ]
-                                    </p>
-                                    <p>
-                                      Encontrado: [{color.R},{color.G},{color.B}
-                                      ]
-                                    </p>
-                                    <p>
-                                      {`Buscado: [${getValues("R")},${getValues(
-                                        "G",
-                                      )},${getValues("B")}]`}
-                                    </p>
-                                    <p>
-                                      Desviacion: {color.distancia.toFixed(2)}{" "}
-                                      uD
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                              <div
-                                style={{
-                                  backgroundColor: `rgb(${getValues(
-                                    "R",
-                                  )},${getValues("G")},${getValues("B")})`,
-                                }}
-                                className="mask mask-squircle h-24 w-24 shadow-lg"
-                              />
-                            </div>
-                          </div>
-                          <div className="card-body">
-                            <div className="flex w-full">
-                              <div className="card rounded-box flex-grow place-items-center bg-whitePrimary py-2 ">
-                                <h5>Bases</h5>
-                                <div className="justify-between">
-                                  {color.regcolbases.map((base) => (
-                                    <p className="font-normal " key={base.id}>
-                                      {
-                                        bases?.find((x) => x.id == base.id)
-                                          ?.reforiginal
-                                      }{" "}
-                                      {
-                                        bases?.find((x) => x.id == base.id)
-                                          ?.slang
-                                      }{" "}
-                                      <span className="badge m-1 rounded-md p-1">
-                                        {base.amount.toString()} LB
-                                      </span>
-                                    </p>
-                                  ))}
-                                </div>
-                              </div>
-                              <div className="divider divider-horizontal"></div>
-                              <div className="card rounded-box grid flex-grow place-items-center bg-whitePrimary py-2 ">
-                                <h5>Colorantes</h5>
-                                <div className="justify-between">
-                                  {color.regcolcolorants.map((colorante) => (
-                                    <p
-                                      className="font-normal "
-                                      key={colorante.id}
-                                    >
-                                      {
-                                        coloantes?.find(
-                                          (x) => x.id == colorante.colorantId,
-                                        )?.shortcode
-                                      }{" "}
-                                      <span className="badge m-1 rounded-md p-1">
-                                        {colorante.amount.toString()} GR
-                                      </span>
-                                    </p>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </dialog>
+                    <DetalleRegistroModal
+                      key={color.id}
+                      RGB={[getValues("R"), getValues("G"), getValues("B")]}
+                      bases={bases ?? []}
+                      colorantes={coloantes ?? []}
+                      distancia={color.distancia}
+                      regcolbases={color.regcolbases}
+                      regcolcolorants={color.regcolcolorants}
+                      color={color}
+                    />
                   </th>
                 </tr>
               );
