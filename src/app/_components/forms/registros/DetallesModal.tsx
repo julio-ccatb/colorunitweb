@@ -1,42 +1,22 @@
 import Decimal from "decimal.js";
-import {
-  type Base,
-  type Colorant,
-  type Regcol,
-  type Regcolbases,
-  type Regcolcolorants,
-} from "pg/generated/zod";
+import { type Base, type Colorant } from "pg/generated/zod";
+import { type RegColWithDistance } from "~/app/dashboard/laboratory/registro/search/page";
 
 export default function DetalleRegistroModal({
   color,
-  distancia,
-  regcolbases,
-  regcolcolorants,
   bases,
   colorantes,
   RGB,
 }: {
-  color: Regcol;
-  regcolbases: Regcolbases[];
-  regcolcolorants: Regcolcolorants[];
+  color: RegColWithDistance;
+
   bases: Base[];
   colorantes: Colorant[];
-  distancia: number;
-  RGB: number[];
+  RGB: { R: number; G: number; B: number };
 }) {
+  // console.log(color);
   return (
     <>
-      <button
-        className="btn btn-ghost btn-xs"
-        onClick={() => {
-          const dialog = document.getElementById(
-            "my_modal_1",
-          ) as HTMLDialogElement;
-          dialog.showModal();
-        }}
-      >
-        details
-      </button>
       <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
           <form method="dialog">
@@ -47,7 +27,7 @@ export default function DetalleRegistroModal({
           </form>
           <h3 className="my-2 text-lg font-bold">Detalles</h3>
 
-          <div className="diff rounded-btn  h-28 w-full border">
+          <div className="diff h-28  w-full rounded-btn border">
             <div className="diff-item-1">
               <div
                 style={{
@@ -57,14 +37,14 @@ export default function DetalleRegistroModal({
               >
                 <span
                   style={{
-                    color: `rgb(${RGB[0]},${RGB[1]},${RGB[2]})`,
+                    color: `rgb(${RGB.R},${RGB.G},${RGB.B})`,
                   }}
                 >
-                  {RGB[0]}
+                  {RGB.R}
 
-                  {RGB[1]}
+                  {RGB.G}
 
-                  {RGB[2]}
+                  {RGB.B}
                 </span>
               </div>
             </div>
@@ -106,11 +86,12 @@ export default function DetalleRegistroModal({
               <span>
                 Desviacion:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {distancia.toFixed(2)} uD
+                  {color.distancia.toFixed(2)} uD
                 </span>
               </span>
             </div>
             <p>
+              Gl
               <input type="text" />
             </p>
           </div>
@@ -119,10 +100,10 @@ export default function DetalleRegistroModal({
             <div className="flex justify-center gap-4"></div>
             <div className="card-body p-0">
               <div className="flex w-full">
-                <div className="card rounded-box flex-grow items-start py-2 ">
+                <div className="card flex-grow items-start rounded-box py-2 ">
                   <h5>Bases</h5>
                   <div className="justify-between">
-                    {regcolbases.map((base) => (
+                    {color.regcolbases.map((base) => (
                       <p className="font-normal " key={base.id}>
                         {bases?.find((x) => x.id == base.id)?.reforiginal}{" "}
                         {bases?.find((x) => x.id == base.id)?.slang}{" "}
@@ -134,10 +115,10 @@ export default function DetalleRegistroModal({
                   </div>
                 </div>
                 <div className="divider divider-horizontal"></div>
-                <div className="card rounded-box grid flex-grow items-start  py-2 ">
+                <div className="card grid flex-grow items-start rounded-box  py-2 ">
                   <h5>Colorantes</h5>
                   <div className="justify-between">
-                    {regcolcolorants.map((colorante) => (
+                    {color.regcolcolorants.map((colorante) => (
                       <p className="font-normal " key={colorante.id}>
                         {
                           colorantes?.find((x) => x.id == colorante.colorantId)
