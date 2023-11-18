@@ -36,20 +36,9 @@ export default function LaboratoryPage({
     setActiveModule(module);
   };
 
-  const moduleMenuProps: ModuleMenuProps = {
-    config: {
-      title: "Laboratory",
-      modules: initialModules,
-      moduleName: "Laboratory",
-      url: "/dashboard/laboratory",
-    },
-    activeModule: activeModule,
-    onModuleClick: handleModuleClick,
-  };
-
   return (
     <div className="flex max-h-screen flex-col gap-4 rounded-md">
-      <ModuleMenu {...moduleMenuProps} />
+      {/* <ModuleMenu {...moduleMenuProps} /> */}
       {children}
     </div>
   );

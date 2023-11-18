@@ -34,6 +34,7 @@ export const processRegCol = async (id: number) => {
     ]);
 
   if (!record || !recordsBasesBlancas || !recordsBasesNoBlancas) return;
+  if (record.process) return;
 
   let totalPeso = new Decimal(0);
   let pesoBasesBlancas = new Decimal(0);
@@ -58,6 +59,7 @@ export const processRegCol = async (id: number) => {
   let tipo = 0;
   if (pesoBasesBlancas.greaterThanOrEqualTo(pesoBasesNoBlancas))
     tipo = recordsBasesBlancas[0]?.base.tbaseId ?? 0;
+  if (tipo == 0) tipo = recordsBasesNoBlancas[0]?.base.tbaseId ?? 0;
 
   const porcentaje = pesoBasesBlancas.div(totalPeso).mul(100);
 
@@ -66,15 +68,15 @@ export const processRegCol = async (id: number) => {
   let selectedPeso;
 
   if (porcentaje.greaterThanOrEqualTo(95)) {
-    selectedPeso = tipoBase!.peso1;
+    selectedPeso = tipoBase?.peso1;
   } else if (porcentaje.greaterThanOrEqualTo(85)) {
-    selectedPeso = tipoBase!.peso2;
+    selectedPeso = tipoBase?.peso2;
   } else if (porcentaje.greaterThanOrEqualTo(75)) {
-    selectedPeso = tipoBase!.peso3;
+    selectedPeso = tipoBase?.peso3;
   } else if (porcentaje.greaterThanOrEqualTo(65)) {
-    selectedPeso = tipoBase!.peso4;
+    selectedPeso = tipoBase?.peso4;
   } else {
-    selectedPeso = tipoBase!.peso5;
+    selectedPeso = tipoBase?.peso5;
   }
 
   const coeficienteG = selectedPeso?.div(totalPeso) ?? 1;

@@ -92,6 +92,7 @@ model Regcol {
   G               Int
   B               Int
   tbaseId         Int?
+  process Boolean @default(false)
   pesopromedio    Decimal?          @db.Decimal(65, 2)
   brillo          Decimal?          @db.Decimal(65, 2)
   active          Boolean?

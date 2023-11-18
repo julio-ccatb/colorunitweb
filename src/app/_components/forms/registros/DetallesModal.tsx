@@ -1,10 +1,9 @@
 import Decimal from "decimal.js";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ServerCrash } from "lucide-react";
 import { type Base, type Colorant } from "pg/generated/zod";
 import { type RegColWithDistance } from "~/app/dashboard/laboratory/registro/search/page";
 import { api } from "~/trpc/react";
 import { useState } from "react";
-import { toInteger } from "lodash";
 
 export default function DetalleRegistroModal({
   color,
@@ -18,7 +17,7 @@ export default function DetalleRegistroModal({
   colorantes: Colorant[];
   RGB?: { R: number; G: number; B: number };
 }) {
-  const { mutate, error, data, isLoading } = api.registro.process.useMutation();
+  const { mutate, isLoading, error } = api.registro.process.useMutation();
   const [cantidad, setCantidad] = useState(new Decimal(1));
 
   console.log(color);
@@ -132,14 +131,23 @@ export default function DetalleRegistroModal({
               ) : (
                 <>
                   <h4 className="font-semibold">Estado</h4>
-                  <div className="alert alert-warning">
-                    <AlertTriangle />
-                    <span>
-                      El color {color.description} no ha sido procesado.
-                    </span>
-                  </div>
+
+                  {error ? (
+                    <div className="alert alert-error text-sm">
+                      <ServerCrash size={20} />
+                      <span className="text-xs">{error.message}</span>
+                    </div>
+                  ) : (
+                    <div className="alert alert-warning">
+                      <AlertTriangle />
+                      <span>
+                        El color {color.description} no ha sido procesado.
+                      </span>
+                    </div>
+                  )}
+
                   <button
-                    disabled={isLoading}
+                    disabled={isLoading && !error}
                     onClick={() => mutate(color.id)}
                     className="btn btn-accent text-white"
                   >

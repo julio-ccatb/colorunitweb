@@ -1,4 +1,4 @@
-import { BarChart3, FlaskConical } from "lucide-react";
+import { BarChart3, Box, FlaskConical } from "lucide-react";
 import Sidebar from "../_components/sideBar";
 import SidebarItem from "../_components/sideBarItem";
 
@@ -16,6 +16,47 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           icon={<FlaskConical size={20} />}
           text="Laboratory"
           href="/dashboard/laboratory"
+          submenus={[
+            {
+              href: "/dashboard/laboratory/base",
+              text: "Bases",
+              active: false,
+              submenus: [
+                {
+                  href: "/dashboard/laboratory/base",
+                  text: "Todas las bases",
+                  active: false,
+                },
+                {
+                  href: "/dashboard/laboratory/base",
+                  text: "Tipos de base",
+                  active: false,
+                },
+              ],
+            },
+            {
+              href: "/dashboard/laboratory/colorante",
+              text: "Colorantes",
+              active: false,
+            },
+            {
+              href: "/dashboard/laboratory/registro",
+              text: "Registro",
+              active: false,
+              submenus: [
+                {
+                  href: "/dashboard/laboratory/registro/search",
+                  text: "Buscar Color",
+                  active: false,
+                },
+                {
+                  href: "/dashboard/laboratory/registro",
+                  text: "Crear Color",
+                  active: false,
+                },
+              ],
+            },
+          ]}
         />
       </Sidebar>
       <div className="flex-1 overflow-y-auto  p-4">{children}</div>

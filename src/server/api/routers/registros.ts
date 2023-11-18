@@ -29,6 +29,7 @@ export const registrosRouter = createTRPCRouter({
       const processedRegCol = await processRegCol(input);
       return processedRegCol;
     } catch (error) {
+      console.log(error);
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         const errorResponse = mapPrismaErrorToTrpcError(error);
         throw new TRPCError(errorResponse);
