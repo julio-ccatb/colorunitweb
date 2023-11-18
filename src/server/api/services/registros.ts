@@ -79,6 +79,30 @@ export const processRegCol = async (id: number) => {
 
   const coeficienteG = selectedPeso?.div(totalPeso) ?? 1;
 
+  const updateBaseNoBlanca = recordsBasesBlancas.map((record) => {
+    return db.regcolbases.update({
+      where: { id: record.id },
+      data: { amount: record.amount.mul(coeficienteG).div(5) },
+    });
+  });
+
+  const updateBaseBlanca = recordsBasesNoBlancas.map((record) => {
+    return db.regcolbases.update({
+      where: { id: record.id },
+      data: { amount: record.amount.mul(coeficienteG).div(5) },
+    });
+  });
+  const updateColorant = record.regcolcolorants.map((record) => {
+    return db.regcolcolorants.update({
+      where: { id: record.id },
+      data: { amount: record.amount.mul(coeficienteG).div(5) },
+    });
+  });
+
+  await db.$transaction(updateBaseBlanca);
+  await db.$transaction(updateBaseNoBlanca);
+  await db.$transaction(updateColorant);
+
   const updateRegCol = await db.regcol.update({
     where: { id },
     data: {
@@ -91,5 +115,6 @@ export const processRegCol = async (id: number) => {
     include: { regcolbases: true, regcolcolorants: true, Tbase: true },
   });
 
-  console.log({ updateRegCol });
+  console.log(updateRegCol);
+  return updateRegCol;
 };

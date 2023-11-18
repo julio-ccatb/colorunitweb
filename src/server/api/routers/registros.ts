@@ -25,7 +25,16 @@ export const registrosRouter = createTRPCRouter({
       }
     }),
   process: protectedProcedure.input(z.number()).mutation(async ({ input }) => {
-    await processRegCol(input);
+    try {
+      const processedRegCol = await processRegCol(input);
+      return processedRegCol;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        const errorResponse = mapPrismaErrorToTrpcError(error);
+        throw new TRPCError(errorResponse);
+      }
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    }
   }),
   findColor: protectedProcedure
     .input(

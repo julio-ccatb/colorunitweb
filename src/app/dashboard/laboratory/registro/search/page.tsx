@@ -191,7 +191,11 @@ export default function Registropage() {
                       </div>
                     </div>
                   </td>
-                  <td>{color.Tbase?.description}</td>
+                  <td>
+                    {color.Tbase?.description ?? (
+                      <span className="badge badge-warning">NP</span>
+                    )}
+                  </td>
                   <td>
                     <span className="badge badge-ghost badge-sm p-2">
                       {formatDate(color.updatedAt)}

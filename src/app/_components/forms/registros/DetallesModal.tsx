@@ -1,6 +1,10 @@
 import Decimal from "decimal.js";
+import { AlertTriangle } from "lucide-react";
 import { type Base, type Colorant } from "pg/generated/zod";
 import { type RegColWithDistance } from "~/app/dashboard/laboratory/registro/search/page";
+import { api } from "~/trpc/react";
+import { useState } from "react";
+import { toInteger } from "lodash";
 
 export default function DetalleRegistroModal({
   color,
@@ -12,9 +16,12 @@ export default function DetalleRegistroModal({
 
   bases: Base[];
   colorantes: Colorant[];
-  RGB: { R: number; G: number; B: number };
+  RGB?: { R: number; G: number; B: number };
 }) {
-  // console.log(color);
+  const { mutate, error, data, isLoading } = api.registro.process.useMutation();
+  const [cantidad, setCantidad] = useState(new Decimal(1));
+
+  console.log(color);
   return (
     <>
       <dialog id="my_modal_1" className="modal">
@@ -37,10 +44,10 @@ export default function DetalleRegistroModal({
               >
                 <span
                   style={{
-                    color: `rgb(${RGB.R},${RGB.G},${RGB.B})`,
+                    color: `rgb(${RGB?.R},${RGB?.G},${RGB?.B})`,
                   }}
                 >
-                  {RGB.R},{RGB.G},{RGB.B}
+                  {RGB?.R},{RGB?.G},{RGB?.B}
                 </span>
               </div>
             </div>
@@ -48,7 +55,7 @@ export default function DetalleRegistroModal({
               <div
                 className="grid place-content-center  text-7xl font-extrabold"
                 style={{
-                  backgroundColor: `rgb(${RGB.R},${RGB.G},${RGB.B})`,
+                  backgroundColor: `rgb(${RGB?.R},${RGB?.G},${RGB?.B})`,
                 }}
               >
                 <span
@@ -64,15 +71,22 @@ export default function DetalleRegistroModal({
 
             <div className="diff-resizer" />
           </div>
-          <div className="flex">
-            <div className="flex flex-col text-sm font-normal">
-              <div className="py-2 font-bold">
+          <div className="divider divider-vertical">Resumen</div>
+          <div className="flex gap-4 ">
+            <div className="flex w-1/2 flex-col text-sm font-normal">
+              <div className="font-semibold">
                 <h4>Comparacion</h4>
               </div>
               <span>
                 Nombre:{" "}
                 <span className="badge m-1 rounded-md p-1">
                   {color.description}
+                </span>
+              </span>
+              <span>
+                Calidad:{" "}
+                <span className="badge m-1 rounded-md p-1">
+                  {color.Tbase?.description}
                 </span>
               </span>
               <span>
@@ -84,9 +98,7 @@ export default function DetalleRegistroModal({
               <span>
                 Brillo:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.brillo instanceof Decimal && color.brillo
-                    ? color.brillo.toFixed(2)
-                    : "N/A"}
+                  {color.brillo?.toString() ?? "N/A"}
                 </span>
               </span>
               <span>
@@ -95,11 +107,54 @@ export default function DetalleRegistroModal({
                   {color.distancia.toFixed(2)} uD
                 </span>
               </span>
+              <span>
+                Peso Cubeta:{" "}
+                <span className="badge m-1 rounded-md p-1">
+                  {color.pesopromedio?.toString()} LB
+                </span>
+              </span>
             </div>
-            <p>
-              Gl
-              <input type="text" />
-            </p>
+            <div className="flex w-1/2 flex-1 flex-col gap-2 font-bold">
+              {color.Tbase ? (
+                <>
+                  <h4 className="font-semibold">Ordenar</h4>
+                  <input
+                    type="text"
+                    id="G"
+                    onChange={(e) =>
+                      setCantidad(new Decimal(e.target.value) ?? new Decimal(1))
+                    }
+                    placeholder="Cantidad GL"
+                    className={`join-item w-28 border p-2 text-center focus:input-accent`}
+                  />
+                  <button className="btn btn-accent text-white">Ordenar</button>
+                </>
+              ) : (
+                <>
+                  <h4 className="font-semibold">Estado</h4>
+                  <div className="alert alert-warning">
+                    <AlertTriangle />
+                    <span>
+                      El color {color.description} no ha sido procesado.
+                    </span>
+                  </div>
+                  <button
+                    disabled={isLoading}
+                    onClick={() => mutate(color.id)}
+                    className="btn btn-accent text-white"
+                  >
+                    {isLoading ? (
+                      <>
+                        <span className="loading loading-spinner" />
+                        ... Procesando
+                      </>
+                    ) : (
+                      <>Procesar</>
+                    )}
+                  </button>
+                </>
+              )}
+            </div>
           </div>
           <div className="divider divider-vertical">Componentes</div>
           <div className="card w-full">
@@ -107,34 +162,49 @@ export default function DetalleRegistroModal({
             <div className="card-body p-0">
               <div className="flex w-full">
                 <div className="card flex-grow items-start rounded-box py-2 ">
-                  <h5>Bases</h5>
+                  <h4 className="font-semibold">Bases</h4>
                   <div className="justify-between">
-                    {color.regcolbases.map((base) => (
-                      <p className="font-normal " key={base.id}>
-                        {bases?.find((x) => x.id == base.id)?.reforiginal}{" "}
-                        {bases?.find((x) => x.id == base.id)?.slang}{" "}
-                        <span className="badge m-1 rounded-md p-1">
-                          {base.amount.toString()} LB
-                        </span>
-                      </p>
-                    ))}
+                    {color.regcolbases.map((base) => {
+                      const total = Decimal.mul(
+                        base.amount,
+                        cantidad,
+                      ).toString();
+
+                      return (
+                        <p className="font-normal " key={base.id}>
+                          {bases?.find((x) => x.id == base.baseId)?.reforiginal}{" "}
+                          {bases?.find((x) => x.id == base.baseId)?.slang}{" "}
+                          <span className="badge m-1 rounded-md p-1">
+                            {total} LB
+                          </span>
+                        </p>
+                      );
+                    })}
                   </div>
                 </div>
                 <div className="divider divider-horizontal"></div>
                 <div className="card grid flex-grow items-start rounded-box  py-2 ">
-                  <h5>Colorantes</h5>
+                  <h4 className="font-semibold">Colorantes</h4>
                   <div className="justify-between">
-                    {color.regcolcolorants.map((colorante) => (
-                      <p className="font-normal " key={colorante.id}>
-                        {
-                          colorantes?.find((x) => x.id == colorante.colorantId)
-                            ?.shortcode
-                        }{" "}
-                        <span className="badge m-1 rounded-md p-1">
-                          {colorante.amount.toString()} GR
-                        </span>
-                      </p>
-                    ))}
+                    {color.regcolcolorants.map((colorante) => {
+                      const total = Decimal.mul(
+                        colorante.amount,
+                        cantidad,
+                      ).toString();
+
+                      return (
+                        <p className="font-normal " key={colorante.id}>
+                          {
+                            colorantes?.find(
+                              (x) => x.id == colorante.colorantId,
+                            )?.shortcode
+                          }{" "}
+                          <span className="badge m-1 rounded-md p-1">
+                            {total} GR
+                          </span>
+                        </p>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
