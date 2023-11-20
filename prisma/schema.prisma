@@ -3,8 +3,9 @@ generator client {
 }
 
 generator zod {
-  provider         = "npx zod-prisma-types"
-  useMultipleFiles = "true"
+  provider                  = "npx zod-prisma-types"
+  useMultipleFiles          = "true"
+  createRelationValuesTypes = true
 }
 
 datasource db {
@@ -92,7 +93,7 @@ model Regcol {
   G               Int
   B               Int
   tbaseId         Int?
-  process Boolean @default(false)
+  process         Boolean           @default(false)
   pesopromedio    Decimal?          @db.Decimal(65, 2)
   brillo          Decimal?          @db.Decimal(65, 2)
   active          Boolean?

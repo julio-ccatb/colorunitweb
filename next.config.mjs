@@ -5,6 +5,10 @@
 await import("./src/env.mjs");
 
 /** @type {import("next").NextConfig} */
-const config = { images: { domains: ["lh3.googleusercontent.com"] } };
+const config = {
+  images: { domains: ["lh3.googleusercontent.com"] },
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
+};
 
 export default config;

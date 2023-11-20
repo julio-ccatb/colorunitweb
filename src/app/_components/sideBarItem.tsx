@@ -76,7 +76,7 @@ export default function SidebarItem({
                       {submenu.submenus.map((submenu2) => (
                         <li key={submenu2.href}>
                           <Link
-                            className={`hover:bg-accent/30 hover:text-accent`}
+                            className={`hover:bg-accent/30 hover:text-accent active:text-accent`}
                             href={submenu2.href}
                           >
                             {submenu2.text}
