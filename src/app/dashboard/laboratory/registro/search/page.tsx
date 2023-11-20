@@ -113,10 +113,9 @@ export default function Registropage() {
     initialRegColWithDistance,
   );
 
-  const onSubmit: SubmitHandler<SearchColorInput> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<SearchColorInput> = (data) =>
     mutate({ ...data });
-  };
+
   useEffect(() => {
     mutate({});
   }, []);

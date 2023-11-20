@@ -14,7 +14,6 @@ export // Map Prisma errors to "trpc" errors
 function mapPrismaErrorToTrpcError(
   error: Prisma.PrismaClientKnownRequestError,
 ): TrpcError {
-  console.log(error);
   switch (error.code) {
     case "P2025": // Prisma code for UniqueConstraintViolationError
       return {

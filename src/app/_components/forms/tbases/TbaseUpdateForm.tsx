@@ -32,10 +32,7 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
   const { mutate, isLoading, isSuccess, error } =
     api.base.updateTypeBase.useMutation();
 
-  console.log(errors);
-
   const onSubmit: SubmitHandler<Input> = (data) => {
-    console.log(data);
     mutate({ where: { id: initialData.id }, data });
   };
   return (

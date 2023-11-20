@@ -117,6 +117,5 @@ export const processRegCol = async (id: number) => {
     include: { regcolbases: true, regcolcolorants: true, Tbase: true },
   });
 
-  console.log(updateRegCol);
   return updateRegCol;
 };

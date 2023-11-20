@@ -66,7 +66,6 @@ export default function SeachColorForm(props: Props) {
               type="text"
               id="G"
               onChange={(e) => {
-                console.log(e);
                 {
                   setValue("G", toInteger(e.target.value));
                   props.setRGB((cur) => {

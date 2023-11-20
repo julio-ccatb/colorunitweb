@@ -6,7 +6,11 @@ await import("./src/env.mjs");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  images: { domains: ["lh3.googleusercontent.com"] },
+  images: {
+    remotePatterns: [
+      { hostname: "lh3.googleusercontent.com", protocol: "https" },
+    ],
+  },
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 };

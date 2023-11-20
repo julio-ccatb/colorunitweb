@@ -10,10 +10,7 @@ export const registrosRouter = createTRPCRouter({
   create: protectedProcedure
     .input(RegcolCreateInputSchema)
     .mutation(async ({ ctx, input }) => {
-      console.log(input);
       try {
-        console.log(input);
-
         const createRegistro = await ctx.db.regcol.create({ data: input });
         return createRegistro;
       } catch (error) {
@@ -29,7 +26,6 @@ export const registrosRouter = createTRPCRouter({
       const processedRegCol = await processRegCol(input);
       return processedRegCol;
     } catch (error) {
-      console.log(error);
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         const errorResponse = mapPrismaErrorToTrpcError(error);
         throw new TRPCError(errorResponse);
@@ -74,7 +70,7 @@ export const registrosRouter = createTRPCRouter({
       });
 
       diff = diff.sort((a, b) => a.distancia - b.distancia);
-      console.log(diff);
+
       return diff;
     }),
 });

@@ -140,7 +140,6 @@ export default function RegistroCreateForm() {
     console.log(errors);
   }
 
-  console.log(coloranteSelectedArray);
   const onSubmit: SubmitHandler<Input> = (data) => {
     const bases = baseSelectedArray.map((item): FormatedBase => {
       return {
@@ -160,7 +159,6 @@ export default function RegistroCreateForm() {
       regcolbases: { createMany: { data: [...bases] } },
       regcolcolorants: { createMany: { data: [...colorantes] } },
     };
-    console.log(dataFormated);
     mutate(dataFormated);
   };
 
@@ -184,10 +182,8 @@ export default function RegistroCreateForm() {
             <input
               type="text"
               id="G"
-              onChange={(e) => {
-                console.log(e);
-                setValue("G", toInteger(e.target.value));
-              }}
+              onChange={(e) => setValue("G", toInteger(e.target.value));
+              }
               placeholder="G"
               className={`join-item w-28 rounded-md border p-2 text-center ${
                 errors.R ? "input-error" : "focus:input-accent"

@@ -20,7 +20,6 @@ export default function DetalleRegistroModal({
   const { mutate, isLoading, error } = api.registro.process.useMutation();
   const [cantidad, setCantidad] = useState(new Decimal(1));
 
-  console.log(color);
   return (
     <>
       <dialog id="my_modal_1" className="modal">

@@ -22,8 +22,6 @@ export default function SidebarItem({
 }: SidebarItemProps) {
   const { expanded } = useContext(SidebarContext) ?? { expanded: false };
 
-  console.log(window.location.pathname);
-
   return (
     <li>
       <details open={expanded}>

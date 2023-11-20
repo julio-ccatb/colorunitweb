@@ -33,7 +33,6 @@ export default function TbaseCreateForm() {
   }
 
   const onSubmit: SubmitHandler<Input> = (data) => {
-    console.log(data);
     mutate(data);
   };
 
