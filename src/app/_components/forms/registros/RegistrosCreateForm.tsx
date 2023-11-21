@@ -182,8 +182,7 @@ export default function RegistroCreateForm() {
             <input
               type="text"
               id="G"
-              onChange={(e) => setValue("G", toInteger(e.target.value));
-              }
+              onChange={(e) => setValue("G", toInteger(e.target.value))}
               placeholder="G"
               className={`join-item w-28 rounded-md border p-2 text-center ${
                 errors.R ? "input-error" : "focus:input-accent"

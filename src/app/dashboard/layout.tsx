@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   active: false,
                 },
                 {
-                  href: "/dashboard/laboratory/base",
+                  href: "/dashboard/laboratory/base/tipo",
                   text: "Tipos de base",
                   active: false,
                 },

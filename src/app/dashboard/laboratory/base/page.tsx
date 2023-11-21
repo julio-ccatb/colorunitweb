@@ -35,21 +35,21 @@ export default function BasesPage() {
           <h1 className="mb-4 text-2xl font-bold">Bases</h1>
         </div>
         <BaseCreateForm />
-        <table className="w-full max-w-full border-collapse border">
+        <table className="table">
           <thead className="text-left">
             <tr>
-              <th className="bg-graySecondary  p-2 text-greenLight">Ref</th>
-              <th className="bg-graySecondary  p-2 text-greenLight">Tipo</th>
-              <th className="bg-graySecondary  p-2 text-greenLight">Slang</th>
-              <th className="bg-graySecondary  p-2 text-greenLight">Peso</th>
-              <th className="bg-graySecondary  p-2 text-greenLight">Actions</th>
+              <th>Ref</th>
+              <th>Tipo</th>
+              <th>Slang</th>
+              <th>Peso</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody className="">
             {itemsToDisplay.map((item) => (
               <tr
                 key={item.id}
-                className="border font-semibold hover:bg-greenAccent/25"
+                className="border font-normal hover:bg-greenAccent/25"
               >
                 <td className=" justify-start p-2">
                   {item.reforiginal ?? "N/A"}
@@ -58,50 +58,44 @@ export default function BasesPage() {
                 <td className=" justify-start p-2">{item.slang ?? "N/A"}</td>
                 <td className=" justify-start p-2">
                   <div className="flex gap-2">
-                    <div className="flex">
-                      <span className="inline-block rounded-l-full bg-greenAccent px-[0.65em] pb-[0.25em] pt-[0.35em] align-baseline text-[0.75em] font-bold leading-none ">
-                        P1
-                      </span>
-                      <span className="inline-block  rounded-r-full bg-neutral-800 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-neutral-50 dark:bg-neutral-900">
+                    <div className="join rounded-full font-semibold">
+                      <span className="join-item badge-error px-1">P1</span>
+                      <span className="join-item badge-neutral px-1">
                         {` ${item.tbase.peso1?.toString()} lb`}
                       </span>
                     </div>
-                    <div className="flex">
-                      <span className="inline-block rounded-l-full bg-blue-500 px-[0.65em] pb-[0.25em] pt-[0.35em] align-baseline text-[0.75em] font-bold leading-none ">
+                    <div className="join rounded-full font-semibold">
+                      <span className="badge join-item bg-orange-400 px-1">
                         P2
                       </span>
-                      <span className="inline-block  rounded-r-full bg-neutral-800 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-neutral-50 dark:bg-neutral-900">
+                      <span className="join-item badge-neutral px-1">
                         {` ${item.tbase.peso2?.toString()} lb`}
                       </span>
                     </div>
-                    <div className="flex">
-                      <span className="inline-block rounded-l-full bg-yellow-500 px-[0.65em] pb-[0.25em] pt-[0.35em] align-baseline text-[0.75em] font-bold leading-none ">
+                    <div className="join rounded-full font-semibold">
+                      <span className="badge join-item bg-warning px-1">
                         P3
                       </span>
-                      <span className="inline-block  rounded-r-full bg-neutral-800 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-neutral-50 dark:bg-neutral-900">
+                      <span className="join-item badge-neutral px-1">
                         {` ${item.tbase.peso3?.toString()} lb`}
                       </span>
                     </div>
-                    <div className="flex">
-                      <span className="inline-block rounded-l-full bg-orange-500 px-[0.65em] pb-[0.25em] pt-[0.35em] align-baseline text-[0.75em] font-bold leading-none ">
-                        P4
-                      </span>
-                      <span className="inline-block  rounded-r-full bg-neutral-800 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-neutral-50 dark:bg-neutral-900">
+                    <div className="join rounded-full font-semibold">
+                      <span className="join-item badge-info px-1">P4</span>
+                      <span className="join-item badge-neutral px-1">
                         {` ${item.tbase.peso4?.toString()} lb`}
                       </span>
                     </div>
-                    <div className="flex">
-                      <span className="inline-block rounded-l-full bg-red-500 px-[0.65em] pb-[0.25em] pt-[0.35em] align-baseline text-[0.75em] font-bold leading-none ">
-                        P5
-                      </span>
-                      <span className="inline-block  rounded-r-full bg-neutral-800 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-neutral-50 dark:bg-neutral-900">
+                    <div className="join rounded-full font-semibold">
+                      <span className="join-item badge-accent px-1">P5</span>
+                      <span className="join-item badge-neutral px-1">
                         {` ${item.tbase.peso5?.toString()} lb`}
                       </span>
                     </div>
                   </div>
                 </td>
-                <td className="flex justify-start p-2">
-                  <button className="mr-2 rounded-md bg-blue-500 px-2 py-2 text-white">
+                <td className="mt-4 flex gap-2">
+                  <button className="btn btn-info rounded-md text-white">
                     <ClipboardEdit size={15} />
                   </button>
                   <button
@@ -116,7 +110,7 @@ export default function BasesPage() {
                         },
                       )
                     }
-                    className="rounded-md bg-red-500 px-2 py-2 text-white"
+                    className="btn btn-error rounded-md text-white"
                   >
                     <Trash size={15} />
                   </button>

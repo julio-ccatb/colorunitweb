@@ -89,9 +89,9 @@ model Regcol {
   id              Int               @id @default(autoincrement())
   description     String?
   carta           Int?
-  R               Int
-  G               Int
-  B               Int
+  R               Int /// @zod.number.lte(255).nonnegative()
+  G               Int /// @zod.number.lte(255).nonnegative()
+  B               Int /// @zod.number.lte(255).nonnegative()
   tbaseId         Int?
   process         Boolean           @default(false)
   pesopromedio    Decimal?          @db.Decimal(65, 2)

@@ -78,13 +78,13 @@ export default function DetalleRegistroModal({
               <span>
                 Nombre:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.description}
+                  {color.description ?? "N/A"}
                 </span>
               </span>
               <span>
                 Calidad:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.Tbase?.description}
+                  {color.Tbase?.description ?? "N/A"}
                 </span>
               </span>
               <span>
@@ -137,7 +137,7 @@ export default function DetalleRegistroModal({
                       <span className="text-xs">{error.message}</span>
                     </div>
                   ) : (
-                    <div className="alert alert-warning">
+                    <div className="alert alert-warning text-sm">
                       <AlertTriangle />
                       <span>
                         El color {color.description} no ha sido procesado.

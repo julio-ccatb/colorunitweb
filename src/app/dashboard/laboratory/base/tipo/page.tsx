@@ -45,28 +45,23 @@ export default function TipoDeBasePage() {
         <TbaseUpdateForm initialData={selected} key={selected.id} />
       )}
       <div className="flex-1 overflow-x-auto">
-        <table className="w-full max-w-full  border-collapse border">
+        <table className="table w-full max-w-full  ">
           <thead>
             <tr>
-              <th className="bg-graySecondary p-2 text-greenLight">Codigo</th>
-              <th className="bg-graySecondary p-2 text-greenLight">
-                Descripccion
-              </th>
+              <th className="">Codigo</th>
+              <th className="">Descripccion</th>
 
-              <th className="bg-graySecondary p-2 text-greenLight">Actions</th>
+              <th className="">Actions</th>
             </tr>
           </thead>
           <tbody className="">
             {itemsToDisplay.map((item) => (
-              <tr
-                key={item.id}
-                className="border font-semibold hover:bg-greenAccent/25"
-              >
-                <td className="border p-2">{item.shortcode}</td>
-                <td className="border p-2">{item.description}</td>
+              <tr key={item.id} className="  hover:bg-greenAccent/25">
+                <td className=" p-2">{item.shortcode}</td>
+                <td className=" p-2">{item.description}</td>
                 <td className="flex justify-start p-2">
                   <button
-                    className="mr-2 rounded-md bg-blue-500 px-2 py-2 text-white"
+                    className="btn btn-info mr-2 rounded-md text-white"
                     onClick={() => setSelected(item)}
                   >
                     <ClipboardEdit size={15} />
@@ -83,7 +78,7 @@ export default function TipoDeBasePage() {
                         },
                       )
                     }
-                    className="rounded-md bg-red-500 px-2 py-2 text-white"
+                    className="btn btn-error rounded-md  text-white"
                   >
                     <Trash size={15} />
                   </button>
