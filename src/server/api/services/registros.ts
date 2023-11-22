@@ -121,17 +121,15 @@ export const processRegCol = async (id: number) => {
 };
 
 export const dispensar = (
-  x: number,
-  medidaGrande: number,
-  medidaPequena: number,
+  x: Decimal,
+  medidaGrande: Decimal,
+  medidaPequena: Decimal,
 ) => {
   // Calculamos la cantidad de unidades grandes necesarias.
-  const unidadesGrandes = Math.floor(x / medidaGrande);
+  const unidadesGrandes = x.dividedBy(medidaGrande).floor();
 
   // Calculamos la cantidad de unidades pequeñas necesarias.
-  const unidadesPequenas = x % medidaGrande;
+  const unidadesPequenas = x.mod(medidaGrande);
 
   return { unidadesGrandes, unidadesPequenas };
 };
-
-console.log(dispensar(200, 12, 9));

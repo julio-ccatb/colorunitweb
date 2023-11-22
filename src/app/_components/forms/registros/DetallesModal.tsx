@@ -18,6 +18,7 @@ export default function DetalleRegistroModal({
   RGB?: { R: number; G: number; B: number };
 }) {
   const { mutate, isLoading, error } = api.registro.process.useMutation();
+  const { data } = api.registro.dispenser.useQuery(color.id);
   const [cantidad, setCantidad] = useState(new Decimal(1));
 
   return (
@@ -119,9 +120,11 @@ export default function DetalleRegistroModal({
                   <input
                     type="text"
                     id="G"
-                    onChange={(e) =>
-                      setCantidad(new Decimal(e.target.value) ?? new Decimal(1))
-                    }
+                    onChange={(e) => {
+                      setCantidad(
+                        new Decimal(e.target.value) ?? new Decimal(1),
+                      );
+                    }}
                     placeholder="Cantidad GL"
                     className={`join-item w-28 border p-2 text-center focus:input-accent`}
                   />

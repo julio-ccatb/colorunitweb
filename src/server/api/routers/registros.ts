@@ -4,7 +4,13 @@ import { Prisma } from "@prisma/client";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { calcularDistanciaRGB, processRegCol } from "../services/registros";
+import {
+  calcularDistanciaRGB,
+  dispensar,
+  processRegCol,
+} from "../services/registros";
+import Decimal from "decimal.js";
+import { RegcolcolorantsSelectSchema } from "pg/generated/zod/outputTypeSchemas/RegcolcolorantsUpdateArgsSchema";
 
 export const registrosRouter = createTRPCRouter({
   create: protectedProcedure
@@ -72,5 +78,12 @@ export const registrosRouter = createTRPCRouter({
       diff = diff.sort((a, b) => a.distancia - b.distancia);
 
       return diff;
+    }),
+  dispenser: protectedProcedure
+    .input(z.object({ id: z.number(), amount: z.string().optional() }))
+    .query(({ ctx, input }) => {
+      console.log(dispensar(new Decimal(200), new Decimal(12), new Decimal(9)));
+
+      return;
     }),
 });
