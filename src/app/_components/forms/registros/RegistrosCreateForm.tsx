@@ -15,6 +15,7 @@ import { api } from "~/trpc/react";
 import HandleStatus from "../../handleStatus";
 import { FilePlus2, Loader2 } from "lucide-react";
 import { toInteger } from "lodash";
+import { ToastContainer } from "react-toastify";
 
 export default function RegistroCreateForm() {
   type Input = z.infer<typeof RegcolCreateManyInputSchema>;
@@ -174,6 +175,7 @@ export default function RegistroCreateForm() {
       onSubmit={handleSubmit(onSubmit)}
       className={`flex flex-col items-start justify-center gap-2`}
     >
+      <ToastContainer />
       <div className="flex flex-col">
         <div className="flex flex-col gap-2">
           <div className="join">
