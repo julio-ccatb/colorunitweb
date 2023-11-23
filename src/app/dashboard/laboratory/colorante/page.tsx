@@ -17,7 +17,7 @@ export default function ColorantePage() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const { mutate, status: statusupdate } = api.colorante.update.useMutation();
+  const { mutate } = api.colorante.update.useMutation();
   const [colorant, setColorant] = useState<Colorant>({} as Colorant);
 
   // Get the items to display on the current page

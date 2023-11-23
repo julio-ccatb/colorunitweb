@@ -1,17 +1,17 @@
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { Prisma } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
+import Decimal from "decimal.js";
 import {
   DecimalJsLikeSchema,
   NullableDecimalFieldUpdateOperationsInputSchema,
   RegcolCreateInputSchema,
   isValidDecimalInput,
 } from "pg/generated/zod";
-import { Prisma } from "@prisma/client";
-import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { calcularDistanciaRGB, processRegCol } from "../services/registros";
-import Decimal from "decimal.js";
 import { calcularUnidades } from "~/app/_utils/dispensador";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
+import { calcularDistanciaRGB, processRegCol } from "../services/registros";
 
 export const registrosRouter = createTRPCRouter({
   create: protectedProcedure

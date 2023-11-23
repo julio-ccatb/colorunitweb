@@ -1,4 +1,4 @@
-import { BarChart3, Box, FlaskConical } from "lucide-react";
+import { BarChart3, FlaskConical } from "lucide-react";
 import Sidebar from "../_components/sideBar";
 import SidebarItem from "../_components/sideBarItem";
 
