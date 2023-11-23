@@ -119,17 +119,3 @@ export const processRegCol = async (id: number) => {
 
   return updateRegCol;
 };
-
-export const dispensar = (
-  x: Decimal,
-  medidaGrande: Decimal,
-  medidaPequena: Decimal,
-) => {
-  // Calculamos la cantidad de unidades grandes necesarias.
-  const unidadesGrandes = x.dividedBy(medidaGrande).floor();
-
-  // Calculamos la cantidad de unidades pequeñas necesarias.
-  const unidadesPequenas = x.mod(medidaGrande);
-
-  return { unidadesGrandes, unidadesPequenas };
-};

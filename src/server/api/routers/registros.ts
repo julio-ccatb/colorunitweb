@@ -1,16 +1,17 @@
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { RegcolCreateInputSchema } from "pg/generated/zod";
+import {
+  DecimalJsLikeSchema,
+  NullableDecimalFieldUpdateOperationsInputSchema,
+  RegcolCreateInputSchema,
+  isValidDecimalInput,
+} from "pg/generated/zod";
 import { Prisma } from "@prisma/client";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import {
-  calcularDistanciaRGB,
-  dispensar,
-  processRegCol,
-} from "../services/registros";
+import { calcularDistanciaRGB, processRegCol } from "../services/registros";
 import Decimal from "decimal.js";
-import { RegcolcolorantsSelectSchema } from "pg/generated/zod/outputTypeSchemas/RegcolcolorantsUpdateArgsSchema";
+import { calcularUnidades } from "~/app/_utils/dispensador";
 
 export const registrosRouter = createTRPCRouter({
   create: protectedProcedure
@@ -80,10 +81,41 @@ export const registrosRouter = createTRPCRouter({
       return diff;
     }),
   dispenser: protectedProcedure
-    .input(z.object({ id: z.number(), amount: z.string().optional() }))
+    .input(
+      z.object({
+        id: z.number(),
+        amount: z
+          .union([
+            z
+              .union([
+                z.number(),
+                z.string(),
+                z.instanceof(Decimal),
+                z.instanceof(Prisma.Decimal),
+                DecimalJsLikeSchema,
+              ])
+              .refine((v) => isValidDecimalInput(v), {
+                message: "Must be a Decimal",
+              }),
+            z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema),
+          ])
+          .optional(),
+      }),
+    )
     .query(({ ctx, input }) => {
-      console.log(dispensar(new Decimal(200), new Decimal(12), new Decimal(9)));
-
+      const resultado = calcularUnidades(
+        new Decimal(62),
+        new Decimal(4.95),
+        new Decimal(0.69),
+      );
+      console.log(
+        `
+        Se necesitan 
+        unidades grandes: ${resultado.unidadesGrandes.toString()}uG
+        unidades pequeñas: ${resultado.unidadesPequeñas.toString()}uP
+        Gramos ingresados:  ${new Decimal(62).toString()} g. 
+        diff: ${resultado.margen.toString()}g`,
+      );
       return;
     }),
 });

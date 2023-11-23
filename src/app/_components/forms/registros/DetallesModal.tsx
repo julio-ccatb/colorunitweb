@@ -1,9 +1,10 @@
 import Decimal from "decimal.js";
-import { AlertTriangle, ServerCrash } from "lucide-react";
+import { AlertTriangle, Droplet, Droplets, ServerCrash } from "lucide-react";
 import { type Base, type Colorant } from "pg/generated/zod";
 import { type RegColWithDistance } from "~/app/dashboard/laboratory/registro/search/page";
 import { api } from "~/trpc/react";
 import { useState } from "react";
+import { calcularUnidades } from "~/app/_utils/dispensador";
 
 export default function DetalleRegistroModal({
   color,
@@ -18,13 +19,12 @@ export default function DetalleRegistroModal({
   RGB?: { R: number; G: number; B: number };
 }) {
   const { mutate, isLoading, error } = api.registro.process.useMutation();
-  const { data } = api.registro.dispenser.useQuery(color.id);
   const [cantidad, setCantidad] = useState(new Decimal(1));
 
   return (
     <>
       <dialog id="my_modal_1" className="modal">
-        <div className="modal-box">
+        <div className="modal-box max-w-xl">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
@@ -79,7 +79,7 @@ export default function DetalleRegistroModal({
               <span>
                 Nombre:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.description ?? "N/A"}
+                  {!color.description ? "N/A" : color.description}
                 </span>
               </span>
               <span>
@@ -121,9 +121,13 @@ export default function DetalleRegistroModal({
                     type="text"
                     id="G"
                     onChange={(e) => {
-                      setCantidad(
-                        new Decimal(e.target.value) ?? new Decimal(1),
-                      );
+                      let value = new Decimal(1);
+                      try {
+                        value = new Decimal(e.target.value) ?? new Decimal(1);
+                      } catch {
+                        value = new Decimal(1);
+                      }
+                      setCantidad(value);
                     }}
                     placeholder="Cantidad GL"
                     className={`join-item w-28 border p-2 text-center focus:input-accent`}
@@ -170,8 +174,8 @@ export default function DetalleRegistroModal({
           <div className="card w-full">
             <div className="flex justify-center gap-4"></div>
             <div className="card-body p-0">
-              <div className="flex w-full">
-                <div className="card flex-grow items-start rounded-box py-2 ">
+              <div className="sm:flex">
+                <div className="card max-w-sm items-start rounded-box py-2 ">
                   <h4 className="font-semibold">Bases</h4>
                   <div className="justify-between">
                     {color.regcolbases.map((base) => {
@@ -192,26 +196,63 @@ export default function DetalleRegistroModal({
                     })}
                   </div>
                 </div>
-                <div className="divider divider-horizontal"></div>
-                <div className="card grid flex-grow items-start rounded-box  py-2 ">
+                <div className="sm:devider-vertical divider md:divider-horizontal"></div>
+                <div className="card grid items-start rounded-box  py-2 ">
                   <h4 className="font-semibold">Colorantes</h4>
                   <div className="justify-between">
                     {color.regcolcolorants.map((colorante) => {
-                      const total = Decimal.mul(
-                        colorante.amount,
-                        cantidad,
-                      ).toString();
+                      const total = Decimal.mul(colorante.amount, cantidad);
+
+                      const colorante_scope = colorantes.find(
+                        (x) => x.id === colorante.colorantId,
+                      );
+                      console.log(colorante_scope);
+                      if (!colorante_scope) return <>N</>;
+
+                      const { unidadesGrandes, unidadesPequeñas, margen } =
+                        calcularUnidades(
+                          total,
+                          colorante_scope.gramUG,
+                          colorante_scope.gramUP,
+                        );
 
                       return (
-                        <p className="font-normal " key={colorante.id}>
-                          {
-                            colorantes?.find(
-                              (x) => x.id == colorante.colorantId,
-                            )?.shortcode
-                          }{" "}
-                          <span className="badge m-1 rounded-md p-1">
-                            {total} GR
-                          </span>
+                        <p className="py-1 font-normal " key={colorante.id}>
+                          {colorante_scope.shortcode}{" "}
+                          <div className="join ">
+                            <div
+                              className="tooltip tooltip-left"
+                              data-tip={`${margen.toFixed(2).toString()} GR`}
+                            >
+                              <span className="badge join-item">
+                                {`${total.toString()}`}
+                              </span>
+                            </div>
+                            <div
+                              className="tooltip tooltip-left"
+                              data-tip="Unindades pequeñas"
+                            >
+                              <span className="badge join-item">
+                                {unidadesGrandes.toString()}
+                                <Droplets
+                                  className="ml-1 text-primary"
+                                  size={15}
+                                />
+                              </span>
+                            </div>
+                            <div
+                              className="tooltip tooltip-left"
+                              data-tip="Unindades grandes"
+                            >
+                              <span className="badge join-item">
+                                {unidadesPequeñas.toString()}
+                                <Droplet
+                                  className="ml-1 text-secondary"
+                                  size={15}
+                                />
+                              </span>
+                            </div>
+                          </div>
                         </p>
                       );
                     })}
