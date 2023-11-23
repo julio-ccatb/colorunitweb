@@ -48,6 +48,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  roles         Role[]
   account       Account[]
   session       Session[]
 }
@@ -142,4 +143,12 @@ model Tbase {
   updatedAt   DateTime @default(now()) @updatedAt
   base        Base[]
   regCol      Regcol[]
+}
+
+model Role {
+  roleId String
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([roleId, userId])
 }

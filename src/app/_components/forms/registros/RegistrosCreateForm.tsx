@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   RegcolCreateManyInputSchema,
-  type RegcolCreateInputSchema,
+  RegcolCreateInputSchema,
   type RegcolbasesCreateManyRegcolInputSchema,
   type RegcolcolorantsCreateManyRegcolInputSchema,
 } from "pg/generated/zod";
@@ -10,7 +10,7 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { Decimal } from "decimal.js";
 
-import { type z } from "zod";
+import { type z, ZodError } from "zod";
 import { api } from "~/trpc/react";
 import HandleStatus from "../../handleStatus";
 import { FilePlus2, Loader2 } from "lucide-react";
@@ -159,7 +159,14 @@ export default function RegistroCreateForm() {
       regcolbases: { createMany: { data: [...bases] } },
       regcolcolorants: { createMany: { data: [...colorantes] } },
     };
-    mutate(dataFormated);
+    try {
+      const parsed = RegcolCreateInputSchema.parse(dataFormated);
+      mutate(parsed);
+    } catch (err) {
+      if (err instanceof ZodError) {
+        // console.log(err.message);
+      }
+    }
   };
 
   return (
