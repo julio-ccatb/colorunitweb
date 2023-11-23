@@ -2,25 +2,12 @@
 import Link from "next/link";
 import { useContext } from "react";
 import { SidebarContext } from "./sideBar";
+import { type TYPE_ROUTE } from "./hooks/menuSettings";
 
-export interface SidebarItemProps {
-  icon?: React.ReactNode;
-  text: string;
-  href: string;
-  active?: boolean;
-  alert?: boolean;
-  submenus?: SidebarItemProps[];
-}
-
-export default function SidebarItem({
-  icon,
-  text,
-  active,
-  alert,
-  href,
-  submenus,
-}: SidebarItemProps) {
-  const { expanded } = useContext(SidebarContext) ?? { expanded: false };
+export default function SidebarItem(Item: TYPE_ROUTE) {
+  const { expanded, updateSubmenuActiveState } = useContext(SidebarContext) ?? {
+    expanded: false,
+  };
 
   return (
     <li>
@@ -29,25 +16,21 @@ export default function SidebarItem({
           className={` group menu-title relative my-1 flex cursor-pointer items-center justify-center
           rounded-md  px-3 py-2
           font-medium text-greenLight transition-colors
-          ${active ? "bg-greenAccent text-grayPrimary" : " hover:bg-accent/50"}
+          ${
+            Item.active
+              ? "bg-greenAccent text-grayPrimary"
+              : " hover:bg-accent/50"
+          }
           `}
         >
-          {icon}
+          {Item.icon}
           <span
             className={`overflow-hidden transition-all ${
               expanded ? "ml-3 w-52" : "w-0"
             }`}
           >
-            <Link href={href}>{text}</Link>
+            <Link href={Item.href}>{Item.text}</Link>
           </span>
-          {alert && (
-            <div
-              className={`absolute right-2 h-2 w-2 rounded bg-indigo-400 ${
-                expanded ? "" : "top-2"
-              }`}
-            />
-          )}
-
           {!expanded && (
             <div
               className={`
@@ -57,13 +40,13 @@ export default function SidebarItem({
             group-hover:visible group-hover:translate-x-0 group-hover:opacity-100
         `}
             >
-              {text}
+              {Item.text}
             </div>
           )}
         </summary>
         {expanded ? (
           <ul className="text-white">
-            {submenus?.map((submenu) => (
+            {Item.submenus?.map((submenu) => (
               <li key={submenu.href}>
                 {submenu.submenus ? (
                   <details open>
@@ -76,6 +59,9 @@ export default function SidebarItem({
                           <Link
                             className={`hover:bg-accent/30 hover:text-accent active:text-accent`}
                             href={submenu2.href}
+                            onClick={() =>
+                              updateSubmenuActiveState(submenu.href)
+                            }
                           >
                             {submenu2.text}
                           </Link>
@@ -85,7 +71,9 @@ export default function SidebarItem({
                   </details>
                 ) : (
                   <Link
-                    className={` hover:bg-accent/30 hover:text-accent`}
+                    className={`hover:bg-accent/30 hover:text-accent ${
+                      submenu.active ? "text-red-500" : ""
+                    }`}
                     href={submenu.href}
                   >
                     {submenu.text}

@@ -1,4 +1,5 @@
-const Home = () => {
+import { withRoles } from "../../../_components/auth/withRoles";
+const SettingUserPage = () => {
   return (
     <div className="stats shadow">
       <div className="stat">
@@ -10,4 +11,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withRoles(SettingUserPage, ["admin"]);

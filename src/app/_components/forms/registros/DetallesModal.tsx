@@ -5,7 +5,6 @@ import { type RegColWithDistance } from "~/app/dashboard/laboratory/registro/sea
 import { api } from "~/trpc/react";
 import { useState } from "react";
 import { calcularUnidades } from "~/app/_utils/dispensador";
-import { toast } from "react-toastify";
 
 export default function DetalleRegistroModal({
   color,
@@ -207,7 +206,7 @@ export default function DetalleRegistroModal({
                       const colorante_scope = colorantes.find(
                         (x) => x.id === colorante.colorantId,
                       );
-                      console.log(colorante_scope);
+                      // console.log(colorante_scope);
                       if (!colorante_scope) return <>N</>;
 
                       const { unidadesGrandes, unidadesPequeñas, margen } =

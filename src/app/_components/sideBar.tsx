@@ -5,9 +5,13 @@ import { MoreVertical, ChevronLast } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Icon from "/public/logo.svg";
 import Image from "next/image";
+import useSidebarItems, { type TYPE_ROUTE } from "./hooks/menuSettings";
 
 interface SidebarContextProps {
   expanded: boolean;
+  sidebarItems: TYPE_ROUTE[];
+  setSidebarItems: React.Dispatch<React.SetStateAction<TYPE_ROUTE[]>>;
+  updateSubmenuActiveState: (submenuHref: string) => void;
 }
 
 export const SidebarContext = createContext<SidebarContextProps | undefined>(
@@ -16,8 +20,9 @@ export const SidebarContext = createContext<SidebarContextProps | undefined>(
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
   const [expanded, setExpanded] = useState(true);
+  const { sidebarItems, setSidebarItems, updateSubmenuActiveState } =
+    useSidebarItems();
   const session = useSession();
-
   return (
     <aside className="h-screen bg-graySecondary outline-none">
       <nav className="flex h-full flex-col shadow-md  ">
@@ -54,13 +59,21 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           </button>
         </div>
 
-        <SidebarContext.Provider value={{ expanded }}>
+        <SidebarContext.Provider
+          value={{
+            expanded,
+            sidebarItems,
+            setSidebarItems,
+            updateSubmenuActiveState,
+          }}
+        >
           <ul className="menu flex-1 px-3 py-4">{children}</ul>
         </SidebarContext.Provider>
 
         <div className="flex p-3 shadow-md">
           <Image
-            src={session.data?.user.image || Icon}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            src={session.data?.user?.image ?? Icon}
             alt=""
             width={2}
             height={2}
@@ -74,9 +87,9 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           >
             <div className="leading-4 text-greenLight">
               <h4 className="text-sm font-semibold">
-                {session?.data?.user.name}
+                {session?.data?.user?.name}
               </h4>
-              <span className=" text-xs">{session?.data?.user.email}</span>
+              <span className=" text-xs">{session?.data?.user?.email}</span>
             </div>
             <MoreVertical size={20} />
           </div>

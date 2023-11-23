@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import { rolesAndCodes, type UserRole } from "~/server/utils/roles";
 
-function hasRequiredPermissions(
+export function hasRequiredPermissions(
   requiredPermissions: UserRole[],
   userPermissions: string[],
 ): boolean {
