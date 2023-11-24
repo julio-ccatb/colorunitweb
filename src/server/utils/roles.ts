@@ -1,5 +1,6 @@
 export type UserRole = "admin" | "editor" | "viewer";
 export type UserCode = "A007584" | "A006135" | "V006466";
+export const ExposeRole: UserRole[] = ["admin", "editor", "viewer"];
 
 export const rolesToCodes: Record<UserRole, UserCode> = {
   admin: "A007584",

@@ -1,55 +1,33 @@
-"use client";
+import UserTable from "~/app/_components/tables/users";
 import { withRoles } from "../../../_components/auth/withRoles";
 const SettingUserPage = () => {
-  // const users: UserWithRelations[] = [];
-  let option = 1;
-  const setOption = (opt: number) => (option = opt);
-
   return (
     <div className="container rounded-box border-base-300  bg-base-100 p-4 shadow">
+      <h1 className="mb-4 text-2xl font-bold">Ajustes</h1>
       <div role="tablist" className="tabs tabs-lifted">
         <input
           type="radio"
           name="my_tabs_2"
           role="tab"
-          className="tab"
+          className="tab checked:text-accent"
           aria-label="Usuarios"
-          checked={option === 1}
-          onChange={() => setOption(1)}
-        />
-        <div
-          role="tabpanel"
-          className="tab-content rounded-box border-base-300 bg-base-100 p-6"
-        ></div>
-
-        <input
-          type="radio"
-          name="my_tabs_2"
-          role="tab"
-          className="tab"
-          aria-label="Tab 2"
-          checked={option === 2}
-          onChange={() => setOption(2)}
+          defaultChecked={true}
         />
         <div
           role="tabpanel"
           className="tab-content rounded-box border-base-300 bg-base-100 p-6"
         >
-          Tab content 2
+          <UserTable />
         </div>
-
-        <input
-          type="radio"
-          name="my_tabs_2"
-          role="tab"
-          className="tab"
-          aria-label="Tab 3"
-        />
-        <div
-          role="tabpanel"
-          className="tab-content rounded-box border-base-300 bg-base-100 p-6"
-        >
-          Tab content 3
+        <div role="tablist" className="tabs tabs-lifted">
+          <input
+            type="radio"
+            name="my_tabs_2"
+            role="tab"
+            className="tab checked:text-accent"
+            aria-label="Roles"
+            disabled
+          />
         </div>
       </div>
     </div>
