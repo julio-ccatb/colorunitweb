@@ -1,27 +1,14 @@
 "use client";
 
-import React, { createContext, useState } from "react";
 import { MoreVertical, ChevronLast } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Icon from "/public/logo.svg";
 import Image from "next/image";
-import useSidebarItems, { type TYPE_ROUTE } from "./hooks/menuSettings";
+import { useSidebar } from "./providers/sideBarProvider";
+import { type ReactNode } from "react";
 
-interface SidebarContextProps {
-  expanded: boolean;
-  sidebarItems: TYPE_ROUTE[];
-  setSidebarItems: React.Dispatch<React.SetStateAction<TYPE_ROUTE[]>>;
-  updateSubmenuActiveState: (submenuHref: string) => void;
-}
-
-export const SidebarContext = createContext<SidebarContextProps | undefined>(
-  undefined,
-);
-
-export default function Sidebar({ children }: { children: React.ReactNode }) {
-  const [expanded, setExpanded] = useState(true);
-  const { sidebarItems, setSidebarItems, updateSubmenuActiveState } =
-    useSidebarItems();
+export default function Sidebar({ children }: { children: ReactNode }) {
+  const { expanded, toggle } = useSidebar();
   const session = useSession();
   return (
     <aside className="h-screen bg-graySecondary outline-none">
@@ -35,6 +22,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
         >
           <div className="flex items-center justify-center ">
             <Image
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               src={Icon}
               className={`overflow-hidden transition-all ${
                 expanded ? "w-16" : "w-0"
@@ -50,7 +38,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             </span>
           </div>
           <button
-            onClick={() => setExpanded((curr) => !curr)}
+            onClick={() => toggle((curr) => !curr)}
             className={`rounded-lg  p-2  transition-transform duration-500 hover:bg-greenAccent ${
               expanded ? "rotate-[-180deg]" : "bg-greenLight text-grayPrimary"
             }`}
@@ -59,16 +47,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           </button>
         </div>
 
-        <SidebarContext.Provider
-          value={{
-            expanded,
-            sidebarItems,
-            setSidebarItems,
-            updateSubmenuActiveState,
-          }}
-        >
-          <ul className="menu flex-1 px-3 py-4">{children}</ul>
-        </SidebarContext.Provider>
+        <ul className="menu flex-1 px-3 py-4">{children}</ul>
 
         <div className="flex p-3 shadow-md">
           <Image

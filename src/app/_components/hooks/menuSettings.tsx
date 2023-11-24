@@ -90,30 +90,20 @@ const useSidebarItems = (): {
   const updateSubmenuActiveState = (submenuHref: string) => {
     setSidebarItems((prevItems) =>
       prevItems.map((item) => {
-        if (item.submenus) {
-          // Reset active property for all submenus
-          item.submenus = item.submenus.map((submenu) => ({
+        const recursivelyUpdateSubmenus = (
+          submenus: TYPE_ROUTE[] | undefined,
+        ): TYPE_ROUTE[] | undefined =>
+          submenus?.map((submenu) => ({
             ...submenu,
-            active: false,
+            active: submenu.href === submenuHref,
+            submenus: recursivelyUpdateSubmenus(submenu.submenus),
           }));
 
-          // Find and update the active property for the specified submenu
-          const updatedSubmenus = item.submenus.map((submenu) =>
-            submenu.href === submenuHref
-              ? { ...submenu, active: true }
-              : submenu,
-          );
-
-          console.log(updatedSubmenus);
-
-          return {
-            ...item,
-            submenus: updatedSubmenus,
-          };
-        }
-
-        console.log(item);
-        return item;
+        return {
+          ...item,
+          active: item.href === submenuHref,
+          submenus: recursivelyUpdateSubmenus(item.submenus),
+        };
       }),
     );
   };

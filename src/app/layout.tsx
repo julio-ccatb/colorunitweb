@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import AuthProvider from "./_components/providers/authProvider";
+import { SidebarProvider } from "./_components/providers/sideBarProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,7 +27,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans  ${inter.variable}`}>
         <TRPCReactProvider headers={headers()}>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <SidebarProvider>{children}</SidebarProvider>
+          </AuthProvider>
         </TRPCReactProvider>
       </body>
     </html>

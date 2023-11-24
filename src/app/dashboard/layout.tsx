@@ -1,16 +1,12 @@
 "use client";
-import Sidebar, { SidebarContext } from "../_components/sideBar";
+import Sidebar from "../_components/sideBar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SidebarItem from "../_components/sideBarItem";
-import { useContext } from "react";
-import useSidebarItems from "../_components/hooks/menuSettings";
+import { useSidebar } from "../_components/providers/sideBarProvider";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const {} = useContext(SidebarContext) ?? {
-    expanded: false,
-  };
-  const { sidebarItems } = useSidebarItems();
+  const { sidebarItems } = useSidebar();
   return (
     <>
       <ToastContainer
@@ -22,10 +18,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <main className="overflowy relative flex bg-whitePrimary/50 text-graySecondary">
         <Sidebar>
           {sidebarItems?.map((item) => {
+            console.log(item);
             return <SidebarItem key={item.href} {...item} />;
           })}
         </Sidebar>
-        <div className="flex-1 overflow-y-auto  p-4">{children}</div>
+        <div className=" flex-auto overflow-y-auto p-4">{children}</div>
       </main>
     </>
   );
