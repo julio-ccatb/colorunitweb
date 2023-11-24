@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
-import { rolesAndCodes, type UserRole } from "~/server/utils/roles";
+import { rolesToCodes, type UserRole } from "~/server/utils/roles";
 
 export function hasRequiredPermissions(
   requiredPermissions: UserRole[],
@@ -8,7 +8,7 @@ export function hasRequiredPermissions(
 ): boolean {
   for (const permission of requiredPermissions) {
     // console.log({ userPermissions, permission });
-    if (userPermissions.includes(rolesAndCodes[permission])) {
+    if (userPermissions.includes(rolesToCodes[permission])) {
       return true; // Found a matching permission
     }
   }

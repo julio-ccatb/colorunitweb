@@ -13,7 +13,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
 import { calcularDistanciaRGB, processRegCol } from "../services/registros";
 
-export const registrosRouter = createTRPCRouter({
+export const registroRouter = createTRPCRouter({
   create: protectedProcedure
     .input(RegcolCreateInputSchema)
     .mutation(async ({ ctx, input }) => {

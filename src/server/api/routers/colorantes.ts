@@ -7,7 +7,7 @@ import {
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
 
-export const colorantesRouter = createTRPCRouter({
+export const coloranteRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
     try {
       const listColorantes = await ctx.db.colorant.findMany({
