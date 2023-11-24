@@ -225,7 +225,7 @@ export default function DetalleRegistroModal({
                               data-tip={`${margen.toFixed(2).toString()} GR`}
                             >
                               <span className="badge join-item">
-                                {`${total.toString()}`}
+                                {`${total.toString()} GR`}
                               </span>
                             </div>
                             <div

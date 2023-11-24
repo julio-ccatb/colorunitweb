@@ -17,10 +17,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       />
       <main className="overflowy relative flex bg-whitePrimary/50 text-graySecondary">
         <Sidebar>
-          {sidebarItems?.map((item) => {
-            console.log(item);
-            return <SidebarItem key={item.href} {...item} />;
-          })}
+          {sidebarItems?.map((item) => (
+            <SidebarItem key={item.href} {...item} />
+          ))}
         </Sidebar>
         <div className=" flex-auto overflow-y-auto p-4">{children}</div>
       </main>
