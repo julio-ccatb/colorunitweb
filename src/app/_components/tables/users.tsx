@@ -1,10 +1,11 @@
 "use client";
-import { ClipboardEdit, Trash } from "lucide-react";
+import { ClipboardEdit, Trash, User } from "lucide-react";
 import Image from "next/image";
 import { toast } from "react-toastify";
-import { codeToRole, getUserRoleByCode } from "~/server/utils/roles";
+import { getUserRoleByCode } from "~/server/utils/roles";
 import { api } from "~/trpc/react";
 import { ExposeRole } from "../../../server/utils/roles";
+import UserModal from "../modals/userModal";
 
 const UserTable = () => {
   const { data: users } = api.user.list.useQuery({});
@@ -55,24 +56,26 @@ const UserTable = () => {
                       </div>
                     </div>
                   </td>
-                  <td>
+                  <td className="justify-center">
                     <span className="join">
                       {user.roles.map((role) => {
                         const userRole = getUserRoleByCode(role.roleId);
 
                         return (
-                          <span
-                            key={Math.random()}
-                            className={`badge join-item badge-md px-2 py-1 font-extrabold shadow
+                          userRole && (
+                            <span
+                              key={Math.random()}
+                              className={`badge join-item badge-md rounded-md px-2 py-1 font-extrabold shadow
                         ${
                           userRole === "admin" && "badge-success text-white"
                         }                  
                         ${userRole === "editor" && "badge-secondary text-white"}
                         ${userRole === "viewer" && "badge-neutral text-white"}
                         `}
-                          >
-                            {userRole}
-                          </span>
+                            >
+                              {userRole}
+                            </span>
+                          )
                         );
                       })}
                     </span>
@@ -90,54 +93,7 @@ const UserTable = () => {
                     >
                       <ClipboardEdit size={15} />
                     </button>
-                    <dialog id={user.id} className="modal">
-                      <div className="modal-box">
-                        <form method="dialog">
-                          {/* if there is a button in form, it will close the modal */}
-                          <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
-                            ✕
-                          </button>
-                        </form>
-                        <div className="card card-side ">
-                          <figure className="relative w-1/3">
-                            <Image fill src={user.image ?? ""} alt="Movie" />
-                          </figure>
-                          <div className="card-body">
-                            <h2 className="card-title">{user.name}</h2>
-                            <div className="flex flex-col gap-2">
-                              {ExposeRole.map((exRole) => {
-                                const checked =
-                                  !!user.roles.find(
-                                    (x) =>
-                                      getUserRoleByCode(x.roleId) === exRole,
-                                  ) ?? false;
-
-                                return (
-                                  <div
-                                    key={exRole}
-                                    className="form-control flex-row items-center gap-1"
-                                  >
-                                    <label className="label cursor-pointer">
-                                      <input
-                                        type="checkbox"
-                                        className="checkbox"
-                                        checked={checked}
-                                      />
-                                    </label>
-                                    <span className="label-text">{exRole}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                            <div className="card-actions justify-end">
-                              <button className="btn btn-primary">
-                                Actualizar
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </dialog>
+                    <UserModal user={user} />
                     <button
                       onClick={() => toast("Hello")}
                       className="btn btn-error rounded-md text-white"
