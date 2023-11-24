@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { type TYPE_ROUTE } from "./hooks/menuSettings";
 import { useSidebar } from "./providers/sideBarProvider";
+import { Box, Boxes } from "lucide-react";
 
 export default function SidebarItem(Item: TYPE_ROUTE) {
   const { updateSubmenuActiveState, expanded } = useSidebar();
@@ -17,7 +18,7 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
             Item.active
               ? "bg-greenAccent text-grayPrimary"
               : " hover:bg-accent/50"
-          } ${!expanded ? "after:hidden" : ""}
+          } ${!expanded || !Item.submenus ? "after:hidden" : ""}
           `}
         >
           {Item.icon}
@@ -26,12 +27,12 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
               expanded ? "ml-3 w-52" : "w-0"
             }`}
           >
-            <Link href={Item.href}>{Item.text}</Link>
+            <p> {Item.text}</p>
           </span>
           {!expanded && (
             <div
               className={`
-            invisible absolute left-full ml-6 -translate-x-3 rounded-md
+            invisible absolute left-full z-50 ml-6 -translate-x-3 rounded-md
             bg-greenLight px-2 py-1
             text-sm text-greenAccent opacity-20 transition-all
             group-hover:visible group-hover:translate-x-0 group-hover:opacity-100
@@ -48,7 +49,7 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
                 {submenu.submenus ? (
                   <details open>
                     <summary className="hover:bg-accent/75 hover:text-white">
-                      {submenu.text}
+                      {submenu.icon ?? <Boxes size={15} />} {submenu.text}
                     </summary>
                     <ul>
                       {submenu.submenus.map((submenu2) => (
@@ -62,7 +63,7 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
                               updateSubmenuActiveState(submenu2.href)
                             }
                           >
-                            {submenu2.text}
+                            <Box size={10} /> {submenu2.text}
                           </Link>
                         </li>
                       ))}
@@ -76,7 +77,7 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
                     onClick={() => updateSubmenuActiveState(submenu.href)}
                     href={submenu.href}
                   >
-                    {submenu.text}
+                    {submenu.icon ?? <Box size={15} />} {submenu.text}
                   </Link>
                 )}
               </li>

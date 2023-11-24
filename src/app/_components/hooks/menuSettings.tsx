@@ -1,5 +1,14 @@
 "use client";
-import { BarChart3, FlaskConical, Settings } from "lucide-react";
+import {
+  BarChart3,
+  Book,
+  FlaskConical,
+  FlaskRound,
+  Home,
+  Pipette,
+  Settings,
+  UserCog,
+} from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 export type TYPE_ROUTE = {
@@ -13,9 +22,9 @@ export type TYPE_ROUTE = {
 // Define the initial state as a constant
 export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
   {
-    icon: <BarChart3 size={20} />,
-    text: "Statistics",
-    href: "/statistics",
+    icon: <Home size={20} />,
+    text: "Inicio",
+    href: "/home",
     active: false,
   },
   {
@@ -25,6 +34,7 @@ export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
     active: false,
     submenus: [
       {
+        icon: <FlaskRound size={15} />,
         href: "/dashboard/laboratory/base",
         text: "Bases",
         active: false,
@@ -42,11 +52,13 @@ export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
         ],
       },
       {
+        icon: <Pipette size={15} />,
         href: "/dashboard/laboratory/colorante",
         text: "Colorantes",
         active: false,
       },
       {
+        icon: <Book size={15} />,
         href: "/dashboard/laboratory/registro",
         text: "Registro",
         active: false,
@@ -71,6 +83,7 @@ export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
     href: "/settings",
     submenus: [
       {
+        icon: <UserCog size={15} />,
         href: "/dashboard/settings/users",
         text: "Usuarios",
         active: false,
