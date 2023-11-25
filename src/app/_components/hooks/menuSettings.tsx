@@ -1,6 +1,5 @@
 "use client";
 import {
-  BarChart3,
   Book,
   FlaskConical,
   FlaskRound,
