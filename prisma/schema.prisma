@@ -3,7 +3,7 @@ generator client {
 }
 
 generator zod {
-  provider                  = "npx zod-prisma-types"
+  provider                  = "zod-prisma-types"
   useMultipleFiles          = "true"
   createRelationValuesTypes = true
   createPartialTypes        = true
