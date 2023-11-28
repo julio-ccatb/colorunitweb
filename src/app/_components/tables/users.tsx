@@ -1,6 +1,7 @@
 "use client";
 import { ClipboardEdit, Trash, User } from "lucide-react";
 import Image from "next/image";
+import { toast } from "react-toastify";
 import { getUserRoleByCode } from "~/server/utils/roles";
 import { api } from "~/trpc/react";
 import { ExposeRole } from "../../../server/utils/roles";
@@ -93,7 +94,10 @@ const UserTable = () => {
                       <ClipboardEdit size={15} />
                     </button>
                     <UserModal user={user} />
-                    <button className="btn btn-error rounded-md text-white">
+                    <button
+                      onClick={() => toast("Hello")}
+                      className="btn btn-error rounded-md text-white"
+                    >
                       <Trash size={15} />
                     </button>
                   </th>
