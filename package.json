@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "buildvercel": "prisma generate && prisma migrate deploy && next build",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "dev": "next dev",
+    "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start"
   },
