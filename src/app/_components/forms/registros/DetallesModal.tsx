@@ -13,7 +13,6 @@ export default function DetalleRegistroModal({
   RGB,
 }: {
   color: RegColWithDistance;
-
   bases: Base[];
   colorantes: Colorant[];
   RGB?: { R: number; G: number; B: number };
@@ -85,7 +84,7 @@ export default function DetalleRegistroModal({
               <span>
                 Calidad:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.Tbase?.description ?? "N/A"}
+                  {color.tbase?.description ?? "N/A"}
                 </span>
               </span>
               <span>
@@ -114,7 +113,7 @@ export default function DetalleRegistroModal({
               </span>
             </div>
             <div className="flex w-1/2 flex-1 flex-col gap-2 font-bold">
-              {color.Tbase ? (
+              {color.process ? (
                 <>
                   <h4 className="font-semibold">Ordenar</h4>
                   <input

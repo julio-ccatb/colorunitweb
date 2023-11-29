@@ -113,8 +113,9 @@ export const processRegCol = async (id: number) => {
       active: true,
       coeficienteG:
         coeficienteG !== new Decimal(1) ? record.coeficienteG : coeficienteG,
+      process: true,
     },
-    include: { regcolbases: true, regcolcolorants: true, Tbase: true },
+    include: { regcolbases: true, regcolcolorants: true, tbase: true },
   });
 
   return updateRegCol;

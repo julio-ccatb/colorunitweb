@@ -1,5 +1,11 @@
 "use client";
 import Decimal from "decimal.js";
+import {
+  type Regcolbases,
+  type Regcolcolorants,
+  type Tbase,
+  type Regcol,
+} from "pg/generated/zod";
 import { useEffect, useState } from "react";
 import { type SubmitHandler } from "react-hook-form";
 import SeachColorForm, {
@@ -12,46 +18,13 @@ import DetalleRegistroModal from "../../../../_components/forms/registros/Detall
 
 export type RegColWithDistance = {
   distancia: number;
-  regcolbases: {
-    id: number;
-    regColId: number;
-    baseId: number;
-    amount: Decimal;
-  }[];
-  regcolcolorants: {
-    id: number;
-    regColId: number;
-    colorantId: number;
-    amount: Decimal;
-  }[];
-  Tbase: {
-    id: number;
-    description: string;
-    shortcode: string;
-    peso1: Decimal | null;
-    peso2: Decimal | null;
-    peso3: Decimal | null;
-    peso4: Decimal | null;
-    peso5: Decimal | null;
-    createdAt: Date;
-    updatedAt: Date;
-  } | null;
-  id: number;
-  description: string | null;
-  carta: number | null;
-  R: number;
-  G: number;
-  B: number;
-  tbaseId: number | null;
-  pesopromedio: Decimal | null;
-  brillo: Decimal | null;
-  active: boolean | null;
-  coeficienteG: Decimal | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
+  regcolbases: Regcolbases[];
+  regcolcolorants: Regcolcolorants[];
+  tbase: Tbase | null;
+} & Regcol;
 
 const initialRegColWithDistance: RegColWithDistance = {
+  process: false,
   distancia: 0,
   regcolbases: [
     {
@@ -71,7 +44,7 @@ const initialRegColWithDistance: RegColWithDistance = {
     },
     // Additional regcolcolorants objects can be added here if needed
   ],
-  Tbase: {
+  tbase: {
     id: 1,
     description: "Example Tbase",
     shortcode: "TB",
@@ -191,7 +164,7 @@ export default function Registropage() {
                     </div>
                   </td>
                   <td>
-                    {color.Tbase?.description ?? (
+                    {color.tbase?.description ?? (
                       <span className="badge badge-warning">NP</span>
                     )}
                   </td>
