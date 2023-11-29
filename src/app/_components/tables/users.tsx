@@ -1,11 +1,11 @@
 "use client";
-import { ClipboardEdit, Trash, User } from "lucide-react";
+import { ClipboardEdit, Trash } from "lucide-react";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { getUserRoleByCode } from "~/server/utils/roles";
 import { api } from "~/trpc/react";
-import { ExposeRole } from "../../../server/utils/roles";
 import UserModal from "../modals/userModal";
+import { formatDate } from "../../_utils/dateFunctions";
 
 const UserTable = () => {
   const { data: users } = api.user.list.useQuery({});
@@ -58,14 +58,14 @@ const UserTable = () => {
                   </td>
                   <td className="justify-center">
                     <span className="join">
-                      {user.roles.map((role) => {
+                      {user.role.map((role) => {
                         const userRole = getUserRoleByCode(role.roleId);
 
                         return (
                           userRole && (
                             <span
                               key={Math.random()}
-                              className={`badge join-item badge-md rounded-md px-2 py-1 font-extrabold shadow
+                              className={`badge join-item badge-outline badge-md rounded-md px-2 py-1 font-extrabold shadow
                         ${
                           userRole === "admin" && "badge-success text-white"
                         }                  
@@ -80,7 +80,7 @@ const UserTable = () => {
                       })}
                     </span>
                   </td>
-                  <td>{user.id}</td>
+                  <td>{formatDate(user.createdAt)}</td>
                   <th className="flex gap-1">
                     <button
                       className="btn btn-info rounded-md text-white"

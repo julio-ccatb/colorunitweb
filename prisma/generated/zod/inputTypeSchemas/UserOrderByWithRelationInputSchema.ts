@@ -13,6 +13,7 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
   email: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   emailVerified: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   image: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  createdAt: z.lazy(() => SortOrderSchema).optional(),
   account: z.lazy(() => AccountOrderByRelationAggregateInputSchema).optional(),
   role: z.lazy(() => RoleOrderByRelationAggregateInputSchema).optional(),
   session: z.lazy(() => SessionOrderByRelationAggregateInputSchema).optional()

@@ -19,6 +19,7 @@ export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
   email: z.boolean().optional(),
   emailVerified: z.boolean().optional(),
   image: z.boolean().optional(),
+  createdAt: z.boolean().optional(),
   account: z.union([z.boolean(),z.lazy(() => AccountFindManyArgsSchema)]).optional(),
   role: z.union([z.boolean(),z.lazy(() => RoleFindManyArgsSchema)]).optional(),
   session: z.union([z.boolean(),z.lazy(() => SessionFindManyArgsSchema)]).optional(),

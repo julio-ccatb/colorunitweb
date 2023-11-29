@@ -9,7 +9,7 @@ export const userRouter = createTRPCRouter({
     try {
       const userList = await ctx.db.user.findMany({
         where: {},
-        include: { roles: { orderBy: { roleId: "desc" } } },
+        include: { role: { orderBy: { roleId: "desc" } } },
       });
 
       return userList;

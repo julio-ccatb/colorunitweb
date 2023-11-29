@@ -48,13 +48,13 @@ const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
                 <div className="join justify-center ">
                   {ExposeRole.map((exRole) => {
                     const checked =
-                      !!user.roles?.find(
+                      !!user.role?.find(
                         (x) => getUserRoleByCode(x.roleId ?? "") === exRole,
                       ) ?? false;
 
                     return (
                       <span
-                        className={`badge join-item badge-md rounded-md px-2 py-1 font-extrabold text-gray-200 shadow
+                        className={`badge join-item badge-outline badge-md rounded-md px-2 py-1 font-extrabold text-gray-400 shadow
                                       ${
                                         exRole === "admin" &&
                                         checked &&

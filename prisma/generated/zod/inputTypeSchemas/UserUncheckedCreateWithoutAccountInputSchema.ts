@@ -10,6 +10,7 @@ export const UserUncheckedCreateWithoutAccountInputSchema: z.ZodType<Prisma.User
   email: z.string().optional().nullable(),
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
   role: z.lazy(() => RoleUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   session: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional()
 }).strict();

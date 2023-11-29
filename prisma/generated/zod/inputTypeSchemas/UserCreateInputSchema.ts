@@ -11,6 +11,7 @@ export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object
   email: z.string().optional().nullable(),
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
+  createdAt: z.coerce.date().optional(),
   account: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
   role: z.lazy(() => RoleCreateNestedManyWithoutUserInputSchema).optional(),
   session: z.lazy(() => SessionCreateNestedManyWithoutUserInputSchema).optional()

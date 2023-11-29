@@ -144,6 +144,7 @@ model User {
   email         String?   @unique(map: "User_email_key")
   emailVerified DateTime?
   image         String?
+  createdAt     DateTime  @default(now())
   account       Account[]
   role          Role[]
   session       Session[]
