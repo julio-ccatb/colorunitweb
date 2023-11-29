@@ -7,7 +7,7 @@ import { NullableIntFieldUpdateOperationsInputSchema } from './NullableIntFieldU
 import { UserUpdateOneRequiredWithoutAccountNestedInputSchema } from './UserUpdateOneRequiredWithoutAccountNestedInputSchema';
 
 export const AccountUpdateInputSchema: z.ZodType<Prisma.AccountUpdateInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   type: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   provider: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   providerAccountId: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),

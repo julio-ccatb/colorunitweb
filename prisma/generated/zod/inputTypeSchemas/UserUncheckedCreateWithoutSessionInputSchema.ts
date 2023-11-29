@@ -5,7 +5,7 @@ import { AccountUncheckedCreateNestedManyWithoutUserInputSchema } from './Accoun
 import { RoleUncheckedCreateNestedManyWithoutUserInputSchema } from './RoleUncheckedCreateNestedManyWithoutUserInputSchema';
 
 export const UserUncheckedCreateWithoutSessionInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutSessionInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string().optional().nullable(),
   email: z.string().optional().nullable(),
   emailVerified: z.coerce.date().optional().nullable(),

@@ -9,7 +9,7 @@ import { UserPartialWithRelationsSchema } from './UserSchema'
 /////////////////////////////////////////
 
 export const AccountSchema = z.object({
-  id: z.string(),
+  id: z.string().cuid(),
   userId: z.string(),
   type: z.string(),
   provider: z.string(),

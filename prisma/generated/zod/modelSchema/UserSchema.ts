@@ -17,7 +17,7 @@ import { SessionPartialWithRelationsSchema } from './SessionSchema'
 /////////////////////////////////////////
 
 export const UserSchema = z.object({
-  id: z.string(),
+  id: z.string().cuid(),
   name: z.string().nullable(),
   email: z.string().nullable(),
   emailVerified: z.coerce.date().nullable(),

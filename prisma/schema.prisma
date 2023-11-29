@@ -15,7 +15,7 @@ datasource db {
 }
 
 model Account {
-  id                String  @id
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -114,7 +114,7 @@ model Role {
 }
 
 model Session {
-  id           String   @id
+  id           String   @id @default(cuid())
   sessionToken String   @unique(map: "Session_sessionToken_key")
   userId       String
   expires      DateTime
@@ -139,7 +139,7 @@ model Tbase {
 }
 
 model User {
-  id            String    @id
+  id            String    @id @default(cuid())
   name          String?
   email         String?   @unique(map: "User_email_key")
   emailVerified DateTime?
