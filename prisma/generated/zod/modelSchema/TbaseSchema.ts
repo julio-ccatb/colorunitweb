@@ -42,14 +42,14 @@ export type TbasePartial = z.infer<typeof TbasePartialSchema>
 
 export type TbaseRelations = {
   base: BaseWithRelations[];
-  regCol: RegcolWithRelations[];
+  regcol: RegcolWithRelations[];
 };
 
 export type TbaseWithRelations = z.infer<typeof TbaseSchema> & TbaseRelations
 
 export const TbaseWithRelationsSchema: z.ZodType<TbaseWithRelations> = TbaseSchema.merge(z.object({
   base: z.lazy(() => BaseWithRelationsSchema).array(),
-  regCol: z.lazy(() => RegcolWithRelationsSchema).array(),
+  regcol: z.lazy(() => RegcolWithRelationsSchema).array(),
 }))
 
 /////////////////////////////////////////
@@ -58,21 +58,21 @@ export const TbaseWithRelationsSchema: z.ZodType<TbaseWithRelations> = TbaseSche
 
 export type TbasePartialRelations = {
   base?: BasePartialWithRelations[];
-  regCol?: RegcolPartialWithRelations[];
+  regcol?: RegcolPartialWithRelations[];
 };
 
 export type TbasePartialWithRelations = z.infer<typeof TbasePartialSchema> & TbasePartialRelations
 
 export const TbasePartialWithRelationsSchema: z.ZodType<TbasePartialWithRelations> = TbasePartialSchema.merge(z.object({
   base: z.lazy(() => BasePartialWithRelationsSchema).array(),
-  regCol: z.lazy(() => RegcolPartialWithRelationsSchema).array(),
+  regcol: z.lazy(() => RegcolPartialWithRelationsSchema).array(),
 })).partial()
 
 export type TbaseWithPartialRelations = z.infer<typeof TbaseSchema> & TbasePartialRelations
 
 export const TbaseWithPartialRelationsSchema: z.ZodType<TbaseWithPartialRelations> = TbaseSchema.merge(z.object({
   base: z.lazy(() => BasePartialWithRelationsSchema).array(),
-  regCol: z.lazy(() => RegcolPartialWithRelationsSchema).array(),
+  regcol: z.lazy(() => RegcolPartialWithRelationsSchema).array(),
 }).partial())
 
 export default TbaseSchema;

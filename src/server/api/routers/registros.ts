@@ -54,7 +54,7 @@ export const registroRouter = createTRPCRouter({
         input.tipo == 0
           ? await ctx.db.regcol.findMany({
               include: {
-                Tbase: true,
+                tbase: true,
                 regcolbases: true,
                 regcolcolorants: true,
               },
@@ -62,7 +62,7 @@ export const registroRouter = createTRPCRouter({
           : await ctx.db.regcol.findMany({
               where: { tbaseId: input.tipo },
               include: {
-                Tbase: true,
+                tbase: true,
                 regcolbases: true,
                 regcolcolorants: true,
               },
@@ -102,7 +102,7 @@ export const registroRouter = createTRPCRouter({
           .optional(),
       }),
     )
-    .query(({ ctx, input }) => {
+    .query(({}) => {
       const resultado = calcularUnidades(
         new Decimal(62),
         new Decimal(4.95),

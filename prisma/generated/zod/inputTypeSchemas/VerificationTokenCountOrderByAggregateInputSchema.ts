@@ -3,10 +3,10 @@ import type { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { SortOrderSchema } from './SortOrderSchema';
 
-export const VerificationTokenCountOrderByAggregateInputSchema: z.ZodType<Prisma.VerificationTokenCountOrderByAggregateInput> = z.object({
+export const VerificationtokenCountOrderByAggregateInputSchema: z.ZodType<Prisma.VerificationtokenCountOrderByAggregateInput> = z.object({
   identifier: z.lazy(() => SortOrderSchema).optional(),
   token: z.lazy(() => SortOrderSchema).optional(),
   expires: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
-export default VerificationTokenCountOrderByAggregateInputSchema;
+export default VerificationtokenCountOrderByAggregateInputSchema;

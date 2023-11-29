@@ -15,7 +15,7 @@ export const TbaseCreateWithoutBaseInputSchema: z.ZodType<Prisma.TbaseCreateWith
   peso5: z.union([z.number(),z.string(),z.instanceof(Decimal),z.instanceof(Prisma.Decimal),DecimalJsLikeSchema,]).refine((v) => isValidDecimalInput(v), { message: 'Must be a Decimal' }).optional().nullable(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
-  regCol: z.lazy(() => RegcolCreateNestedManyWithoutTbaseInputSchema).optional()
+  regcol: z.lazy(() => RegcolCreateNestedManyWithoutTbaseInputSchema).optional()
 }).strict();
 
 export default TbaseCreateWithoutBaseInputSchema;

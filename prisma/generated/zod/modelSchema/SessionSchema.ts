@@ -9,7 +9,7 @@ import { UserPartialWithRelationsSchema } from './UserSchema'
 /////////////////////////////////////////
 
 export const SessionSchema = z.object({
-  id: z.string().cuid(),
+  id: z.string(),
   sessionToken: z.string(),
   userId: z.string(),
   expires: z.coerce.date(),

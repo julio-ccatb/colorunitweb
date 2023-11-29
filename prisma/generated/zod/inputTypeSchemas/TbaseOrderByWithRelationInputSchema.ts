@@ -18,7 +18,7 @@ export const TbaseOrderByWithRelationInputSchema: z.ZodType<Prisma.TbaseOrderByW
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional(),
   base: z.lazy(() => BaseOrderByRelationAggregateInputSchema).optional(),
-  regCol: z.lazy(() => RegcolOrderByRelationAggregateInputSchema).optional()
+  regcol: z.lazy(() => RegcolOrderByRelationAggregateInputSchema).optional()
 }).strict();
 
 export default TbaseOrderByWithRelationInputSchema;

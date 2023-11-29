@@ -1,23 +1,23 @@
 import { z } from 'zod';
 
 /////////////////////////////////////////
-// VERIFICATION TOKEN SCHEMA
+// VERIFICATIONTOKEN SCHEMA
 /////////////////////////////////////////
 
-export const VerificationTokenSchema = z.object({
+export const VerificationtokenSchema = z.object({
   identifier: z.string(),
   token: z.string(),
   expires: z.coerce.date(),
 })
 
-export type VerificationToken = z.infer<typeof VerificationTokenSchema>
+export type Verificationtoken = z.infer<typeof VerificationtokenSchema>
 
 /////////////////////////////////////////
-// VERIFICATION TOKEN PARTIAL SCHEMA
+// VERIFICATIONTOKEN PARTIAL SCHEMA
 /////////////////////////////////////////
 
-export const VerificationTokenPartialSchema = VerificationTokenSchema.partial()
+export const VerificationtokenPartialSchema = VerificationtokenSchema.partial()
 
-export type VerificationTokenPartial = z.infer<typeof VerificationTokenPartialSchema>
+export type VerificationtokenPartial = z.infer<typeof VerificationtokenPartialSchema>
 
-export default VerificationTokenSchema;
+export default VerificationtokenSchema;

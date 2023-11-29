@@ -1,14 +1,14 @@
 import { z } from 'zod';
-import type { RoleWithRelations } from './RoleSchema'
-import type { RolePartialWithRelations } from './RoleSchema'
 import type { AccountWithRelations } from './AccountSchema'
 import type { AccountPartialWithRelations } from './AccountSchema'
+import type { RoleWithRelations } from './RoleSchema'
+import type { RolePartialWithRelations } from './RoleSchema'
 import type { SessionWithRelations } from './SessionSchema'
 import type { SessionPartialWithRelations } from './SessionSchema'
-import { RoleWithRelationsSchema } from './RoleSchema'
-import { RolePartialWithRelationsSchema } from './RoleSchema'
 import { AccountWithRelationsSchema } from './AccountSchema'
 import { AccountPartialWithRelationsSchema } from './AccountSchema'
+import { RoleWithRelationsSchema } from './RoleSchema'
+import { RolePartialWithRelationsSchema } from './RoleSchema'
 import { SessionWithRelationsSchema } from './SessionSchema'
 import { SessionPartialWithRelationsSchema } from './SessionSchema'
 
@@ -17,7 +17,7 @@ import { SessionPartialWithRelationsSchema } from './SessionSchema'
 /////////////////////////////////////////
 
 export const UserSchema = z.object({
-  id: z.string().cuid(),
+  id: z.string(),
   name: z.string().nullable(),
   email: z.string().nullable(),
   emailVerified: z.coerce.date().nullable(),
@@ -39,16 +39,16 @@ export type UserPartial = z.infer<typeof UserPartialSchema>
 /////////////////////////////////////////
 
 export type UserRelations = {
-  roles: RoleWithRelations[];
   account: AccountWithRelations[];
+  role: RoleWithRelations[];
   session: SessionWithRelations[];
 };
 
 export type UserWithRelations = z.infer<typeof UserSchema> & UserRelations
 
 export const UserWithRelationsSchema: z.ZodType<UserWithRelations> = UserSchema.merge(z.object({
-  roles: z.lazy(() => RoleWithRelationsSchema).array(),
   account: z.lazy(() => AccountWithRelationsSchema).array(),
+  role: z.lazy(() => RoleWithRelationsSchema).array(),
   session: z.lazy(() => SessionWithRelationsSchema).array(),
 }))
 
@@ -57,24 +57,24 @@ export const UserWithRelationsSchema: z.ZodType<UserWithRelations> = UserSchema.
 /////////////////////////////////////////
 
 export type UserPartialRelations = {
-  roles?: RolePartialWithRelations[];
   account?: AccountPartialWithRelations[];
+  role?: RolePartialWithRelations[];
   session?: SessionPartialWithRelations[];
 };
 
 export type UserPartialWithRelations = z.infer<typeof UserPartialSchema> & UserPartialRelations
 
 export const UserPartialWithRelationsSchema: z.ZodType<UserPartialWithRelations> = UserPartialSchema.merge(z.object({
-  roles: z.lazy(() => RolePartialWithRelationsSchema).array(),
   account: z.lazy(() => AccountPartialWithRelationsSchema).array(),
+  role: z.lazy(() => RolePartialWithRelationsSchema).array(),
   session: z.lazy(() => SessionPartialWithRelationsSchema).array(),
 })).partial()
 
 export type UserWithPartialRelations = z.infer<typeof UserSchema> & UserPartialRelations
 
 export const UserWithPartialRelationsSchema: z.ZodType<UserWithPartialRelations> = UserSchema.merge(z.object({
-  roles: z.lazy(() => RolePartialWithRelationsSchema).array(),
   account: z.lazy(() => AccountPartialWithRelationsSchema).array(),
+  role: z.lazy(() => RolePartialWithRelationsSchema).array(),
   session: z.lazy(() => SessionPartialWithRelationsSchema).array(),
 }).partial())
 

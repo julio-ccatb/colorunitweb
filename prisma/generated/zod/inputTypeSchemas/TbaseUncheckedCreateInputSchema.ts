@@ -18,7 +18,7 @@ export const TbaseUncheckedCreateInputSchema: z.ZodType<Prisma.TbaseUncheckedCre
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   base: z.lazy(() => BaseUncheckedCreateNestedManyWithoutTbaseInputSchema).optional(),
-  regCol: z.lazy(() => RegcolUncheckedCreateNestedManyWithoutTbaseInputSchema).optional()
+  regcol: z.lazy(() => RegcolUncheckedCreateNestedManyWithoutTbaseInputSchema).optional()
 }).strict();
 
 export default TbaseUncheckedCreateInputSchema;

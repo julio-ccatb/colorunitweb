@@ -4,8 +4,8 @@ import { UserIncludeSchema } from '../inputTypeSchemas/UserIncludeSchema'
 import { UserUpdateInputSchema } from '../inputTypeSchemas/UserUpdateInputSchema'
 import { UserUncheckedUpdateInputSchema } from '../inputTypeSchemas/UserUncheckedUpdateInputSchema'
 import { UserWhereUniqueInputSchema } from '../inputTypeSchemas/UserWhereUniqueInputSchema'
-import { RoleFindManyArgsSchema } from "../outputTypeSchemas/RoleFindManyArgsSchema"
 import { AccountFindManyArgsSchema } from "../outputTypeSchemas/AccountFindManyArgsSchema"
+import { RoleFindManyArgsSchema } from "../outputTypeSchemas/RoleFindManyArgsSchema"
 import { SessionFindManyArgsSchema } from "../outputTypeSchemas/SessionFindManyArgsSchema"
 import { UserCountOutputTypeArgsSchema } from "../outputTypeSchemas/UserCountOutputTypeArgsSchema"
 // Select schema needs to be in file to prevent circular imports
@@ -17,8 +17,8 @@ export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
   email: z.boolean().optional(),
   emailVerified: z.boolean().optional(),
   image: z.boolean().optional(),
-  roles: z.union([z.boolean(),z.lazy(() => RoleFindManyArgsSchema)]).optional(),
   account: z.union([z.boolean(),z.lazy(() => AccountFindManyArgsSchema)]).optional(),
+  role: z.union([z.boolean(),z.lazy(() => RoleFindManyArgsSchema)]).optional(),
   session: z.union([z.boolean(),z.lazy(() => SessionFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => UserCountOutputTypeArgsSchema)]).optional(),
 }).strict()

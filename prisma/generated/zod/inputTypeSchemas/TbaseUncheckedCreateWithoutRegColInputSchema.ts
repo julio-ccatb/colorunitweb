@@ -5,7 +5,7 @@ import { isValidDecimalInput } from './isValidDecimalInput';
 import { DecimalJsLikeSchema } from './DecimalJsLikeSchema';
 import { BaseUncheckedCreateNestedManyWithoutTbaseInputSchema } from './BaseUncheckedCreateNestedManyWithoutTbaseInputSchema';
 
-export const TbaseUncheckedCreateWithoutRegColInputSchema: z.ZodType<Prisma.TbaseUncheckedCreateWithoutRegColInput> = z.object({
+export const TbaseUncheckedCreateWithoutRegcolInputSchema: z.ZodType<Prisma.TbaseUncheckedCreateWithoutRegcolInput> = z.object({
   id: z.number().int().optional(),
   description: z.string(),
   shortcode: z.string(),
@@ -19,4 +19,4 @@ export const TbaseUncheckedCreateWithoutRegColInputSchema: z.ZodType<Prisma.Tbas
   base: z.lazy(() => BaseUncheckedCreateNestedManyWithoutTbaseInputSchema).optional()
 }).strict();
 
-export default TbaseUncheckedCreateWithoutRegColInputSchema;
+export default TbaseUncheckedCreateWithoutRegcolInputSchema;

@@ -17,7 +17,7 @@ export const TbaseCreateInputSchema: z.ZodType<Prisma.TbaseCreateInput> = z.obje
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
   base: z.lazy(() => BaseCreateNestedManyWithoutTbaseInputSchema).optional(),
-  regCol: z.lazy(() => RegcolCreateNestedManyWithoutTbaseInputSchema).optional()
+  regcol: z.lazy(() => RegcolCreateNestedManyWithoutTbaseInputSchema).optional()
 }).strict();
 
 export default TbaseCreateInputSchema;

@@ -5,7 +5,7 @@ import { isValidDecimalInput } from './isValidDecimalInput';
 import { DecimalJsLikeSchema } from './DecimalJsLikeSchema';
 import { BaseCreateNestedManyWithoutTbaseInputSchema } from './BaseCreateNestedManyWithoutTbaseInputSchema';
 
-export const TbaseCreateWithoutRegColInputSchema: z.ZodType<Prisma.TbaseCreateWithoutRegColInput> = z.object({
+export const TbaseCreateWithoutRegcolInputSchema: z.ZodType<Prisma.TbaseCreateWithoutRegcolInput> = z.object({
   description: z.string(),
   shortcode: z.string(),
   peso1: z.union([z.number(),z.string(),z.instanceof(Decimal),z.instanceof(Prisma.Decimal),DecimalJsLikeSchema,]).refine((v) => isValidDecimalInput(v), { message: 'Must be a Decimal' }).optional().nullable(),
@@ -18,4 +18,4 @@ export const TbaseCreateWithoutRegColInputSchema: z.ZodType<Prisma.TbaseCreateWi
   base: z.lazy(() => BaseCreateNestedManyWithoutTbaseInputSchema).optional()
 }).strict();
 
-export default TbaseCreateWithoutRegColInputSchema;
+export default TbaseCreateWithoutRegcolInputSchema;

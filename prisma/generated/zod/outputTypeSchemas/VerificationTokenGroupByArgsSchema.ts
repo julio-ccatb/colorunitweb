@@ -1,17 +1,17 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
-import { VerificationTokenWhereInputSchema } from '../inputTypeSchemas/VerificationTokenWhereInputSchema'
-import { VerificationTokenOrderByWithAggregationInputSchema } from '../inputTypeSchemas/VerificationTokenOrderByWithAggregationInputSchema'
-import { VerificationTokenScalarFieldEnumSchema } from '../inputTypeSchemas/VerificationTokenScalarFieldEnumSchema'
-import { VerificationTokenScalarWhereWithAggregatesInputSchema } from '../inputTypeSchemas/VerificationTokenScalarWhereWithAggregatesInputSchema'
+import { VerificationtokenWhereInputSchema } from '../inputTypeSchemas/VerificationtokenWhereInputSchema'
+import { VerificationtokenOrderByWithAggregationInputSchema } from '../inputTypeSchemas/VerificationtokenOrderByWithAggregationInputSchema'
+import { VerificationtokenScalarFieldEnumSchema } from '../inputTypeSchemas/VerificationtokenScalarFieldEnumSchema'
+import { VerificationtokenScalarWhereWithAggregatesInputSchema } from '../inputTypeSchemas/VerificationtokenScalarWhereWithAggregatesInputSchema'
 
-export const VerificationTokenGroupByArgsSchema: z.ZodType<Prisma.VerificationTokenGroupByArgs> = z.object({
-  where: VerificationTokenWhereInputSchema.optional(),
-  orderBy: z.union([ VerificationTokenOrderByWithAggregationInputSchema.array(),VerificationTokenOrderByWithAggregationInputSchema ]).optional(),
-  by: VerificationTokenScalarFieldEnumSchema.array(),
-  having: VerificationTokenScalarWhereWithAggregatesInputSchema.optional(),
+export const VerificationtokenGroupByArgsSchema: z.ZodType<Prisma.VerificationtokenGroupByArgs> = z.object({
+  where: VerificationtokenWhereInputSchema.optional(),
+  orderBy: z.union([ VerificationtokenOrderByWithAggregationInputSchema.array(),VerificationtokenOrderByWithAggregationInputSchema ]).optional(),
+  by: VerificationtokenScalarFieldEnumSchema.array(),
+  having: VerificationtokenScalarWhereWithAggregatesInputSchema.optional(),
   take: z.number().optional(),
   skip: z.number().optional(),
 }).strict()
 
-export default VerificationTokenGroupByArgsSchema;
+export default VerificationtokenGroupByArgsSchema;

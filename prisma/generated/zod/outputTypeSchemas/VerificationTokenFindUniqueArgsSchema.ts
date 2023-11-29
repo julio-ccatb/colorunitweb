@@ -1,18 +1,18 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
-import { VerificationTokenWhereUniqueInputSchema } from '../inputTypeSchemas/VerificationTokenWhereUniqueInputSchema'
+import { VerificationtokenWhereUniqueInputSchema } from '../inputTypeSchemas/VerificationtokenWhereUniqueInputSchema'
 // Select schema needs to be in file to prevent circular imports
 //------------------------------------------------------
 
-export const VerificationTokenSelectSchema: z.ZodType<Prisma.VerificationTokenSelect> = z.object({
+export const VerificationtokenSelectSchema: z.ZodType<Prisma.VerificationtokenSelect> = z.object({
   identifier: z.boolean().optional(),
   token: z.boolean().optional(),
   expires: z.boolean().optional(),
 }).strict()
 
-export const VerificationTokenFindUniqueArgsSchema: z.ZodType<Prisma.VerificationTokenFindUniqueArgs> = z.object({
-  select: VerificationTokenSelectSchema.optional(),
-  where: VerificationTokenWhereUniqueInputSchema,
+export const VerificationtokenFindUniqueArgsSchema: z.ZodType<Prisma.VerificationtokenFindUniqueArgs> = z.object({
+  select: VerificationtokenSelectSchema.optional(),
+  where: VerificationtokenWhereUniqueInputSchema,
 }).strict()
 
-export default VerificationTokenFindUniqueArgsSchema;
+export default VerificationtokenFindUniqueArgsSchema;

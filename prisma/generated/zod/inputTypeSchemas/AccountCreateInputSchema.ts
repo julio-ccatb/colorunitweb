@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { UserCreateNestedOneWithoutAccountInputSchema } from './UserCreateNestedOneWithoutAccountInputSchema';
 
 export const AccountCreateInputSchema: z.ZodType<Prisma.AccountCreateInput> = z.object({
-  id: z.string().cuid().optional(),
+  id: z.string(),
   type: z.string(),
   provider: z.string(),
   providerAccountId: z.string(),

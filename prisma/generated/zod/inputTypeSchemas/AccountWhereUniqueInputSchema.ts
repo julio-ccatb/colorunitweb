@@ -11,18 +11,18 @@ import { UserWhereInputSchema } from './UserWhereInputSchema';
 
 export const AccountWhereUniqueInputSchema: z.ZodType<Prisma.AccountWhereUniqueInput> = z.union([
   z.object({
-    id: z.string().cuid(),
+    id: z.string(),
     provider_providerAccountId: z.lazy(() => AccountProviderProviderAccountIdCompoundUniqueInputSchema)
   }),
   z.object({
-    id: z.string().cuid(),
+    id: z.string(),
   }),
   z.object({
     provider_providerAccountId: z.lazy(() => AccountProviderProviderAccountIdCompoundUniqueInputSchema),
   }),
 ])
 .and(z.object({
-  id: z.string().cuid().optional(),
+  id: z.string().optional(),
   provider_providerAccountId: z.lazy(() => AccountProviderProviderAccountIdCompoundUniqueInputSchema).optional(),
   AND: z.union([ z.lazy(() => AccountWhereInputSchema),z.lazy(() => AccountWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => AccountWhereInputSchema).array().optional(),

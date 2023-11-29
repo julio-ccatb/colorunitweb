@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
-import { VerificationTokenWhereInputSchema } from '../inputTypeSchemas/VerificationTokenWhereInputSchema'
+import { VerificationtokenWhereInputSchema } from '../inputTypeSchemas/VerificationtokenWhereInputSchema'
 
-export const VerificationTokenDeleteManyArgsSchema: z.ZodType<Prisma.VerificationTokenDeleteManyArgs> = z.object({
-  where: VerificationTokenWhereInputSchema.optional(),
+export const VerificationtokenDeleteManyArgsSchema: z.ZodType<Prisma.VerificationtokenDeleteManyArgs> = z.object({
+  where: VerificationtokenWhereInputSchema.optional(),
 }).strict()
 
-export default VerificationTokenDeleteManyArgsSchema;
+export default VerificationtokenDeleteManyArgsSchema;

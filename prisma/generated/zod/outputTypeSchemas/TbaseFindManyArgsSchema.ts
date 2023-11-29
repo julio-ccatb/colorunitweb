@@ -23,7 +23,7 @@ export const TbaseSelectSchema: z.ZodType<Prisma.TbaseSelect> = z.object({
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
   base: z.union([z.boolean(),z.lazy(() => BaseFindManyArgsSchema)]).optional(),
-  regCol: z.union([z.boolean(),z.lazy(() => RegcolFindManyArgsSchema)]).optional(),
+  regcol: z.union([z.boolean(),z.lazy(() => RegcolFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => TbaseCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 

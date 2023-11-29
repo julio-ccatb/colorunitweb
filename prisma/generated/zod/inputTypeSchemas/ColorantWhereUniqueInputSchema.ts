@@ -3,11 +3,11 @@ import Decimal from 'decimal.js';
 import { z } from 'zod';
 import { ColorantWhereInputSchema } from './ColorantWhereInputSchema';
 import { StringFilterSchema } from './StringFilterSchema';
-import { BoolFilterSchema } from './BoolFilterSchema';
 import { DecimalFilterSchema } from './DecimalFilterSchema';
 import { isValidDecimalInput } from './isValidDecimalInput';
 import { DecimalJsLikeSchema } from './DecimalJsLikeSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
+import { BoolFilterSchema } from './BoolFilterSchema';
 import { RegcolcolorantsListRelationFilterSchema } from './RegcolcolorantsListRelationFilterSchema';
 
 export const ColorantWhereUniqueInputSchema: z.ZodType<Prisma.ColorantWhereUniqueInput> = z.union([
@@ -29,11 +29,11 @@ export const ColorantWhereUniqueInputSchema: z.ZodType<Prisma.ColorantWhereUniqu
   OR: z.lazy(() => ColorantWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => ColorantWhereInputSchema),z.lazy(() => ColorantWhereInputSchema).array() ]).optional(),
   description: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
-  active: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   gramUP: z.union([ z.lazy(() => DecimalFilterSchema),z.union([z.number(),z.string(),z.instanceof(Decimal),z.instanceof(Prisma.Decimal),DecimalJsLikeSchema,]).refine((v) => isValidDecimalInput(v), { message: 'Must be a Decimal' }) ]).optional(),
   gramUG: z.union([ z.lazy(() => DecimalFilterSchema),z.union([z.number(),z.string(),z.instanceof(Decimal),z.instanceof(Prisma.Decimal),DecimalJsLikeSchema,]).refine((v) => isValidDecimalInput(v), { message: 'Must be a Decimal' }) ]).optional(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  active: z.union([ z.lazy(() => BoolFilterSchema),z.boolean() ]).optional(),
   regcolcolorants: z.lazy(() => RegcolcolorantsListRelationFilterSchema).optional()
 }).strict());
 

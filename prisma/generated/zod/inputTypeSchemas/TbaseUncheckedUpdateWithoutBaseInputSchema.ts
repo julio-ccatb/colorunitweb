@@ -20,7 +20,7 @@ export const TbaseUncheckedUpdateWithoutBaseInputSchema: z.ZodType<Prisma.TbaseU
   peso5: z.union([ z.union([z.number(),z.string(),z.instanceof(Decimal),z.instanceof(Prisma.Decimal),DecimalJsLikeSchema,]).refine((v) => isValidDecimalInput(v), { message: 'Must be a Decimal' }),z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-  regCol: z.lazy(() => RegcolUncheckedUpdateManyWithoutTbaseNestedInputSchema).optional()
+  regcol: z.lazy(() => RegcolUncheckedUpdateManyWithoutTbaseNestedInputSchema).optional()
 }).strict();
 
 export default TbaseUncheckedUpdateWithoutBaseInputSchema;

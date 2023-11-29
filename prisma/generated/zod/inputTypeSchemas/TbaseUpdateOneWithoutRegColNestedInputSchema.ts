@@ -1,24 +1,24 @@
 import type { Prisma } from '@prisma/client';
 
 import { z } from 'zod';
-import { TbaseCreateWithoutRegColInputSchema } from './TbaseCreateWithoutRegColInputSchema';
-import { TbaseUncheckedCreateWithoutRegColInputSchema } from './TbaseUncheckedCreateWithoutRegColInputSchema';
-import { TbaseCreateOrConnectWithoutRegColInputSchema } from './TbaseCreateOrConnectWithoutRegColInputSchema';
-import { TbaseUpsertWithoutRegColInputSchema } from './TbaseUpsertWithoutRegColInputSchema';
+import { TbaseCreateWithoutRegcolInputSchema } from './TbaseCreateWithoutRegcolInputSchema';
+import { TbaseUncheckedCreateWithoutRegcolInputSchema } from './TbaseUncheckedCreateWithoutRegcolInputSchema';
+import { TbaseCreateOrConnectWithoutRegcolInputSchema } from './TbaseCreateOrConnectWithoutRegcolInputSchema';
+import { TbaseUpsertWithoutRegcolInputSchema } from './TbaseUpsertWithoutRegcolInputSchema';
 import { TbaseWhereInputSchema } from './TbaseWhereInputSchema';
 import { TbaseWhereUniqueInputSchema } from './TbaseWhereUniqueInputSchema';
-import { TbaseUpdateToOneWithWhereWithoutRegColInputSchema } from './TbaseUpdateToOneWithWhereWithoutRegColInputSchema';
-import { TbaseUpdateWithoutRegColInputSchema } from './TbaseUpdateWithoutRegColInputSchema';
-import { TbaseUncheckedUpdateWithoutRegColInputSchema } from './TbaseUncheckedUpdateWithoutRegColInputSchema';
+import { TbaseUpdateToOneWithWhereWithoutRegcolInputSchema } from './TbaseUpdateToOneWithWhereWithoutRegcolInputSchema';
+import { TbaseUpdateWithoutRegcolInputSchema } from './TbaseUpdateWithoutRegcolInputSchema';
+import { TbaseUncheckedUpdateWithoutRegcolInputSchema } from './TbaseUncheckedUpdateWithoutRegcolInputSchema';
 
-export const TbaseUpdateOneWithoutRegColNestedInputSchema: z.ZodType<Prisma.TbaseUpdateOneWithoutRegColNestedInput> = z.object({
-  create: z.union([ z.lazy(() => TbaseCreateWithoutRegColInputSchema),z.lazy(() => TbaseUncheckedCreateWithoutRegColInputSchema) ]).optional(),
-  connectOrCreate: z.lazy(() => TbaseCreateOrConnectWithoutRegColInputSchema).optional(),
-  upsert: z.lazy(() => TbaseUpsertWithoutRegColInputSchema).optional(),
+export const TbaseUpdateOneWithoutRegcolNestedInputSchema: z.ZodType<Prisma.TbaseUpdateOneWithoutRegcolNestedInput> = z.object({
+  create: z.union([ z.lazy(() => TbaseCreateWithoutRegcolInputSchema),z.lazy(() => TbaseUncheckedCreateWithoutRegcolInputSchema) ]).optional(),
+  connectOrCreate: z.lazy(() => TbaseCreateOrConnectWithoutRegcolInputSchema).optional(),
+  upsert: z.lazy(() => TbaseUpsertWithoutRegcolInputSchema).optional(),
   disconnect: z.union([ z.boolean(),z.lazy(() => TbaseWhereInputSchema) ]).optional(),
   delete: z.union([ z.boolean(),z.lazy(() => TbaseWhereInputSchema) ]).optional(),
   connect: z.lazy(() => TbaseWhereUniqueInputSchema).optional(),
-  update: z.union([ z.lazy(() => TbaseUpdateToOneWithWhereWithoutRegColInputSchema),z.lazy(() => TbaseUpdateWithoutRegColInputSchema),z.lazy(() => TbaseUncheckedUpdateWithoutRegColInputSchema) ]).optional(),
+  update: z.union([ z.lazy(() => TbaseUpdateToOneWithWhereWithoutRegcolInputSchema),z.lazy(() => TbaseUpdateWithoutRegcolInputSchema),z.lazy(() => TbaseUncheckedUpdateWithoutRegcolInputSchema) ]).optional(),
 }).strict();
 
-export default TbaseUpdateOneWithoutRegColNestedInputSchema;
+export default TbaseUpdateOneWithoutRegcolNestedInputSchema;

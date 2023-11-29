@@ -1,21 +1,21 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
-import { VerificationTokenUpdateInputSchema } from '../inputTypeSchemas/VerificationTokenUpdateInputSchema'
-import { VerificationTokenUncheckedUpdateInputSchema } from '../inputTypeSchemas/VerificationTokenUncheckedUpdateInputSchema'
-import { VerificationTokenWhereUniqueInputSchema } from '../inputTypeSchemas/VerificationTokenWhereUniqueInputSchema'
+import { VerificationtokenUpdateInputSchema } from '../inputTypeSchemas/VerificationtokenUpdateInputSchema'
+import { VerificationtokenUncheckedUpdateInputSchema } from '../inputTypeSchemas/VerificationtokenUncheckedUpdateInputSchema'
+import { VerificationtokenWhereUniqueInputSchema } from '../inputTypeSchemas/VerificationtokenWhereUniqueInputSchema'
 // Select schema needs to be in file to prevent circular imports
 //------------------------------------------------------
 
-export const VerificationTokenSelectSchema: z.ZodType<Prisma.VerificationTokenSelect> = z.object({
+export const VerificationtokenSelectSchema: z.ZodType<Prisma.VerificationtokenSelect> = z.object({
   identifier: z.boolean().optional(),
   token: z.boolean().optional(),
   expires: z.boolean().optional(),
 }).strict()
 
-export const VerificationTokenUpdateArgsSchema: z.ZodType<Prisma.VerificationTokenUpdateArgs> = z.object({
-  select: VerificationTokenSelectSchema.optional(),
-  data: z.union([ VerificationTokenUpdateInputSchema,VerificationTokenUncheckedUpdateInputSchema ]),
-  where: VerificationTokenWhereUniqueInputSchema,
+export const VerificationtokenUpdateArgsSchema: z.ZodType<Prisma.VerificationtokenUpdateArgs> = z.object({
+  select: VerificationtokenSelectSchema.optional(),
+  data: z.union([ VerificationtokenUpdateInputSchema,VerificationtokenUncheckedUpdateInputSchema ]),
+  where: VerificationtokenWhereUniqueInputSchema,
 }).strict()
 
-export default VerificationTokenUpdateArgsSchema;
+export default VerificationtokenUpdateArgsSchema;

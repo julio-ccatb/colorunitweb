@@ -22,7 +22,7 @@ export const TbaseUncheckedUpdateInputSchema: z.ZodType<Prisma.TbaseUncheckedUpd
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   base: z.lazy(() => BaseUncheckedUpdateManyWithoutTbaseNestedInputSchema).optional(),
-  regCol: z.lazy(() => RegcolUncheckedUpdateManyWithoutTbaseNestedInputSchema).optional()
+  regcol: z.lazy(() => RegcolUncheckedUpdateManyWithoutTbaseNestedInputSchema).optional()
 }).strict();
 
 export default TbaseUncheckedUpdateInputSchema;

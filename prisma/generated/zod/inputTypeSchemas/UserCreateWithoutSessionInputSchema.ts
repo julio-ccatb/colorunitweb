@@ -1,17 +1,17 @@
 import type { Prisma } from '@prisma/client';
 
 import { z } from 'zod';
-import { RoleCreateNestedManyWithoutUserInputSchema } from './RoleCreateNestedManyWithoutUserInputSchema';
 import { AccountCreateNestedManyWithoutUserInputSchema } from './AccountCreateNestedManyWithoutUserInputSchema';
+import { RoleCreateNestedManyWithoutUserInputSchema } from './RoleCreateNestedManyWithoutUserInputSchema';
 
 export const UserCreateWithoutSessionInputSchema: z.ZodType<Prisma.UserCreateWithoutSessionInput> = z.object({
-  id: z.string().cuid().optional(),
+  id: z.string(),
   name: z.string().optional().nullable(),
   email: z.string().optional().nullable(),
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
-  roles: z.lazy(() => RoleCreateNestedManyWithoutUserInputSchema).optional(),
-  account: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional()
+  account: z.lazy(() => AccountCreateNestedManyWithoutUserInputSchema).optional(),
+  role: z.lazy(() => RoleCreateNestedManyWithoutUserInputSchema).optional()
 }).strict();
 
 export default UserCreateWithoutSessionInputSchema;

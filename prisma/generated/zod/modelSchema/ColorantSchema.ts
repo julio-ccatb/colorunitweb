@@ -13,11 +13,11 @@ export const ColorantSchema = z.object({
   id: z.number().int(),
   description: z.string(),
   shortcode: z.string(),
-  active: z.boolean(),
   gramUP: z.instanceof(Prisma.Decimal, { message: "Field 'gramUP' must be a Decimal. Location: ['Models', 'Colorant']"}),
   gramUG: z.instanceof(Prisma.Decimal, { message: "Field 'gramUG' must be a Decimal. Location: ['Models', 'Colorant']"}),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
+  active: z.boolean(),
 })
 
 export type Colorant = z.infer<typeof ColorantSchema>

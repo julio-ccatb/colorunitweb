@@ -5,12 +5,12 @@ import { RoleUncheckedCreateNestedManyWithoutUserInputSchema } from './RoleUnche
 import { SessionUncheckedCreateNestedManyWithoutUserInputSchema } from './SessionUncheckedCreateNestedManyWithoutUserInputSchema';
 
 export const UserUncheckedCreateWithoutAccountInputSchema: z.ZodType<Prisma.UserUncheckedCreateWithoutAccountInput> = z.object({
-  id: z.string().cuid().optional(),
+  id: z.string(),
   name: z.string().optional().nullable(),
   email: z.string().optional().nullable(),
   emailVerified: z.coerce.date().optional().nullable(),
   image: z.string().optional().nullable(),
-  roles: z.lazy(() => RoleUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
+  role: z.lazy(() => RoleUncheckedCreateNestedManyWithoutUserInputSchema).optional(),
   session: z.lazy(() => SessionUncheckedCreateNestedManyWithoutUserInputSchema).optional()
 }).strict();
 

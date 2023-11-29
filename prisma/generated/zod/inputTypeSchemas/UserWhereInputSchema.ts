@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { StringFilterSchema } from './StringFilterSchema';
 import { StringNullableFilterSchema } from './StringNullableFilterSchema';
 import { DateTimeNullableFilterSchema } from './DateTimeNullableFilterSchema';
-import { RoleListRelationFilterSchema } from './RoleListRelationFilterSchema';
 import { AccountListRelationFilterSchema } from './AccountListRelationFilterSchema';
+import { RoleListRelationFilterSchema } from './RoleListRelationFilterSchema';
 import { SessionListRelationFilterSchema } from './SessionListRelationFilterSchema';
 
 export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
@@ -17,8 +17,8 @@ export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
   email: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   emailVerified: z.union([ z.lazy(() => DateTimeNullableFilterSchema),z.coerce.date() ]).optional().nullable(),
   image: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
-  roles: z.lazy(() => RoleListRelationFilterSchema).optional(),
   account: z.lazy(() => AccountListRelationFilterSchema).optional(),
+  role: z.lazy(() => RoleListRelationFilterSchema).optional(),
   session: z.lazy(() => SessionListRelationFilterSchema).optional()
 }).strict();
 

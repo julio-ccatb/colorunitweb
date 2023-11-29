@@ -6,9 +6,9 @@ import { RegcolCreateInputSchema } from '../inputTypeSchemas/RegcolCreateInputSc
 import { RegcolUncheckedCreateInputSchema } from '../inputTypeSchemas/RegcolUncheckedCreateInputSchema'
 import { RegcolUpdateInputSchema } from '../inputTypeSchemas/RegcolUpdateInputSchema'
 import { RegcolUncheckedUpdateInputSchema } from '../inputTypeSchemas/RegcolUncheckedUpdateInputSchema'
+import { TbaseArgsSchema } from "../outputTypeSchemas/TbaseArgsSchema"
 import { RegcolbasesFindManyArgsSchema } from "../outputTypeSchemas/RegcolbasesFindManyArgsSchema"
 import { RegcolcolorantsFindManyArgsSchema } from "../outputTypeSchemas/RegcolcolorantsFindManyArgsSchema"
-import { TbaseArgsSchema } from "../outputTypeSchemas/TbaseArgsSchema"
 import { RegcolCountOutputTypeArgsSchema } from "../outputTypeSchemas/RegcolCountOutputTypeArgsSchema"
 // Select schema needs to be in file to prevent circular imports
 //------------------------------------------------------
@@ -20,17 +20,17 @@ export const RegcolSelectSchema: z.ZodType<Prisma.RegcolSelect> = z.object({
   R: z.boolean().optional(),
   G: z.boolean().optional(),
   B: z.boolean().optional(),
-  tbaseId: z.boolean().optional(),
-  process: z.boolean().optional(),
   pesopromedio: z.boolean().optional(),
   brillo: z.boolean().optional(),
   active: z.boolean().optional(),
   coeficienteG: z.boolean().optional(),
   createdAt: z.boolean().optional(),
   updatedAt: z.boolean().optional(),
+  tbaseId: z.boolean().optional(),
+  process: z.boolean().optional(),
+  tbase: z.union([z.boolean(),z.lazy(() => TbaseArgsSchema)]).optional(),
   regcolbases: z.union([z.boolean(),z.lazy(() => RegcolbasesFindManyArgsSchema)]).optional(),
   regcolcolorants: z.union([z.boolean(),z.lazy(() => RegcolcolorantsFindManyArgsSchema)]).optional(),
-  Tbase: z.union([z.boolean(),z.lazy(() => TbaseArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => RegcolCountOutputTypeArgsSchema)]).optional(),
 }).strict()
 

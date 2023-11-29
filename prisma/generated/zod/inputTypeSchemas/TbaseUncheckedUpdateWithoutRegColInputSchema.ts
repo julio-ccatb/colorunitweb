@@ -9,7 +9,7 @@ import { NullableDecimalFieldUpdateOperationsInputSchema } from './NullableDecim
 import { DateTimeFieldUpdateOperationsInputSchema } from './DateTimeFieldUpdateOperationsInputSchema';
 import { BaseUncheckedUpdateManyWithoutTbaseNestedInputSchema } from './BaseUncheckedUpdateManyWithoutTbaseNestedInputSchema';
 
-export const TbaseUncheckedUpdateWithoutRegColInputSchema: z.ZodType<Prisma.TbaseUncheckedUpdateWithoutRegColInput> = z.object({
+export const TbaseUncheckedUpdateWithoutRegcolInputSchema: z.ZodType<Prisma.TbaseUncheckedUpdateWithoutRegcolInput> = z.object({
   id: z.union([ z.number().int(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
   description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   shortcode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
@@ -23,4 +23,4 @@ export const TbaseUncheckedUpdateWithoutRegColInputSchema: z.ZodType<Prisma.Tbas
   base: z.lazy(() => BaseUncheckedUpdateManyWithoutTbaseNestedInputSchema).optional()
 }).strict();
 
-export default TbaseUncheckedUpdateWithoutRegColInputSchema;
+export default TbaseUncheckedUpdateWithoutRegcolInputSchema;

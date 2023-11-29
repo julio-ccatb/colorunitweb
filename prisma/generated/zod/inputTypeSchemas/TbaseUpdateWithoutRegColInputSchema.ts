@@ -8,7 +8,7 @@ import { NullableDecimalFieldUpdateOperationsInputSchema } from './NullableDecim
 import { DateTimeFieldUpdateOperationsInputSchema } from './DateTimeFieldUpdateOperationsInputSchema';
 import { BaseUpdateManyWithoutTbaseNestedInputSchema } from './BaseUpdateManyWithoutTbaseNestedInputSchema';
 
-export const TbaseUpdateWithoutRegColInputSchema: z.ZodType<Prisma.TbaseUpdateWithoutRegColInput> = z.object({
+export const TbaseUpdateWithoutRegcolInputSchema: z.ZodType<Prisma.TbaseUpdateWithoutRegcolInput> = z.object({
   description: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   shortcode: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   peso1: z.union([ z.union([z.number(),z.string(),z.instanceof(Decimal),z.instanceof(Prisma.Decimal),DecimalJsLikeSchema,]).refine((v) => isValidDecimalInput(v), { message: 'Must be a Decimal' }),z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -21,4 +21,4 @@ export const TbaseUpdateWithoutRegColInputSchema: z.ZodType<Prisma.TbaseUpdateWi
   base: z.lazy(() => BaseUpdateManyWithoutTbaseNestedInputSchema).optional()
 }).strict();
 
-export default TbaseUpdateWithoutRegColInputSchema;
+export default TbaseUpdateWithoutRegcolInputSchema;

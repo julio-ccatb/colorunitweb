@@ -10,14 +10,14 @@ export const RegcolMinOrderByAggregateInputSchema: z.ZodType<Prisma.RegcolMinOrd
   R: z.lazy(() => SortOrderSchema).optional(),
   G: z.lazy(() => SortOrderSchema).optional(),
   B: z.lazy(() => SortOrderSchema).optional(),
-  tbaseId: z.lazy(() => SortOrderSchema).optional(),
-  process: z.lazy(() => SortOrderSchema).optional(),
   pesopromedio: z.lazy(() => SortOrderSchema).optional(),
   brillo: z.lazy(() => SortOrderSchema).optional(),
   active: z.lazy(() => SortOrderSchema).optional(),
   coeficienteG: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
-  updatedAt: z.lazy(() => SortOrderSchema).optional()
+  updatedAt: z.lazy(() => SortOrderSchema).optional(),
+  tbaseId: z.lazy(() => SortOrderSchema).optional(),
+  process: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export default RegcolMinOrderByAggregateInputSchema;

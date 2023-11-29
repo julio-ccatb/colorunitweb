@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
-export const RegcolScalarFieldEnumSchema = z.enum(['id','description','carta','R','G','B','tbaseId','process','pesopromedio','brillo','active','coeficienteG','createdAt','updatedAt']);
+export const RegcolScalarFieldEnumSchema = z.enum(['id','description','carta','R','G','B','pesopromedio','brillo','active','coeficienteG','createdAt','updatedAt','tbaseId','process']);
 
 export default RegcolScalarFieldEnumSchema;

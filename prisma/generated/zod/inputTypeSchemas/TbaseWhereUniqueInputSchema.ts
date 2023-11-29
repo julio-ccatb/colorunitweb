@@ -37,7 +37,7 @@ export const TbaseWhereUniqueInputSchema: z.ZodType<Prisma.TbaseWhereUniqueInput
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updatedAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   base: z.lazy(() => BaseListRelationFilterSchema).optional(),
-  regCol: z.lazy(() => RegcolListRelationFilterSchema).optional()
+  regcol: z.lazy(() => RegcolListRelationFilterSchema).optional()
 }).strict());
 
 export default TbaseWhereUniqueInputSchema;

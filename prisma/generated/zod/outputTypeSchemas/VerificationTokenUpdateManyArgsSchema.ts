@@ -1,12 +1,12 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
-import { VerificationTokenUpdateManyMutationInputSchema } from '../inputTypeSchemas/VerificationTokenUpdateManyMutationInputSchema'
-import { VerificationTokenUncheckedUpdateManyInputSchema } from '../inputTypeSchemas/VerificationTokenUncheckedUpdateManyInputSchema'
-import { VerificationTokenWhereInputSchema } from '../inputTypeSchemas/VerificationTokenWhereInputSchema'
+import { VerificationtokenUpdateManyMutationInputSchema } from '../inputTypeSchemas/VerificationtokenUpdateManyMutationInputSchema'
+import { VerificationtokenUncheckedUpdateManyInputSchema } from '../inputTypeSchemas/VerificationtokenUncheckedUpdateManyInputSchema'
+import { VerificationtokenWhereInputSchema } from '../inputTypeSchemas/VerificationtokenWhereInputSchema'
 
-export const VerificationTokenUpdateManyArgsSchema: z.ZodType<Prisma.VerificationTokenUpdateManyArgs> = z.object({
-  data: z.union([ VerificationTokenUpdateManyMutationInputSchema,VerificationTokenUncheckedUpdateManyInputSchema ]),
-  where: VerificationTokenWhereInputSchema.optional(),
+export const VerificationtokenUpdateManyArgsSchema: z.ZodType<Prisma.VerificationtokenUpdateManyArgs> = z.object({
+  data: z.union([ VerificationtokenUpdateManyMutationInputSchema,VerificationtokenUncheckedUpdateManyInputSchema ]),
+  where: VerificationtokenWhereInputSchema.optional(),
 }).strict()
 
-export default VerificationTokenUpdateManyArgsSchema;
+export default VerificationtokenUpdateManyArgsSchema;

@@ -2,12 +2,12 @@ import type { Prisma } from '@prisma/client';
 
 import { z } from 'zod';
 import { TbaseWhereInputSchema } from './TbaseWhereInputSchema';
-import { TbaseUpdateWithoutRegColInputSchema } from './TbaseUpdateWithoutRegColInputSchema';
-import { TbaseUncheckedUpdateWithoutRegColInputSchema } from './TbaseUncheckedUpdateWithoutRegColInputSchema';
+import { TbaseUpdateWithoutRegcolInputSchema } from './TbaseUpdateWithoutRegcolInputSchema';
+import { TbaseUncheckedUpdateWithoutRegcolInputSchema } from './TbaseUncheckedUpdateWithoutRegcolInputSchema';
 
-export const TbaseUpdateToOneWithWhereWithoutRegColInputSchema: z.ZodType<Prisma.TbaseUpdateToOneWithWhereWithoutRegColInput> = z.object({
+export const TbaseUpdateToOneWithWhereWithoutRegcolInputSchema: z.ZodType<Prisma.TbaseUpdateToOneWithWhereWithoutRegcolInput> = z.object({
   where: z.lazy(() => TbaseWhereInputSchema).optional(),
-  data: z.union([ z.lazy(() => TbaseUpdateWithoutRegColInputSchema),z.lazy(() => TbaseUncheckedUpdateWithoutRegColInputSchema) ]),
+  data: z.union([ z.lazy(() => TbaseUpdateWithoutRegcolInputSchema),z.lazy(() => TbaseUncheckedUpdateWithoutRegcolInputSchema) ]),
 }).strict();
 
-export default TbaseUpdateToOneWithWhereWithoutRegColInputSchema;
+export default TbaseUpdateToOneWithWhereWithoutRegcolInputSchema;

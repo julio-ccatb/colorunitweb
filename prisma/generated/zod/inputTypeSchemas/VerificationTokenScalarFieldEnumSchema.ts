@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
-export const VerificationTokenScalarFieldEnumSchema = z.enum(['identifier','token','expires']);
+export const VerificationtokenScalarFieldEnumSchema = z.enum(['identifier','token','expires']);
 
-export default VerificationTokenScalarFieldEnumSchema;
+export default VerificationtokenScalarFieldEnumSchema;

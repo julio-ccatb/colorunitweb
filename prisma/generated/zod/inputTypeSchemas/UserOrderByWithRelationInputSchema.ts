@@ -3,8 +3,8 @@ import type { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { SortOrderSchema } from './SortOrderSchema';
 import { SortOrderInputSchema } from './SortOrderInputSchema';
-import { RoleOrderByRelationAggregateInputSchema } from './RoleOrderByRelationAggregateInputSchema';
 import { AccountOrderByRelationAggregateInputSchema } from './AccountOrderByRelationAggregateInputSchema';
+import { RoleOrderByRelationAggregateInputSchema } from './RoleOrderByRelationAggregateInputSchema';
 import { SessionOrderByRelationAggregateInputSchema } from './SessionOrderByRelationAggregateInputSchema';
 
 export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWithRelationInput> = z.object({
@@ -13,8 +13,8 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
   email: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   emailVerified: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
   image: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
-  roles: z.lazy(() => RoleOrderByRelationAggregateInputSchema).optional(),
   account: z.lazy(() => AccountOrderByRelationAggregateInputSchema).optional(),
+  role: z.lazy(() => RoleOrderByRelationAggregateInputSchema).optional(),
   session: z.lazy(() => SessionOrderByRelationAggregateInputSchema).optional()
 }).strict();
 

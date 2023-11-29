@@ -20,7 +20,7 @@ export const TbaseUpdateInputSchema: z.ZodType<Prisma.TbaseUpdateInput> = z.obje
   createdAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updatedAt: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   base: z.lazy(() => BaseUpdateManyWithoutTbaseNestedInputSchema).optional(),
-  regCol: z.lazy(() => RegcolUpdateManyWithoutTbaseNestedInputSchema).optional()
+  regcol: z.lazy(() => RegcolUpdateManyWithoutTbaseNestedInputSchema).optional()
 }).strict();
 
 export default TbaseUpdateInputSchema;

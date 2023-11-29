@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import type { Prisma } from '@prisma/client';
-import { VerificationTokenCreateManyInputSchema } from '../inputTypeSchemas/VerificationTokenCreateManyInputSchema'
+import { VerificationtokenCreateManyInputSchema } from '../inputTypeSchemas/VerificationtokenCreateManyInputSchema'
 
-export const VerificationTokenCreateManyArgsSchema: z.ZodType<Prisma.VerificationTokenCreateManyArgs> = z.object({
-  data: z.union([ VerificationTokenCreateManyInputSchema,VerificationTokenCreateManyInputSchema.array() ]),
+export const VerificationtokenCreateManyArgsSchema: z.ZodType<Prisma.VerificationtokenCreateManyArgs> = z.object({
+  data: z.union([ VerificationtokenCreateManyInputSchema,VerificationtokenCreateManyInputSchema.array() ]),
   skipDuplicates: z.boolean().optional(),
 }).strict()
 
-export default VerificationTokenCreateManyArgsSchema;
+export default VerificationtokenCreateManyArgsSchema;

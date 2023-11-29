@@ -4,9 +4,9 @@ generator client {
 
 generator zod {
   provider                  = "zod-prisma-types"
+  createPartialTypes        = "true"
+  createRelationValuesTypes = "true"
   useMultipleFiles          = "true"
-  createRelationValuesTypes = true
-  createPartialTypes        = true
 }
 
 datasource db {
@@ -15,7 +15,7 @@ datasource db {
 }
 
 model Account {
-  id                String  @id @default(cuid())
+  id                String  @id
   userId            String
   type              String
   provider          String
@@ -27,39 +27,10 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Account_userId_fkey")
 
   @@unique([provider, providerAccountId], map: "Account_provider_providerAccountId_key")
   @@index([userId], map: "Account_userId_idx")
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId], map: "Session_userId_fkey")
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  roles         Role[]
-  account       Account[]
-  session       Session[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique(map: "VerificationToken_token_key")
-  expires    DateTime
-
-  @@unique([identifier, token], map: "VerificationToken_identifier_token_key")
 }
 
 model Base {
@@ -78,12 +49,12 @@ model Base {
 model Colorant {
   id              Int               @id @default(autoincrement())
   description     String
-  shortcode       String            @unique
-  active          Boolean           @default(true)
+  shortcode       String            @unique(map: "Colorant_shortcode_key")
   gramUP          Decimal           @db.Decimal(65, 2)
   gramUG          Decimal           @db.Decimal(65, 2)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
+  active          Boolean           @default(true)
   regcolcolorants Regcolcolorants[]
 }
 
@@ -91,20 +62,22 @@ model Regcol {
   id              Int               @id @default(autoincrement())
   description     String?
   carta           Int?
-  R               Int /// @zod.number.lte(255).nonnegative()
-  G               Int /// @zod.number.lte(255).nonnegative()
-  B               Int /// @zod.number.lte(255).nonnegative()
-  tbaseId         Int?
-  process         Boolean           @default(false)
+  R               Int
+  G               Int
+  B               Int
   pesopromedio    Decimal?          @db.Decimal(65, 2)
   brillo          Decimal?          @db.Decimal(65, 2)
   active          Boolean?
   coeficienteG    Decimal?          @db.Decimal(65, 2)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
+  tbaseId         Int?
+  process         Boolean           @default(false)
+  tbase           Tbase?            @relation(fields: [tbaseId], references: [id], map: "Regcol_tbaseId_fkey")
   regcolbases     Regcolbases[]
   regcolcolorants Regcolcolorants[]
-  Tbase           Tbase?            @relation(fields: [tbaseId], references: [id])
+
+  @@index([tbaseId], map: "Regcol_tbaseId_fkey")
 }
 
 model Regcolbases {
@@ -131,6 +104,25 @@ model Regcolcolorants {
   @@index([regColId], map: "RegColColorants_regColId_fkey")
 }
 
+model Role {
+  roleId String
+  userId String
+  user   User   @relation(fields: [userId], references: [id], map: "Role_userId_fkey")
+
+  @@unique([roleId, userId], map: "Role_roleId_userId_key")
+  @@index([userId], map: "Role_userId_fkey")
+}
+
+model Session {
+  id           String   @id
+  sessionToken String   @unique(map: "Session_sessionToken_key")
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Session_userId_fkey")
+
+  @@index([userId], map: "Session_userId_fkey")
+}
+
 model Tbase {
   id          Int      @id @default(autoincrement())
   description String
@@ -143,13 +135,24 @@ model Tbase {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   base        Base[]
-  regCol      Regcol[]
+  regcol      Regcol[]
 }
 
-model Role {
-  roleId String
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+model User {
+  id            String    @id
+  name          String?
+  email         String?   @unique(map: "User_email_key")
+  emailVerified DateTime?
+  image         String?
+  account       Account[]
+  role          Role[]
+  session       Session[]
+}
 
-  @@unique([roleId, userId])
+model Verificationtoken {
+  identifier String
+  token      String   @unique(map: "VerificationToken_token_key")
+  expires    DateTime
+
+  @@unique([identifier, token], map: "VerificationToken_identifier_token_key")
 }
