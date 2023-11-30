@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import SidebarItem from "../_components/sideBarItem";
 import { useSidebar } from "../_components/providers/sideBarProvider";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const { sidebarItems } = useSidebar();
   return (
     <>
@@ -25,4 +25,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
     </>
   );
-}
+};
+
+export default Layout;
