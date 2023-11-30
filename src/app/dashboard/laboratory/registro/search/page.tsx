@@ -14,7 +14,7 @@ import SeachColorForm, {
 import HandleStatus from "~/app/_components/handleStatus";
 import { formatDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
-import DetalleRegistroModal from "../../../../_components/forms/registros/DetallesModal";
+import DetalleRegistroModal from "../../../../_components/modals/DetallesModal";
 
 export type RegColWithDistance = {
   distancia: number;

@@ -65,54 +65,56 @@ export default function DetalleRegistroModal({
                 </span>
               </div>
             </div>
-            <div className="grid place-content-center  text-xl   lg:text-9xl"></div>
+            <div className="grid place-content-center text-xl lg:text-9xl"></div>
 
             <div className="diff-resizer" />
           </div>
           <div className="divider divider-vertical">Resumen</div>
-          <div className="flex gap-4 ">
-            <div className="flex w-1/2 flex-col text-sm font-normal">
-              <div className="font-semibold">
-                <h4>Comparacion</h4>
+          <div className="flex flex-col gap-4 sm:w-full sm:flex-row">
+            <div className="w-full text-sm font-normal sm:w-1/2">
+              <div className="flex flex-col sm:flex-1 ">
+                <div className="font-semibold">
+                  <h4>Comparacion</h4>
+                </div>
+                <span>
+                  Nombre:{" "}
+                  <span className="badge m-1 rounded-md p-1">
+                    {!color.description ? "N/A" : color.description}
+                  </span>
+                </span>
+                <span>
+                  Calidad:{" "}
+                  <span className="badge m-1 rounded-md p-1">
+                    {color.tbase?.description ?? "N/A"}
+                  </span>
+                </span>
+                <span>
+                  RGB:{" "}
+                  <span className="badge m-1 rounded-md p-1">
+                    {color.R},{color.G},{color.B}
+                  </span>
+                </span>
+                <span>
+                  Brillo:{" "}
+                  <span className="badge m-1 rounded-md p-1">
+                    {color.brillo?.toString() ?? "N/A"}
+                  </span>
+                </span>
+                <span>
+                  Desviacion:{" "}
+                  <span className="badge m-1 rounded-md p-1">
+                    {color.distancia.toFixed(2)} uD
+                  </span>
+                </span>
+                <span>
+                  Peso Cubeta:{" "}
+                  <span className="badge m-1 rounded-md p-1">
+                    {color.pesopromedio?.toString()} LB
+                  </span>
+                </span>
               </div>
-              <span>
-                Nombre:{" "}
-                <span className="badge m-1 rounded-md p-1">
-                  {!color.description ? "N/A" : color.description}
-                </span>
-              </span>
-              <span>
-                Calidad:{" "}
-                <span className="badge m-1 rounded-md p-1">
-                  {color.tbase?.description ?? "N/A"}
-                </span>
-              </span>
-              <span>
-                RGB:{" "}
-                <span className="badge m-1 rounded-md p-1">
-                  {color.R},{color.G},{color.B}
-                </span>
-              </span>
-              <span>
-                Brillo:{" "}
-                <span className="badge m-1 rounded-md p-1">
-                  {color.brillo?.toString() ?? "N/A"}
-                </span>
-              </span>
-              <span>
-                Desviacion:{" "}
-                <span className="badge m-1 rounded-md p-1">
-                  {color.distancia.toFixed(2)} uD
-                </span>
-              </span>
-              <span>
-                Peso Cubeta:{" "}
-                <span className="badge m-1 rounded-md p-1">
-                  {color.pesopromedio?.toString()} LB
-                </span>
-              </span>
             </div>
-            <div className="flex w-1/2 flex-1 flex-col gap-2 font-bold">
+            <div className="flex w-full flex-col gap-2 font-bold sm:w-1/2">
               {color.process ? (
                 <>
                   <h4 className="font-semibold">Ordenar</h4>
@@ -220,7 +222,7 @@ export default function DetalleRegistroModal({
                           {colorante_scope.shortcode}{" "}
                           <div className="join ">
                             <div
-                              className="tooltip tooltip-left"
+                              className="tooltip tooltip-right sm:tooltip-left"
                               data-tip={`${margen.toFixed(2).toString()} GR`}
                             >
                               <span className="badge join-item">
@@ -229,7 +231,7 @@ export default function DetalleRegistroModal({
                             </div>
                             <div
                               className="tooltip tooltip-left"
-                              data-tip="Unindades pequeñas"
+                              data-tip="Unindades grandes"
                             >
                               <span className="badge join-item">
                                 {unidadesGrandes.toString()}
@@ -241,7 +243,7 @@ export default function DetalleRegistroModal({
                             </div>
                             <div
                               className="tooltip tooltip-left"
-                              data-tip="Unindades grandes"
+                              data-tip="Unindades pequeñas"
                             >
                               <span className="badge join-item">
                                 {unidadesPequeñas.toString()}
