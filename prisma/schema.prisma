@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,8 +13,9 @@ generator zod {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  relationMode = "prisma"
+  url          = env("DATABASE_URL")
 }
 
 model Account {
@@ -27,10 +31,9 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Account_userId_fkey")
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId], map: "Account_provider_providerAccountId_key")
-  @@index([userId], map: "Account_userId_idx")
+  @@index([userId])
 }
 
 model Base {
@@ -40,16 +43,16 @@ model Base {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now()) @updatedAt
   slang       String
-  tbase       Tbase         @relation(fields: [tbaseId], references: [id], map: "Base_tbaseId_fkey")
+  tbase       Tbase         @relation(fields: [tbaseId], references: [id])
   regcolbases Regcolbases[]
 
-  @@index([tbaseId], map: "Base_tbaseId_fkey")
+  @@index([tbaseId])
 }
 
 model Colorant {
   id              Int               @id @default(autoincrement())
   description     String
-  shortcode       String            @unique(map: "Colorant_shortcode_key")
+  shortcode       String            @unique()
   gramUP          Decimal           @db.Decimal(65, 2)
   gramUG          Decimal           @db.Decimal(65, 2)
   createdAt       DateTime          @default(now())
@@ -73,11 +76,11 @@ model Regcol {
   updatedAt       DateTime          @default(now()) @updatedAt
   tbaseId         Int?
   process         Boolean           @default(false)
-  tbase           Tbase?            @relation(fields: [tbaseId], references: [id], map: "Regcol_tbaseId_fkey")
+  tbase           Tbase?            @relation(fields: [tbaseId], references: [id])
   regcolbases     Regcolbases[]
   regcolcolorants Regcolcolorants[]
 
-  @@index([tbaseId], map: "Regcol_tbaseId_fkey")
+  @@index([tbaseId])
 }
 
 model Regcolbases {
@@ -85,11 +88,11 @@ model Regcolbases {
   regColId Int
   baseId   Int
   amount   Decimal @db.Decimal(65, 2)
-  base     Base    @relation(fields: [baseId], references: [id], map: "RegColBases_baseId_fkey")
-  regcol   Regcol  @relation(fields: [regColId], references: [id], map: "RegColBases_regColId_fkey")
+  base     Base    @relation(fields: [baseId], references: [id])
+  regcol   Regcol  @relation(fields: [regColId], references: [id])
 
-  @@index([baseId], map: "RegColBases_baseId_fkey")
-  @@index([regColId], map: "RegColBases_regColId_fkey")
+  @@index([baseId])
+  @@index([regColId])
 }
 
 model Regcolcolorants {
@@ -97,36 +100,36 @@ model Regcolcolorants {
   regColId   Int
   colorantId Int
   amount     Decimal  @db.Decimal(65, 2)
-  colorant   Colorant @relation(fields: [colorantId], references: [id], map: "RegColColorants_colorantId_fkey")
-  regcol     Regcol   @relation(fields: [regColId], references: [id], map: "RegColColorants_regColId_fkey")
+  colorant   Colorant @relation(fields: [colorantId], references: [id])
+  regcol     Regcol   @relation(fields: [regColId], references: [id])
 
-  @@index([colorantId], map: "RegColColorants_colorantId_fkey")
-  @@index([regColId], map: "RegColColorants_regColId_fkey")
+  @@index([colorantId])
+  @@index([regColId])
 }
 
 model Role {
   roleId String
   userId String
-  user   User   @relation(fields: [userId], references: [id], map: "Role_userId_fkey")
+  user   User   @relation(fields: [userId], references: [id])
 
-  @@unique([roleId, userId], map: "Role_roleId_userId_key")
-  @@index([userId], map: "Role_userId_fkey")
+  @@unique([roleId, userId])
+  @@index([userId])
 }
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique(map: "Session_sessionToken_key")
+  sessionToken String   @unique()
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Session_userId_fkey")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId], map: "Session_userId_fkey")
+  @@index([userId])
 }
 
 model Tbase {
   id          Int      @id @default(autoincrement())
   description String
-  shortcode   String   @unique(map: "TBase_shortcode_key")
+  shortcode   String   @unique()
   peso1       Decimal? @db.Decimal(65, 2)
   peso2       Decimal? @db.Decimal(65, 2)
   peso3       Decimal? @db.Decimal(65, 2)
@@ -141,7 +144,7 @@ model Tbase {
 model User {
   id            String    @id @default(cuid())
   name          String?
-  email         String?   @unique(map: "User_email_key")
+  email         String?   @unique()
   emailVerified DateTime?
   image         String?
   createdAt     DateTime  @default(now())
@@ -152,8 +155,8 @@ model User {
 
 model Verificationtoken {
   identifier String
-  token      String   @unique(map: "VerificationToken_token_key")
+  token      String   @unique()
   expires    DateTime
 
-  @@unique([identifier, token], map: "VerificationToken_identifier_token_key")
+  @@unique([identifier, token])
 }
