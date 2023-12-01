@@ -1,25 +1,38 @@
 import Image from "next/image";
-import { UserCode, UserRole, getUserRoleByCode } from "~/server/utils/roles";
+import {
+  type UserCode,
+  type UserRole,
+  getUserRoleByCode,
+} from "~/server/utils/roles";
 import { ExposeRole } from "../../../server/utils/roles";
 import { type UserWithPartialRelations } from "pg/generated/zod";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
+import { toast } from "react-toastify";
 
 const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
-  const [userRolesCheked, setUserRolesChecked] = useState<UserRole[]>([]);
-  useEffect(() => {
-    const roles = user.role
-      ? user.role.map((rol) => getUserRoleByCode(rol.roleId as UserCode))
-      : (["notVerified"] as UserRole[]);
+  // Separate the roles associated
+  const roles = user.role
+    ? user.role.map((rol) => getUserRoleByCode(rol.roleId as UserCode))
+    : (["notVerified"] as UserRole[]);
 
-    setUserRolesChecked(roles);
-  }, []);
+  const [userRolesCheked, setUserRolesChecked] = useState<UserRole[]>(roles);
 
-  const { mutate, data, error } = api.user.updateRoles.useMutation();
+  const { mutateAsync, error } = api.user.updateRoles.useMutation();
 
-  const handleRoleChange = () => {
-    console.log(userRolesCheked);
+  const handleRoleChange = async () => {
+    const promise = mutateAsync({ roles: userRolesCheked, id: "1" });
+
+    await toast.promise(
+      promise,
+      {
+        pending: "loading...",
+        success: `${user.name} a sido actualizado`,
+        error: `Error: ${error?.message}`,
+      },
+      { toastId: user.id },
+    );
   };
 
   return (
@@ -68,11 +81,13 @@ const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
                     return (
                       <button
                         onClick={() => {
-                          setUserRolesChecked((curr) =>
-                            curr.includes(exRole)
-                              ? curr.filter((role) => role !== exRole)
-                              : [...curr, exRole],
-                          );
+                          exRole !== "notVerified"
+                            ? setUserRolesChecked((curr) =>
+                                curr.includes(exRole)
+                                  ? curr.filter((role) => role !== exRole)
+                                  : [...curr, exRole],
+                              )
+                            : null;
                         }}
                         className={`badge join-item badge-outline badge-md cursor-pointer rounded-md px-2 py-1 font-extrabold text-gray-400 shadow
                                       ${
@@ -104,7 +119,7 @@ const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
                   })}
                 </div>
                 <button
-                  onSubmit={() => handleRoleChange}
+                  onClick={handleRoleChange}
                   className="btn btn-outline btn-accent"
                 >
                   {" "}

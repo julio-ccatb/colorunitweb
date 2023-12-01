@@ -24,6 +24,7 @@ const UserTable = () => {
               </th>
               <th>Name</th>
               <th>Permissons</th>
+              <th>Provider</th>
               <th>Created At</th>
               <th></th>
             </tr>
@@ -79,6 +80,9 @@ const UserTable = () => {
                         );
                       })}
                     </span>
+                  </td>
+                  <td className="badge capitalize">
+                    {user.account[0]?.provider}
                   </td>
                   <td>{formatDate(user.createdAt)}</td>
                   <th className="flex gap-1">

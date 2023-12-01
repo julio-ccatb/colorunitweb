@@ -16,11 +16,6 @@ function mapPrismaErrorToTrpcError(
 ): TrpcError {
   console.log(error.code);
   switch (error.code) {
-    case "P2025": // Prisma code for UniqueConstraintViolationError
-      return {
-        message: "Unique constraint violation error occurred",
-        code: "CONFLICT", // Use a valid key from TRPC_ERROR_CODES_BY_KEY
-      };
     case "P2000": // Prisma code for ForeignConstraintViolationError
       return {
         message: "Foreign constraint violation error occurred",
@@ -61,8 +56,12 @@ function mapPrismaErrorToTrpcError(
         message: "The column {column} does not exist in the current database.",
         code: "NOT_FOUND", // Use a valid key from TRPC_ERROR_CODES_BY_KEY
       };
-    // Add more cases for other Prisma error codes as needed
-
+    case "P2025":
+      return {
+        message:
+          "An operation failed because it depends on one or more records that were required.",
+        code: "NOT_FOUND", // Use a valid key from TRPC_ERROR_CODES_BY_KEY
+      };
     default:
       // Handle any other Prisma errors here
       return {
