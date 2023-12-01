@@ -1,11 +1,12 @@
 "use client";
 import { type Tbase } from "@prisma/client";
-import { ClipboardEdit, Trash } from "lucide-react";
+import { ClipboardEdit, DeleteIcon, Trash } from "lucide-react";
 import { useState } from "react";
 import TbaseCreateForm from "~/app/_components/forms/tbases/TbaseCreateForm";
 import TbaseUpdateForm from "~/app/_components/forms/tbases/TbaseUpdateForm";
 import { api } from "~/trpc/react";
 import HandleStatus from "../../../../_components/handleStatus";
+import { toast } from "react-toastify";
 
 export default function TipoDeBasePage() {
   const itemsPerPage = 5; // Number of items to display per page
@@ -73,6 +74,18 @@ export default function TipoDeBasePage() {
                         {
                           onSuccess: () => {
                             // Refetch the data to get the updated listColorantes
+                            toast.success(
+                              `${item.description} fue eliminado correctamente`,
+                            );
+                            void refetch();
+                          },
+                          onError: (error) => {
+                            // Refetch the data to get the updated listColorantes
+                            toast.error(
+                              `${item.description} no pudo ser eliminado 
+                              Error: ${error.message}
+                              `,
+                            );
                             void refetch();
                           },
                         },

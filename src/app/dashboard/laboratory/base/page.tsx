@@ -1,6 +1,6 @@
 "use client";
 import { ClipboardEdit, Trash } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BaseCreateForm from "~/app/_components/forms/bases/BaseCreateForm";
 import HandleStatus from "~/app/_components/handleStatus";
 import { api } from "~/trpc/react";
@@ -9,10 +9,13 @@ export default function BasesPage() {
   // Number of items to display per page
   const itemsPerPage = 5;
 
+  const { mutate } = api.base.delete.useMutation();
+  const { data: result, status } = api.base.list.useQuery();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: result, status } = api.base.list.useQuery();
-  const { mutate } = api.base.delete.useMutation();
+  useEffect(() => {
+    console.log("x");
+  }, []);
 
   // Calculate the starting and ending indices for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
