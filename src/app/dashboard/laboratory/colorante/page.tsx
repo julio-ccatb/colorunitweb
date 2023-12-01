@@ -7,12 +7,12 @@ import { formatDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
 
 export default function ColorantePage() {
-  const itemsPerPage = 5;
   const {
     data: listColorantes,
     status,
     refetch,
   } = api.colorante.list.useQuery();
+  const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;

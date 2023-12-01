@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { ColorantUncheckedCreateWithoutRegcolcolorantsInputSchema } from "pg/generated/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
 import { type z } from "zod";
 import { api } from "~/trpc/react";
 
@@ -24,18 +25,28 @@ export default function ColorantesCreateForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Input>({ resolver });
 
-  const { mutate, isLoading, isSuccess, error } =
-    api.colorante.create.useMutation();
+  const { mutate, isLoading } = api.colorante.create.useMutation();
 
   if (errors) {
     console.log(errors);
   }
 
   const onSubmit: SubmitHandler<Input> = (data) => {
-    mutate(data);
+    mutate(data, {
+      onSuccess: () => {
+        {
+          toast.success(
+            `Colorante ${data.description} se a guardado correctamente`,
+          );
+          reset();
+        }
+      },
+      onError: (error) => toast.error(`Error ${error.data?.code}`),
+    });
   };
 
   return (
@@ -110,29 +121,6 @@ export default function ColorantesCreateForm() {
           )}
         </button>
       </form>
-      <div className="w-max-sm absolute right-2 top-2 flex flex-col gap-2">
-        {isSuccess ? (
-          <div className="alert alert-success text-white shadow-md">
-            <CheckCircle />
-            <span>Se a guardado Correctamente</span>
-          </div>
-        ) : error ? (
-          <div className="alert alert-error text-white shadow-md">
-            <ServerCrash />
-            <span>{error.message}</span>
-          </div>
-        ) : (
-          ""
-        )}
-        {errors
-          ? Object.keys(errors).map((key) => (
-              <div key={key} className="alert alert-error shadow-md">
-                <XCircle />
-                <span>{errors ? `Datos invalidos ${key}` : ""}</span>
-              </div>
-            ))
-          : ""}
-      </div>
     </div>
   );
 }

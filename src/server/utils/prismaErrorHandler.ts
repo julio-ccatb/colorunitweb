@@ -14,6 +14,7 @@ export // Map Prisma errors to "trpc" errors
 function mapPrismaErrorToTrpcError(
   error: Prisma.PrismaClientKnownRequestError,
 ): TrpcError {
+  console.log(error.code);
   switch (error.code) {
     case "P2025": // Prisma code for UniqueConstraintViolationError
       return {
@@ -28,12 +29,12 @@ function mapPrismaErrorToTrpcError(
     case "P2001": // Prisma code for ForeignConstraintViolationError
       return {
         message: "The record searched for in the where condition dosent exist",
-        code: "BAD_REQUEST", // Use a valid key from TRPC_ERROR_CODES_BY_KEY
+        code: "NOT_FOUND", // Use a valid key from TRPC_ERROR_CODES_BY_KEY
       };
     case "P2002": // Prisma code for ForeignConstraintViolationError
       return {
         message: "Unique constraint failed",
-        code: "BAD_REQUEST", // Use a valid key from TRPC_ERROR_CODES_BY_KEY
+        code: "CONFLICT", // Use a valid key from TRPC_ERROR_CODES_BY_KEY
       };
     case "P2003": // Prisma code for NoRecordFoundError
       return {

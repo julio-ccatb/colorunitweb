@@ -79,8 +79,20 @@ export default function Registropage() {
   const {
     data: colors,
     mutate,
+    isSuccess,
     isLoading,
   } = api.registro.findColor.useMutation();
+
+  const itemsPerPage = 7;
+  const [currentPage, setCurrentPage] = useState(1);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const itemsToDisplay = isSuccess ? colors.slice(startIndex, endIndex) : [];
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   const [compareTo, setCompareTo] = useState<RegColWithDistance>(
     initialRegColWithDistance,
@@ -102,6 +114,7 @@ export default function Registropage() {
   if (status != "success") HandleStatus({ status });
   if (basesStatus != "success") HandleStatus({ status });
   if (coloantesStatus != "success") HandleStatus({ status });
+  if (!colors) return <>Nodata</>;
 
   return (
     <div className="rounded-md bg-white p-4 shadow-md ">
@@ -132,7 +145,7 @@ export default function Registropage() {
           </thead>
           <tbody>
             {/* row 4 */}
-            {colors?.map((color) => {
+            {itemsToDisplay?.map((color) => {
               return (
                 <tr
                   className="items-center justify-center align-middle"
@@ -200,6 +213,22 @@ export default function Registropage() {
             })}
           </tbody>
         </table>
+        <div className="mt-4 flex justify-center">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary  hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
+          >
+            Previous Page
+          </button>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={endIndex >= colors.length}
+            className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
+          >
+            Next Page
+          </button>
+        </div>
       </div>
     </div>
   );

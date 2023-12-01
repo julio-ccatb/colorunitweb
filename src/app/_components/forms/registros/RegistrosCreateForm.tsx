@@ -15,7 +15,7 @@ import { api } from "~/trpc/react";
 import HandleStatus from "../../handleStatus";
 import { FilePlus2, Loader2 } from "lucide-react";
 import { toInteger } from "lodash";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function RegistroCreateForm() {
   type Input = z.infer<typeof RegcolCreateManyInputSchema>;
@@ -32,6 +32,7 @@ export default function RegistroCreateForm() {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<Input>({ resolver });
 
@@ -162,10 +163,22 @@ export default function RegistroCreateForm() {
     };
     try {
       const parsed = RegcolCreateInputSchema.parse(dataFormated);
-      mutate(parsed);
+      mutate(parsed, {
+        onSuccess: () => {
+          {
+            toast.success(
+              `Colorante ${parsed.description} se a guardado correctamente`,
+            );
+            reset();
+            setBaseSelectedArray([]);
+            setColoranteSelectedArray([]);
+          }
+        },
+        onError: (error) => toast.error(`Error ${error.data?.code}`),
+      });
     } catch (err) {
       if (err instanceof ZodError) {
-        // console.log(err.message);
+        toast.error(err.message);
       }
     }
   };
