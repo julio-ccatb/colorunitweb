@@ -1,15 +1,15 @@
+import { X } from "lucide-react";
 import Image from "next/image";
+import { type UserWithPartialRelations } from "pg/generated/zod";
+import { useState } from "react";
+import { toast } from "react-toastify";
 import {
+  getUserRoleByCode,
   type UserCode,
   type UserRole,
-  getUserRoleByCode,
 } from "~/server/utils/roles";
-import { ExposeRole } from "../../../server/utils/roles";
-import { type UserWithPartialRelations } from "pg/generated/zod";
-import { X } from "lucide-react";
-import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
-import { toast } from "react-toastify";
+import { ExposeRole } from "../../../server/utils/roles";
 
 const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
   // Separate the roles associated
