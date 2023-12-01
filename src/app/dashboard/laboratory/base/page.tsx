@@ -6,10 +6,13 @@ import HandleStatus from "~/app/_components/handleStatus";
 import { api } from "~/trpc/react";
 
 export default function BasesPage() {
-  const itemsPerPage = 5; // Number of items to display per page
+  // Number of items to display per page
+  const itemsPerPage = 5;
+
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: result, status, refetch } = api.base.list.useQuery();
+  const { data: result, status } = api.base.list.useQuery();
+  const { mutate } = api.base.delete.useMutation();
 
   // Calculate the starting and ending indices for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -23,7 +26,6 @@ export default function BasesPage() {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
-  const { mutate } = api.base.delete.useMutation();
 
   if (status != "success") return HandleStatus({ status: "loading" });
   if (result === undefined) return <>No Data</>;
@@ -99,17 +101,7 @@ export default function BasesPage() {
                     <ClipboardEdit size={15} />
                   </button>
                   <button
-                    onClick={() =>
-                      mutate(
-                        { where: { id: item.id } },
-                        {
-                          onSuccess: () => {
-                            // Refetch the data to get the updated listColorantes
-                            void refetch();
-                          },
-                        },
-                      )
-                    }
+                    onClick={() => mutate({ where: { id: item.id } })}
                     className="btn btn-error rounded-md text-white"
                   >
                     <Trash size={15} />

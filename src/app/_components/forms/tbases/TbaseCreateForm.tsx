@@ -1,19 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CheckCircle,
-  FilePlus2,
-  InfoIcon,
-  Loader2,
-  ServerCrash,
-  XCircle,
-} from "lucide-react";
+import { FilePlus2, InfoIcon, Loader2 } from "lucide-react";
 import { TbaseCreateWithoutBaseInputSchema } from "pg/generated/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { type z } from "zod";
 import { api } from "~/trpc/react";
+import type TbaseSchema from "pg/generated/zod/modelSchema/TbaseSchema";
 
 export default function TbaseCreateForm() {
-  type Input = z.infer<typeof TbaseCreateWithoutBaseInputSchema>;
+  type Input = z.infer<typeof TbaseSchema>;
   const resolver = zodResolver(TbaseCreateWithoutBaseInputSchema);
 
   const {
@@ -28,7 +22,6 @@ export default function TbaseCreateForm() {
     api.base.createTypeBase.useMutation();
 
   if (isSuccess) {
-    clearErrors();
     reset();
   }
 
