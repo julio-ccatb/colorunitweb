@@ -22,7 +22,7 @@ const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
   const { mutateAsync, error } = api.user.updateRoles.useMutation();
 
   const handleRoleChange = async () => {
-    const promise = mutateAsync({ roles: userRolesCheked, id: "1" });
+    const promise = mutateAsync({ roles: userRolesCheked, id: user.id });
 
     await toast.promise(
       promise,
@@ -31,7 +31,7 @@ const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
         success: `${user.name} a sido actualizado`,
         error: `Error: ${error?.message}`,
       },
-      { toastId: user.id },
+      { toastId: user.id + "usermodal" },
     );
   };
 
