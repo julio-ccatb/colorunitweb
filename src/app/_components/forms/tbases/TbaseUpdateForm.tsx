@@ -43,6 +43,7 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
       >
         <div>
           <input
+            autoComplete="off"
             type="text"
             id="description"
             {...register("description")}
@@ -50,6 +51,7 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
             className="mr-2 rounded-md border p-2"
           />
           <input
+            autoComplete="off"
             type="text"
             id="shortcode"
             {...register("shortcode")}
@@ -65,6 +67,7 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
             De mayor a menor
           </p>
           <input
+            autoComplete="off"
             type="text"
             id="peso1"
             {...register("peso1")}
@@ -72,6 +75,7 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
             className="mr-2 rounded-md border p-2"
           />
           <input
+            autoComplete="off"
             type="text"
             id="peso2"
             {...register("peso2")}
@@ -81,6 +85,7 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
         </div>
         <div>
           <input
+            autoComplete="off"
             type="text"
             id="peso3"
             {...register("peso3")}
@@ -88,6 +93,7 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
             className="mr-2 rounded-md border p-2"
           />
           <input
+            autoComplete="off"
             type="text"
             id="peso4"
             {...register("peso4")}
@@ -95,6 +101,7 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
             className="mr-2 rounded-md border p-2"
           />
           <input
+            autoComplete="off"
             type="text"
             id="peso5"
             {...register("peso5")}

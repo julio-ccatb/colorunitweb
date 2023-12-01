@@ -49,6 +49,7 @@ export default function BaseCreateForm() {
         className={`mb-4 flex w-2/3 flex-col items-start justify-center gap-2`}
       >
         <input
+          autoComplete="off"
           type="text"
           id="slang"
           {...register("slang")}
@@ -59,6 +60,7 @@ export default function BaseCreateForm() {
         />
         <div className="flex">
           <input
+            autoComplete="off"
             type="text"
             id="reforiginal"
             {...register("reforiginal")}

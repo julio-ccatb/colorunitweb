@@ -47,6 +47,7 @@ export default function TbaseCreateForm() {
       >
         <div>
           <input
+            autoComplete="off"
             type="text"
             id="description"
             {...register("description")}
@@ -56,6 +57,7 @@ export default function TbaseCreateForm() {
             }`}
           />
           <input
+            autoComplete="off"
             type="text"
             id="shortcode"
             {...register("shortcode")}
@@ -73,6 +75,7 @@ export default function TbaseCreateForm() {
             De mayor a menor
           </p>
           <input
+            autoComplete="off"
             type="text"
             id="peso1"
             {...register("peso1")}
@@ -82,6 +85,7 @@ export default function TbaseCreateForm() {
             }`}
           />
           <input
+            autoComplete="off"
             type="text"
             id="peso2"
             {...register("peso2")}
@@ -93,6 +97,7 @@ export default function TbaseCreateForm() {
         </div>
         <div>
           <input
+            autoComplete="off"
             type="text"
             id="peso3"
             {...register("peso3")}
@@ -102,6 +107,7 @@ export default function TbaseCreateForm() {
             }`}
           />
           <input
+            autoComplete="off"
             type="text"
             id="peso4"
             {...register("peso4")}
@@ -111,6 +117,7 @@ export default function TbaseCreateForm() {
             }`}
           />
           <input
+            autoComplete="off"
             type="text"
             id="peso5"
             {...register("peso5")}

@@ -120,7 +120,8 @@ export default function DetalleRegistroModal({
                   <h4 className="font-semibold">Ordenar</h4>
                   <input
                     type="text"
-                    id="G"
+                    id="GL"
+                    autoComplete="off"
                     onChange={(e) => {
                       let value = new Decimal(1);
                       try {

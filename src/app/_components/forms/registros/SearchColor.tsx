@@ -4,7 +4,7 @@ import { type Dispatch, type SetStateAction, useState } from "react";
 import { type Tbase } from "pg/generated/zod";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toInteger } from "lodash";
-import { FilePlus2, Loader2 } from "lucide-react";
+import { FilePlus2, Loader2, Search } from "lucide-react";
 
 const InputSchema = z.object({
   R: z.number().optional().default(0),
@@ -49,6 +49,7 @@ export default function SeachColorForm(props: Props) {
         <div className="flex flex-col gap-2">
           <div className="join">
             <input
+              autoComplete="off"
               type="text"
               id="R"
               onChange={(e) => {
@@ -63,6 +64,7 @@ export default function SeachColorForm(props: Props) {
               }`}
             />
             <input
+              autoComplete="off"
               type="text"
               id="G"
               onChange={(e) => {
@@ -79,6 +81,7 @@ export default function SeachColorForm(props: Props) {
               }`}
             />
             <input
+              autoComplete="off"
               type="text"
               id="B"
               onChange={(e) => {
@@ -130,7 +133,7 @@ export default function SeachColorForm(props: Props) {
               {props.isLoading ? (
                 <Loader2 className="animate-spin" size={15} />
               ) : (
-                <FilePlus2 size={15} />
+                <Search size={15} />
               )}
             </button>
           </div>

@@ -193,6 +193,7 @@ export default function RegistroCreateForm() {
         <div className="flex flex-col gap-2">
           <div className="join">
             <input
+              autoComplete="off"
               type="text"
               id="R"
               onChange={(e) => setValue("R", toInteger(e.target.value))}
@@ -202,6 +203,7 @@ export default function RegistroCreateForm() {
               }`}
             />
             <input
+              autoComplete="off"
               type="text"
               id="G"
               onChange={(e) => setValue("G", toInteger(e.target.value))}
@@ -211,6 +213,7 @@ export default function RegistroCreateForm() {
               }`}
             />
             <input
+              autoComplete="off"
               type="text"
               id="B"
               onChange={(e) => setValue("B", toInteger(e.target.value))}
@@ -221,6 +224,7 @@ export default function RegistroCreateForm() {
             />
           </div>
           <input
+            autoComplete="off"
             type="text"
             id="description"
             {...register("description", { required: true })}
