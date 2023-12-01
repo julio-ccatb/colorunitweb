@@ -1,10 +1,27 @@
 import Image from "next/image";
-import { getUserRoleByCode } from "~/server/utils/roles";
+import { UserCode, UserRole, getUserRoleByCode } from "~/server/utils/roles";
 import { ExposeRole } from "../../../server/utils/roles";
 import { type UserWithPartialRelations } from "pg/generated/zod";
 import { X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { api } from "~/trpc/react";
 
 const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
+  const [userRolesCheked, setUserRolesChecked] = useState<UserRole[]>([]);
+  useEffect(() => {
+    const roles = user.role
+      ? user.role.map((rol) => getUserRoleByCode(rol.roleId as UserCode))
+      : (["notVerified"] as UserRole[]);
+
+    setUserRolesChecked(roles);
+  }, []);
+
+  const { mutate, data, error } = api.user.updateRoles.useMutation();
+
+  const handleRoleChange = () => {
+    console.log(userRolesCheked);
+  };
+
   return (
     <dialog id={user.id} className="modal">
       <div className="modal-box p-0">
@@ -45,16 +62,19 @@ const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
                     Roles
                   </h3>
                 </div>
-                <div className="join justify-center ">
+                <div className="join justify-center">
                   {ExposeRole.map((exRole) => {
-                    const checked =
-                      !!user.role?.find(
-                        (x) => getUserRoleByCode(x.roleId ?? "") === exRole,
-                      ) ?? false;
-
+                    const checked = userRolesCheked.includes(exRole);
                     return (
-                      <span
-                        className={`badge join-item badge-outline badge-md rounded-md px-2 py-1 font-extrabold text-gray-400 shadow
+                      <button
+                        onClick={() => {
+                          setUserRolesChecked((curr) =>
+                            curr.includes(exRole)
+                              ? curr.filter((role) => role !== exRole)
+                              : [...curr, exRole],
+                          );
+                        }}
+                        className={`badge join-item badge-outline badge-md cursor-pointer rounded-md px-2 py-1 font-extrabold text-gray-400 shadow
                                       ${
                                         exRole === "admin" &&
                                         checked &&
@@ -70,14 +90,26 @@ const UserModal = ({ user }: { user: UserWithPartialRelations }) => {
                                         checked &&
                                         "badge-neutral text-white"
                                       }
+                                      ${
+                                        exRole === "notVerified" &&
+                                        checked &&
+                                        "badge text-orange-500"
+                                      }
                                       `}
                         key={exRole}
                       >
                         {exRole}
-                      </span>
+                      </button>
                     );
                   })}
                 </div>
+                <button
+                  onSubmit={() => handleRoleChange}
+                  className="btn btn-outline btn-accent"
+                >
+                  {" "}
+                  Salvar
+                </button>
               </div>
             </div>
           </div>
