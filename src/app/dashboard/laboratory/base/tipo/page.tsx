@@ -1,6 +1,6 @@
 "use client";
 import { type Tbase } from "@prisma/client";
-import { ClipboardEdit, DeleteIcon, Trash } from "lucide-react";
+import { ClipboardEdit, Trash } from "lucide-react";
 import { useState } from "react";
 import TbaseCreateForm from "~/app/_components/forms/tbases/TbaseCreateForm";
 import TbaseUpdateForm from "~/app/_components/forms/tbases/TbaseUpdateForm";
@@ -35,16 +35,43 @@ export default function TipoDeBasePage() {
   if (result === undefined) return <h1>No Data</h1>;
 
   return (
-    <div className=" flex flex-col rounded-md border bg-white p-4">
-      <div className="mt-4 flex justify-between">
-        <h1 className="mb-4 text-2xl font-bold">Tipos de Bases</h1>
+    <div className="  rounded-md border bg-white p-4">
+      <h1 className="mb-4 text-2xl font-bold">Tipos de Bases</h1>
+      <div role="tablist" className="tabs tabs-lifted">
+        <input
+          type="radio"
+          name="my_tabs_2"
+          role="tab"
+          className="tab checked:text-accent"
+          aria-label="Nuevo"
+          defaultChecked
+        />
+        <div
+          role="tabpanel"
+          className="tab-content rounded-box border-base-300 bg-base-100 p-6"
+        >
+          <TbaseCreateForm />
+        </div>
+
+        <input
+          type="radio"
+          name="my_tabs_2"
+          role="tab"
+          className="tab checked:text-accent"
+          aria-label="Editar"
+          checked={!!selected?.id ?? false}
+          disabled={!selected}
+        />
+        <div
+          role="tabpanel"
+          className="tab-content rounded-box border-base-300 bg-base-100 p-6"
+        >
+          <TbaseUpdateForm
+            initialData={selected ?? ({} as Tbase)}
+            key={selected?.id}
+          />
+        </div>
       </div>
-      {/* Form to add a new Tipo de Base */}
-      {!selected ? (
-        <TbaseCreateForm />
-      ) : (
-        <TbaseUpdateForm initialData={selected} key={selected.id} />
-      )}
       <div className="flex-1 overflow-x-auto">
         <table className="table w-full max-w-full  ">
           <thead>

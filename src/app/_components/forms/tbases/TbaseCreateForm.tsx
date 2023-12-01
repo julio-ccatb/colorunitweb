@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FilePlus2, InfoIcon, Loader2, ServerCrash } from "lucide-react";
+import { FilePlus2, InfoIcon, Loader2 } from "lucide-react";
 import { TbaseCreateWithoutBaseInputSchema } from "pg/generated/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { type z } from "zod";
 import { api } from "~/trpc/react";
 import type TbaseSchema from "pg/generated/zod/modelSchema/TbaseSchema";
 import { toast } from "react-toastify";
+import { capitalize } from "lodash";
 
 export default function TbaseCreateForm() {
   type Input = z.infer<typeof TbaseSchema>;
@@ -21,13 +22,29 @@ export default function TbaseCreateForm() {
   } = useForm<Input>({ resolver });
 
   if (errors) {
-    switch (errors) {
-      case errors.peso1:
-        toast.error(errors.peso1?.message);
-    }
+    errors.description &&
+      toast.error(
+        `${capitalize(errors.description.ref?.name)} ${
+          errors.description.message
+        }`,
+        {
+          toastId: "description",
+          hideProgressBar: true,
+        },
+      );
+    errors.shortcode &&
+      toast.error(
+        `${capitalize(errors.shortcode.ref?.name)} ${errors.shortcode.message}`,
+        {
+          toastId: "shortcode",
+          hideProgressBar: true,
+        },
+      );
   }
 
   const onSubmit: SubmitHandler<Input> = (data) => {
+    console.log(TbaseCreateWithoutBaseInputSchema.parse(data));
+
     mutate(data, {
       onSuccess: () => {
         {

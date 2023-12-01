@@ -1,31 +1,29 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CheckCircle,
-  FilePlus2,
-  InfoIcon,
-  Loader2,
-  ServerCrash,
-  XCircle,
-} from "lucide-react";
-import { type SubmitHandler, useForm } from "react-hook-form";
-import { type z } from "zod";
-import { api } from "~/trpc/react";
-import { TbaseUpdateWithoutBaseInputSchema } from "pg/generated/zod";
 import { type Tbase } from "@prisma/client";
 import { omit } from "lodash";
+import { FilePlus2, InfoIcon, Loader2 } from "lucide-react";
+import {
+  type TbaseSchema,
+  TbaseUpdateWithoutBaseInputSchema,
+} from "pg/generated/zod";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
+import { type z } from "zod";
+import { api } from "~/trpc/react";
 
 type UpdateFormProps = {
   initialData: Tbase;
 };
 
 export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
-  type Input = z.infer<typeof TbaseUpdateWithoutBaseInputSchema>;
+  type Input = z.infer<typeof TbaseSchema>;
   const resolver = zodResolver(TbaseUpdateWithoutBaseInputSchema);
   const defaultValues = omit(initialData, "id");
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Input>({ resolver, defaultValues });
 
@@ -33,7 +31,20 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
     api.base.updateTypeBase.useMutation();
 
   const onSubmit: SubmitHandler<Input> = (data) => {
-    mutate({ where: { id: initialData.id }, data });
+    mutate(
+      { where: { id: initialData.id }, data },
+      {
+        onSuccess: () => {
+          {
+            toast.success(
+              `Tipo ${data.description} se a guardado correctamente`,
+            );
+            reset();
+          }
+        },
+        onError: (error) => toast.error(`Error ${error.message}`),
+      },
+    );
   };
   return (
     <div className="flex">
@@ -122,73 +133,6 @@ export default function TbaseUpdateForm({ initialData }: UpdateFormProps) {
           )}
         </button>
       </form>
-      <div className="gap-2` mb-4 flex w-1/2  ">
-        <ul className="flex flex-col gap-2 rounded-md  p-4">
-          {isSuccess ? (
-            <li className="flex  gap-2 rounded-md bg-white p-2 text-greenAccent shadow-md transition-all duration-300">
-              <CheckCircle /> Saved
-            </li>
-          ) : (
-            ""
-          )}
-          {error ? (
-            <li className="flex gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <ServerCrash /> {error.message}
-            </li>
-          ) : (
-            ""
-          )}
-          {errors.description?.message ? (
-            <li className="flex gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.description?.message}
-            </li>
-          ) : (
-            ""
-          )}
-          {errors.shortcode?.message ? (
-            <li className="flex  gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.shortcode?.message}
-            </li>
-          ) : (
-            ""
-          )}
-          {errors.peso1?.message ? (
-            <li className="flex gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.peso1?.message}
-            </li>
-          ) : (
-            ""
-          )}
-          {errors.peso2?.message ? (
-            <li className="flex  gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.peso2?.message}
-            </li>
-          ) : (
-            ""
-          )}
-          {errors.peso3?.message ? (
-            <li className="flex  gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.peso3?.message}
-            </li>
-          ) : (
-            ""
-          )}
-          {errors.peso4?.message ? (
-            <li className="flex  gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.peso4?.message}
-            </li>
-          ) : (
-            ""
-          )}
-          {errors.peso5?.message ? (
-            <li className="flex   gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.peso5?.message}
-            </li>
-          ) : (
-            ""
-          )}
-        </ul>
-      </div>
     </div>
   );
 }

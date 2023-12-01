@@ -34,7 +34,6 @@ model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-
   @@index([userId])
 }
 
@@ -67,9 +66,9 @@ model Regcol {
   id              Int               @id @default(autoincrement())
   description     String?
   carta           Int?
-  R               Int
-  G               Int
-  B               Int
+  R               Int /// @zod.number.lte(255).gte(0); 
+  G               Int /// @zod.number.lte(255).gte(0);
+  B               Int /// @zod.number.lte(255).gte(0);
   pesopromedio    Decimal?          @db.Decimal(65, 2)
   brillo          Decimal?          @db.Decimal(65, 2)
   active          Boolean?
@@ -130,8 +129,8 @@ model Session {
 
 model Tbase {
   id          Int      @id @default(autoincrement())
-  description String
-  shortcode   String   @unique()
+  description String /// @zod.string.min(4)
+  shortcode   String   @unique() /// @zod.string.min(2)
   peso1       Decimal? @db.Decimal(65, 2)
   peso2       Decimal? @db.Decimal(65, 2)
   peso3       Decimal? @db.Decimal(65, 2)

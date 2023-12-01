@@ -1,6 +1,7 @@
 "use client";
 import { type Colorant } from "pg/generated/zod";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import ColorantesCreateForm from "~/app/_components/forms/colorantes/ColorantesCreateForm";
 import HandleStatus from "~/app/_components/handleStatus";
 import { formatDate } from "~/app/_utils/dateFunctions";
@@ -43,6 +44,11 @@ export default function ColorantePage() {
       {
         onSuccess: () => {
           // Refetch the data to get the updated listColorantes
+          toast.success(
+            `${coloante.description} a sido ${
+              coloante.active ? " desactivado" : "activado"
+            } correctamente`,
+          );
           void refetch();
         },
       },
