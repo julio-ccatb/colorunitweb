@@ -1,12 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CheckCircle,
-  FilePlus2,
-  Loader2,
-  ServerCrash,
-  XCircle,
-} from "lucide-react";
+import { FilePlus2, Loader2 } from "lucide-react";
 import { BaseUncheckedCreateWithoutRegcolbasesInputSchema } from "pg/generated/zod";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { type z } from "zod";
@@ -14,6 +8,7 @@ import { api } from "~/trpc/react";
 import { type Tbase } from "../../../../../prisma/generated/zod/modelSchema/TbaseSchema";
 import { useState } from "react";
 import HandleStatus from "../../handleStatus";
+import { toast } from "react-toastify";
 
 export default function BaseCreateForm() {
   type Input = z.infer<typeof BaseUncheckedCreateWithoutRegcolbasesInputSchema>;
@@ -25,20 +20,45 @@ export default function BaseCreateForm() {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<Input>({ resolver });
 
-  const { mutate, isLoading, isSuccess, error } = api.base.create.useMutation();
+  const { mutate, isLoading } = api.base.create.useMutation();
   const { data: listBases, status } = api.base.listTypeBase.useQuery();
 
   const [selected, setSelected] = useState<Tbase>();
 
   if (errors) {
-    console.log(errors);
+    if (errors.reforiginal?.message)
+      toast.warn(`Descripcion is ${errors.reforiginal?.message}`, {
+        toastId: "errreforiginal",
+      });
+    if (errors.slang?.message)
+      toast.warn(`Codigo is ${errors.slang?.message}`, {
+        toastId: "errslang",
+      });
+    if (errors.tbaseId)
+      toast.warn(`Tipo de base is ${errors.tbaseId?.message}`, {
+        toastId: "errtbaseId",
+      });
   }
-
   const onSubmit: SubmitHandler<Input> = (data) => {
-    if (selected && data.reforiginal && data.slang) mutate({ data });
+    if (selected && data.reforiginal && data.slang)
+      mutate(
+        { data },
+        {
+          onSuccess: () => {
+            {
+              toast.success(
+                `Base ${data.reforiginal} se a guardado correctamente`,
+              );
+              reset();
+            }
+          },
+          onError: (error) => toast.error(`Error ${error.data?.code}`),
+        },
+      );
   };
 
   if (status != "success") return HandleStatus({ status });
@@ -114,38 +134,7 @@ export default function BaseCreateForm() {
           )}
         </button>
       </form>
-      <div className="gap-2` mb-4 flex w-1/2  ">
-        <ul className="flex flex-col gap-2 rounded-md  p-4">
-          {isSuccess ? (
-            <li className="flex  gap-2 rounded-md bg-white p-2 text-greenAccent shadow-md transition-all duration-300">
-              <CheckCircle /> Saved
-            </li>
-          ) : (
-            ""
-          )}
-          {error ? (
-            <li className="flex gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <ServerCrash /> {error.message}
-            </li>
-          ) : (
-            ""
-          )}
-          {errors.slang?.message ? (
-            <li className="flex gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.slang?.message}
-            </li>
-          ) : (
-            ""
-          )}{" "}
-          {errors.reforiginal?.message ? (
-            <li className="flex gap-2 rounded-md bg-white p-2 text-red-500 shadow-md transition-all duration-300">
-              <XCircle /> {errors.reforiginal?.message}
-            </li>
-          ) : (
-            ""
-          )}
-        </ul>
-      </div>
+      <div className="gap-2` mb-4 flex w-1/2  "></div>
     </div>
   );
 }

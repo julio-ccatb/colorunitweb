@@ -1,8 +1,10 @@
 "use client";
 import { ClipboardEdit, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import BaseCreateForm from "~/app/_components/forms/bases/BaseCreateForm";
 import HandleStatus from "~/app/_components/handleStatus";
+import { formatDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
 
 export default function BasesPage() {
@@ -10,7 +12,7 @@ export default function BasesPage() {
   const itemsPerPage = 5;
 
   const { mutate } = api.base.delete.useMutation();
-  const { data: result, status } = api.base.list.useQuery();
+  const { data: result, status, refetch } = api.base.list.useQuery();
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -47,6 +49,7 @@ export default function BasesPage() {
               <th>Tipo</th>
               <th>Slang</th>
               <th>Peso</th>
+              <th>Actualizado</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -99,12 +102,31 @@ export default function BasesPage() {
                     </div>
                   </div>
                 </td>
+                <td>
+                  <span className="badge">{formatDate(item.updatedAt)}</span>
+                </td>
                 <td className="mt-4 flex gap-2">
                   <button className="btn btn-info rounded-md text-white">
                     <ClipboardEdit size={15} />
                   </button>
                   <button
-                    onClick={() => mutate({ where: { id: item.id } })}
+                    onClick={() =>
+                      mutate(
+                        { where: { id: item.id } },
+                        {
+                          onSuccess: () => {
+                            {
+                              toast.success(
+                                `Tipo base ${item.reforiginal} se a eliminado correctamente`,
+                              );
+                              void refetch();
+                            }
+                          },
+                          onError: (error) =>
+                            toast.error(`Error ${error.data?.code}`),
+                        },
+                      )
+                    }
                     className="btn btn-error rounded-md text-white"
                   >
                     <Trash size={15} />

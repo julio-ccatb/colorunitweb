@@ -1,6 +1,6 @@
 "use client";
 import Sidebar from "../_components/sideBar";
-import { ToastContainer } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SidebarItem from "../_components/sideBarItem";
 import { useSidebar } from "../_components/providers/sideBarProvider";
@@ -11,6 +11,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <>
       <ToastContainer
         containerId={1}
+        transition={Slide}
         position="top-right"
         limit={5}
         newestOnTop={true}
