@@ -14,12 +14,14 @@ export function hasRequiredPermissions(
   }
   return false; // No matching permission found
 }
-export function withRoles<P>(
+export function withRoles<P extends JSX.IntrinsicAttributes>(
   Component: React.ComponentType<P>,
   requiredPermissions: UserRole[],
 ) {
   return async function WithRolesWrapper(props: P) {
     const session = await getServerAuthSession();
+
+    if (!session) redirect("/");
 
     let hasPermission = false;
     if (session?.user && session.user.roles[0])

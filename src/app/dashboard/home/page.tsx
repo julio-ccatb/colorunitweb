@@ -1,3 +1,4 @@
+import { withRoles } from "../../_components/auth/withRoles";
 const Home = () => {
   return (
     <div className="stats shadow">
@@ -10,4 +11,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withRoles(Home, ["editor", "admin", "notVerified", "viewer"]);

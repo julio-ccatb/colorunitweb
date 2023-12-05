@@ -9,6 +9,7 @@ const config = {
   images: {
     remotePatterns: [
       { hostname: "lh3.googleusercontent.com", protocol: "https" },
+      { hostname: "www.svgrepo.com", protocol: "https" },
     ],
   },
   eslint: { ignoreDuringBuilds: true },

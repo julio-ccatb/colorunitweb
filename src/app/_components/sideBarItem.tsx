@@ -21,7 +21,7 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
           } ${!expanded || !Item.submenus ? "after:hidden" : ""}
           `}
         >
-          {Item.icon}
+          <Link href={Item.href}>{Item.icon}</Link>
           <span
             className={`overflow-hidden transition-all ${
               expanded ? "ml-3 w-52" : "w-0"
@@ -56,7 +56,9 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
                         <li key={submenu2.href}>
                           <Link
                             className={`hover:bg-accent/30 hover:text-accent active:text-accent ${
-                              submenu2.active ? "!text-accent" : ""
+                              submenu2.active
+                                ? "background-animate glass !text-accent"
+                                : ""
                             }`}
                             href={submenu2.href}
                             onClick={() =>
@@ -72,7 +74,9 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
                 ) : (
                   <Link
                     className={`hover:bg-accent/30 hover:text-accent ${
-                      submenu.active ? "!text-accent" : ""
+                      submenu.active
+                        ? "background-animate glass !text-accent"
+                        : ""
                     }`}
                     onClick={() => updateSubmenuActiveState(submenu.href)}
                     href={submenu.href}
