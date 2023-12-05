@@ -6,7 +6,7 @@ import {
   type Tbase,
   type Regcol,
 } from "pg/generated/zod";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { type SubmitHandler } from "react-hook-form";
 import SeachColorForm, {
   type SearchColorInput,
@@ -114,7 +114,6 @@ export default function Registropage() {
   if (status != "success") HandleStatus({ status });
   if (basesStatus != "success") HandleStatus({ status });
   if (coloantesStatus != "success") HandleStatus({ status });
-  if (!colors) return <>Nodata</>;
 
   return (
     <div className="rounded-md bg-white p-4 shadow-md ">
@@ -144,90 +143,98 @@ export default function Registropage() {
             </tr>
           </thead>
           <tbody>
-            {/* row 4 */}
-            {itemsToDisplay?.map((color) => {
-              return (
-                <tr
-                  className="items-center justify-center align-middle"
-                  key={color.id}
-                >
-                  <th>
-                    <label>
-                      <input type="checkbox" className="checkbox" />
-                    </label>
-                  </th>
-                  <td>{color.distancia.toFixed(2)} uD</td>
-                  <td>
-                    <div className="flex items-center gap-3">
-                      <div className="avatar">
-                        <div
-                          key={color.id}
-                          style={{
-                            backgroundColor: `rgb(${color.R},${color.G},${color.B})`,
-                          }}
-                          className="mask mask-circle h-12 w-12 shadow-md"
-                        ></div>
-                      </div>
-                      <div>
-                        <div className="font-bold">{color.description}</div>
-                        <div className="text-sm opacity-50">
-                          [{color.R},{color.G},{color.B}]
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    {color.tbase?.description ?? (
-                      <span className="badge badge-warning">NP</span>
-                    )}
-                  </td>
-                  <td>
-                    <span className="badge badge-ghost badge-sm p-2">
-                      {formatDate(color.updatedAt)}
-                    </span>
-                  </td>
-                  <td>{color.pesopromedio?.toString()} LB</td>
-                  <th>
-                    <button
-                      className="btn btn-ghost btn-xs"
-                      onMouseEnter={() => setCompareTo(color)}
-                      onClick={() => {
-                        const dialog = document.getElementById(
-                          "my_modal_1",
-                        ) as HTMLDialogElement;
-                        dialog.showModal();
-                      }}
+            <Suspense
+              fallback={<div className="bg-accent text-white">Loading...</div>}
+            >
+              {colors &&
+                itemsToDisplay?.map((color) => {
+                  return (
+                    <tr
+                      className="items-center justify-center align-middle"
+                      key={color.id}
                     >
-                      details
-                    </button>
-                    <DetalleRegistroModal
-                      key={compareTo?.id}
-                      RGB={RGB}
-                      bases={bases ?? []}
-                      colorantes={coloantes ?? []}
-                      color={compareTo}
-                    />
-                  </th>
-                </tr>
-              );
-            })}
+                      <th>
+                        <label>
+                          <input type="checkbox" className="checkbox" />
+                        </label>
+                      </th>
+                      <td>{color.distancia.toFixed(2)} uD</td>
+                      <td>
+                        <div className="flex items-center gap-3">
+                          <div className="avatar">
+                            <div
+                              key={color.id}
+                              style={{
+                                backgroundColor: `rgb(${color.R},${color.G},${color.B})`,
+                              }}
+                              className="mask mask-circle h-12 w-12 shadow-md"
+                            ></div>
+                          </div>
+                          <div>
+                            <div className="font-bold">{color.description}</div>
+                            <div className="text-sm opacity-50">
+                              [{color.R},{color.G},{color.B}]
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        {color.tbase?.description ?? (
+                          <span className="badge badge-warning">NP</span>
+                        )}
+                      </td>
+                      <td>
+                        <span className="badge badge-ghost badge-sm p-2">
+                          {formatDate(color.updatedAt)}
+                        </span>
+                      </td>
+                      <td>{color.pesopromedio?.toString()} LB</td>
+                      <th>
+                        <button
+                          className="btn btn-ghost btn-xs"
+                          onMouseEnter={() => setCompareTo(color)}
+                          onClick={() => {
+                            const dialog = document.getElementById(
+                              "my_modal_1",
+                            ) as HTMLDialogElement;
+                            dialog.showModal();
+                          }}
+                        >
+                          details
+                        </button>
+                        <DetalleRegistroModal
+                          key={compareTo?.id}
+                          RGB={RGB}
+                          bases={bases ?? []}
+                          colorantes={coloantes ?? []}
+                          color={compareTo}
+                        />
+                      </th>
+                    </tr>
+                  );
+                })}
+            </Suspense>
           </tbody>
         </table>
         <div className="mt-4 flex justify-center">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary  hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-          >
-            Previous Page
-          </button>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={endIndex >= colors.length}
-            className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-          >
-            Next Page
-          </button>
+          {colors && (
+            <>
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary  hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
+              >
+                Previous Page
+              </button>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={endIndex >= colors.length}
+                className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
+              >
+                Next Page
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

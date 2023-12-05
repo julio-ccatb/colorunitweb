@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function LaboratoryDefPage() {
-  return <div>DEFAULT</div>;
+  redirect("/dashboard/home");
 }
