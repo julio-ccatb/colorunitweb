@@ -112,7 +112,7 @@ export default async function Home() {
               </div>
               <div className="pt-5 text-center text-xs text-gray-400">
                 <span>
-                  Copyright © 2023-2024
+                  Copyright © 2023-2024{" "}
                   <a
                     href="https://github.com/julio-ccatb"
                     rel=""

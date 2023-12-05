@@ -14,7 +14,7 @@ export function hasRequiredPermissions(
   }
   return false; // No matching permission found
 }
-export function withRoles<P extends JSX.IntrinsicAttributes>(
+export function withRoles<P>(
   Component: React.ComponentType<P>,
   requiredPermissions: UserRole[],
 ) {
