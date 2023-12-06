@@ -23,6 +23,11 @@ export function withRoles<P>(
     const session = await getServerAuthSession();
 
     if (!session) redirect(ROUTES.LOGIN);
+    if (session.user)
+      hasRequiredPermissions(
+        ["notVerified", "admin", "editor", "viewer"],
+        [...session.user.roles.map((role) => role.roleId)],
+      ) || redirect(ROUTES.UNASIGNED);
 
     let hasPermission = false;
     if (session?.user && session.user.roles[0])
