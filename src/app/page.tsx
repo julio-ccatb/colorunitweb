@@ -3,10 +3,21 @@ import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
 import Icon from "../../public/logo.svg";
 import { redirect } from "next/navigation";
+import { hasRequiredPermissions } from "./_components/auth/withRoles";
 
 export default async function Home() {
   const session = await getServerAuthSession();
-  if (session) redirect("/dashboard/home");
+
+  if (session?.user) {
+    console.log(session);
+
+    hasRequiredPermissions(
+      ["notVerified", "admin", "editor", "viewer"],
+      [...session.user.roles.map((role) => role.roleId)],
+    )
+      ? redirect("dashboard/home")
+      : redirect("/unasigned");
+  }
 
   return (
     <main className="background-animate flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-grayPrimary  to-greenAccent  text-white">
