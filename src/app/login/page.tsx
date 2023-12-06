@@ -28,7 +28,7 @@ export default async function Home() {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 src={Icon}
                 alt="j"
-                className="background-animate glass mb-7 animate-[spin_1s_ease-in-out] rounded-full p-4 text-black transition-all"
+                className="background-animate glass mb-7 animate-[spin_1s_ease-in] rounded-full p-4 text-black transition-all"
               />
               <h1 className="mb-3 text-7xl font-bold">
                 Color{" "}
