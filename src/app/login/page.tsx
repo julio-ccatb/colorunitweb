@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getServerAuthSession } from "~/server/auth";
-import Icon from "../../public/logo.svg";
+import Icon from "../../../public/logo.svg";
 import { redirect } from "next/navigation";
 import { hasRequiredPermissions } from "../_components/auth/withRoles";
 import { ROUTES } from "../_utils/routesEnum";
