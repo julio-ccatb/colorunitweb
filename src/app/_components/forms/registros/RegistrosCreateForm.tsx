@@ -13,7 +13,7 @@ import { Decimal } from "decimal.js";
 import { type z, ZodError } from "zod";
 import { api } from "~/trpc/react";
 import HandleStatus from "../../handleStatus";
-import { FilePlus2, Loader2 } from "lucide-react";
+import { FilePlus2, Loader2, X } from "lucide-react";
 import { toInteger } from "lodash";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -191,14 +191,14 @@ export default function RegistroCreateForm() {
       <ToastContainer />
       <div className="flex flex-col">
         <div className="flex flex-col gap-2">
-          <div className="join">
+          <div className="join max-w-sm">
             <input
               autoComplete="off"
               type="text"
               id="R"
               onChange={(e) => setValue("R", toInteger(e.target.value))}
               placeholder="R"
-              className={`join-item w-28 rounded-md border p-2 text-center ${
+              className={`join-item w-1/3 rounded-md border p-2 text-center ${
                 errors.R ? "input-error" : "focus:input-accent"
               }`}
             />
@@ -208,7 +208,7 @@ export default function RegistroCreateForm() {
               id="G"
               onChange={(e) => setValue("G", toInteger(e.target.value))}
               placeholder="G"
-              className={`join-item w-28 rounded-md border p-2 text-center ${
+              className={`join-item w-1/3 rounded-md border p-2 text-center ${
                 errors.R ? "input-error" : "focus:input-accent"
               }`}
             />
@@ -218,7 +218,7 @@ export default function RegistroCreateForm() {
               id="B"
               onChange={(e) => setValue("B", toInteger(e.target.value))}
               placeholder="B"
-              className={`join-item w-28 rounded-md border p-2 text-center ${
+              className={`join-item w-1/3 rounded-md border p-2 text-center ${
                 errors.B ? "input-error" : "focus:input-accent"
               }`}
             />
@@ -235,14 +235,14 @@ export default function RegistroCreateForm() {
           />
         </div>
       </div>
-      <div className="flex w-full items-start gap-4">
+      <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
         {/* 
       
       Colorantes
       
       
       */}
-        <div className="w-1/2">
+        <div className="w-full lg:w-1/2">
           <h2 className="stat-title py-2">Colorantes</h2>
           <div className="flex flex-col">
             <label htmlFor="colorantSelector" className="mb-2">
@@ -268,20 +268,14 @@ export default function RegistroCreateForm() {
                 {coloranteSelectedArray.map((item) => (
                   <li
                     key={item.colorantId}
-                    className="join flex w-2/3 items-center rounded-sm"
+                    className="join items-center rounded-sm p-1"
                   >
                     {/* You can display more information about the selected colorante if needed */}
-                    <span className="w-full rounded-l-md bg-graySecondary/10 py-2 pl-2 ">
+                    <span className="w-16 rounded-l-md bg-graySecondary/10 px-2 py-2 ">
                       {
                         Listcolorante?.find(
                           (colorant) => colorant.id === item.colorantId,
                         )?.shortcode
-                      }
-                      {" - "}
-                      {
-                        Listcolorante?.find(
-                          (colorant) => colorant.id === item.colorantId,
-                        )?.description
                       }
                     </span>
                     <input
@@ -292,16 +286,16 @@ export default function RegistroCreateForm() {
                           amount: new Decimal(e.target.value),
                         })
                       }
-                      className="w-16 rounded-l-md border p-2 focus:input-accent"
+                      placeholder="0.0"
+                      className="w-16 rounded-l-md border p-2 text-center focus:input-accent"
                     />
-                    <span className="bg-graySecondary p-2 text-white">GR</span>
-                    <button
-                      type="button"
-                      onClick={() => handleColorantRemove(item)}
-                      className="btn-sm flex h-4 items-center justify-center rounded-r-md bg-graySecondary p-5 text-error"
-                    >
-                      <span>X</span>
-                    </button>
+                    <span className="flex bg-graySecondary p-2 text-white">
+                      GR
+                      <X
+                        className="text-error"
+                        onClick={() => handleColorantRemove(item)}
+                      />
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -313,7 +307,7 @@ export default function RegistroCreateForm() {
 Bases
 
 */}
-        <div className="w-1/2">
+        <div className="w-full lg:w-1/2">
           <h2 className="stat-title py-2">Bases</h2>
           <div className="flex flex-col">
             <label htmlFor="baseSelector" className="mb-2">
@@ -340,35 +334,39 @@ Bases
               {baseSelectedArray.map((item) => (
                 <li
                   key={item.baseId}
-                  className="join flex w-2/3 items-center rounded-sm"
+                  className="join mb-1 flex items-center rounded-sm "
                 >
                   {/* You can display more information about the selected base if needed */}
-                  <span className="w-full rounded-l-md bg-graySecondary/10 py-2 pl-2 ">
-                    {
-                      Listbase?.find((base) => base.id === item.baseId)?.tbase
-                        .shortcode
-                    }
-                    {" - "}
-                    {Listbase?.find((base) => base.id === item.baseId)?.slang}
-                  </span>
-                  <input
-                    type="text"
-                    onChange={(e) =>
-                      handleBaseAmountChange({
-                        baseId: item.baseId,
-                        amount: new Decimal(e.target.value),
-                      })
-                    }
-                    className="w-16 rounded-l-md border p-2 focus:input-accent"
-                  />
-                  <span className="bg-graySecondary p-2 text-white">LB</span>
-                  <button
-                    type="button"
-                    onClick={() => handleBaseRemove(item)}
-                    className="btn-sm flex h-4 items-center justify-center rounded-r-md bg-graySecondary p-5 text-error"
-                  >
-                    <span>X</span>
-                  </button>
+                  <div className="join join-vertical">
+                    <span className="w-full rounded bg-graySecondary/10 py-2 pl-2 ">
+                      {
+                        Listbase?.find((base) => base.id === item.baseId)?.tbase
+                          .shortcode
+                      }
+                      {" - "}
+                      {Listbase?.find((base) => base.id === item.baseId)?.slang}
+                    </span>
+                    <div className="join max-h-max">
+                      <input
+                        type="text"
+                        placeholder="0.0"
+                        onChange={(e) =>
+                          handleBaseAmountChange({
+                            baseId: item.baseId,
+                            amount: new Decimal(e.target.value),
+                          })
+                        }
+                        className=" border p-2 focus:input-accent"
+                      />
+                      <span className="flex w-full justify-between bg-graySecondary p-2 text-white">
+                        LB
+                        <X
+                          className="text-error"
+                          onClick={() => handleBaseRemove(item)}
+                        />
+                      </span>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
