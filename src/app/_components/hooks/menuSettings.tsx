@@ -9,10 +9,11 @@ import {
   UserCog,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { ROUTES } from "~/app/_utils/routesEnum";
 
 export type TYPE_ROUTE = {
   icon?: ReactNode;
-  href: string;
+  href: ROUTES; // Use the enum type for the href property
   text: string;
   active?: boolean;
   submenus?: TYPE_ROUTE[];
@@ -23,28 +24,28 @@ export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
   {
     icon: <Home size={20} />,
     text: "Inicio",
-    href: "/home",
+    href: ROUTES.HOME,
     active: false,
   },
   {
     icon: <FlaskConical size={20} />,
     text: "Laboratory",
-    href: "/dashboard/laboratory",
+    href: ROUTES.LABORATORY,
     active: false,
     submenus: [
       {
         icon: <FlaskRound size={15} />,
-        href: "/dashboard/laboratory/base",
+        href: ROUTES.LABORATORY_BASE,
         text: "Bases",
         active: false,
         submenus: [
           {
-            href: "/dashboard/laboratory/base",
+            href: ROUTES.LABORATORY_BASE,
             text: "Todas las bases",
             active: false,
           },
           {
-            href: "/dashboard/laboratory/base/tipo",
+            href: ROUTES.LABORATORY_BASE_TIPO,
             text: "Tipos de base",
             active: false,
           },
@@ -52,23 +53,23 @@ export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
       },
       {
         icon: <Pipette size={15} />,
-        href: "/dashboard/laboratory/colorante",
         text: "Colorantes",
+        href: ROUTES.LABORATORY_COLORANTE,
         active: false,
       },
       {
         icon: <Book size={15} />,
-        href: "/dashboard/laboratory/registro",
         text: "Registro",
+        href: ROUTES.LABORATORY_REGISTRO,
         active: false,
         submenus: [
           {
-            href: "/dashboard/laboratory/registro/search",
+            href: ROUTES.LABORATORY_REGISTRO_SEARCH,
             text: "Buscar Color",
             active: false,
           },
           {
-            href: "/dashboard/laboratory/registro",
+            href: ROUTES.LABORATORY_REGISTRO,
             text: "Crear Color",
             active: false,
           },
@@ -79,11 +80,11 @@ export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
   {
     icon: <Settings size={20} />,
     text: "Ajustes",
-    href: "/settings",
+    href: ROUTES.SETTINGS,
     submenus: [
       {
         icon: <UserCog size={15} />,
-        href: "/dashboard/settings/users",
+        href: ROUTES.SETTINGS_USERS,
         text: "Usuarios",
         active: false,
       },
@@ -94,12 +95,12 @@ export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
 const useSidebarItems = (): {
   sidebarItems: TYPE_ROUTE[];
   setSidebarItems: React.Dispatch<React.SetStateAction<TYPE_ROUTE[]>>;
-  updateSubmenuActiveState: (submenuHref: string) => void;
+  updateSubmenuActiveState: (submenuHref: ROUTES) => void;
 } => {
   const [sidebarItems, setSidebarItems] =
     useState<TYPE_ROUTE[]>(MENU_INITIAL_STATE);
 
-  const updateSubmenuActiveState = (submenuHref: string) => {
+  const updateSubmenuActiveState = (submenuHref: ROUTES) => {
     setSidebarItems((prevItems) =>
       prevItems.map((item) => {
         const recursivelyUpdateSubmenus = (

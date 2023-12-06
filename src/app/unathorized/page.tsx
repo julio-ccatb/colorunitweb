@@ -2,9 +2,13 @@
 import Link from "next/link";
 import useRedirectAfterSomeSeconds from "../_components/hooks/redirectHook";
 import { XOctagon } from "lucide-react";
+import { ROUTES } from "../_utils/routesEnum";
 
 const Unauthorized = () => {
-  const { secondsRemaining } = useRedirectAfterSomeSeconds("/", 5);
+  const { secondsRemaining } = useRedirectAfterSomeSeconds(
+    ROUTES.LABORATORY,
+    5,
+  );
 
   return (
     <div className="flex h-screen w-screen bg-error">

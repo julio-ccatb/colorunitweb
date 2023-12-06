@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { ROUTES } from "~/app/_utils/routesEnum";
 import { getServerAuthSession } from "~/server/auth";
 import { rolesToCodes, type UserRole } from "~/server/utils/roles";
 
@@ -21,7 +22,7 @@ export function withRoles<P>(
   return async function WithRolesWrapper(props: P) {
     const session = await getServerAuthSession();
 
-    if (!session) redirect("/");
+    if (!session) redirect(ROUTES.LOGIN);
 
     let hasPermission = false;
     if (session?.user && session.user.roles[0])
@@ -37,7 +38,7 @@ export function withRoles<P>(
     } else {
       // console.log(session?.user, hasPermission, requiredPermissions);
 
-      redirect("/unathorized");
+      redirect(ROUTES.UNAUTHORIZED);
     }
   };
 }

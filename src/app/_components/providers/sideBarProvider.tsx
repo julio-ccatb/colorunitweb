@@ -1,13 +1,14 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
 import useSidebarItems, { type TYPE_ROUTE } from "../hooks/menuSettings";
+import { ROUTES } from "~/app/_utils/routesEnum";
 
 interface SidebarContextProps {
   expanded: boolean;
   sidebarItems: TYPE_ROUTE[];
   toggle: React.Dispatch<React.SetStateAction<boolean>>;
   setSidebarItems: React.Dispatch<React.SetStateAction<TYPE_ROUTE[]>>;
-  updateSubmenuActiveState: (submenuHref: string) => void;
+  updateSubmenuActiveState: (submenuHref: ROUTES) => void;
 }
 // Create a context for the sidebar items
 export const SidebarContext = createContext<SidebarContextProps | undefined>(

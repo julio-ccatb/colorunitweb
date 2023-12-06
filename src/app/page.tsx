@@ -4,19 +4,18 @@ import { getServerAuthSession } from "~/server/auth";
 import Icon from "../../public/logo.svg";
 import { redirect } from "next/navigation";
 import { hasRequiredPermissions } from "./_components/auth/withRoles";
+import { ROUTES } from "./_utils/routesEnum";
 
 export default async function Home() {
   const session = await getServerAuthSession();
 
   if (session?.user) {
-    console.log(session);
-
     hasRequiredPermissions(
       ["notVerified", "admin", "editor", "viewer"],
       [...session.user.roles.map((role) => role.roleId)],
     )
-      ? redirect("dashboard/home")
-      : redirect("/unasigned");
+      ? redirect(ROUTES.LABORATORY)
+      : redirect(ROUTES.UNASIGNED);
   }
 
   return (

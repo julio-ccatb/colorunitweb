@@ -5,7 +5,7 @@ import { useSidebar } from "./providers/sideBarProvider";
 import { Box, Boxes } from "lucide-react";
 
 export default function SidebarItem(Item: TYPE_ROUTE) {
-  const { updateSubmenuActiveState, expanded } = useSidebar();
+  const { updateSubmenuActiveState, expanded, toggle } = useSidebar();
 
   return (
     <li>
@@ -61,9 +61,10 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
                                 : ""
                             }`}
                             href={submenu2.href}
-                            onClick={() =>
-                              updateSubmenuActiveState(submenu2.href)
-                            }
+                            onClick={() => {
+                              updateSubmenuActiveState(submenu2.href);
+                              toggle((curr) => !curr);
+                            }}
                           >
                             <Box size={10} /> {submenu2.text}
                           </Link>
@@ -78,7 +79,10 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
                         ? "background-animate glass !text-accent"
                         : ""
                     }`}
-                    onClick={() => updateSubmenuActiveState(submenu.href)}
+                    onClick={() => {
+                      updateSubmenuActiveState(submenu.href);
+                      toggle((curr) => !curr);
+                    }}
                     href={submenu.href}
                   >
                     {submenu.icon ?? <Box size={15} />} {submenu.text}
