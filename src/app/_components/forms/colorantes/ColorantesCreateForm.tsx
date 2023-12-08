@@ -1,13 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CheckCircle,
-  FilePlus2,
-  InfoIcon,
-  Loader2,
-  ServerCrash,
-  XCircle,
-} from "lucide-react";
+import { FilePlus2, InfoIcon, Loader2 } from "lucide-react";
 import { ColorantUncheckedCreateWithoutRegcolcolorantsInputSchema } from "pg/generated/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -55,13 +48,13 @@ export default function ColorantesCreateForm() {
         onSubmit={handleSubmit(onSubmit)}
         className={`flex w-2/3 flex-col items-start justify-center gap-2`}
       >
-        <div className="flex ">
+        <div className="sm:flex ">
           <input
             type="text"
             id="shortcode"
             {...register("shortcode", { required: true })}
             placeholder="Codigo"
-            className={`mr-2 w-1/4 rounded-md border p-2 ${
+            className={`my-2 mr-2 w-1/2  rounded-md border p-2 sm:my-0 sm:w-1/4 ${
               errors.shortcode ? "input-error" : "focus:input-accent"
             }`}
           />
@@ -83,7 +76,7 @@ export default function ColorantesCreateForm() {
           </span>
           Unidades en gramos
         </p>
-        <div className="flex">
+        <div className="sm:flex">
           <div className="flex justify-start">
             <input
               type="text"
@@ -101,7 +94,7 @@ export default function ColorantesCreateForm() {
               id="gramUP"
               {...register("gramUP", { required: true })}
               placeholder="Unidad Pqueña"
-              className={`mr-2  rounded-md border p-2 ${
+              className={`my-2  mr-2 rounded-md border p-2 sm:my-0 ${
                 errors.gramUP ? "input-error" : "focus:input-accent"
               }`}
             />

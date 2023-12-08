@@ -48,60 +48,19 @@ export default function BasesPage() {
               <th>Ref</th>
               <th>Tipo</th>
               <th>Slang</th>
-              <th>Peso</th>
               <th>Actualizado</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody className="">
             {itemsToDisplay.map((item) => (
-              <tr
-                key={item.id}
-                className="border font-normal hover:bg-greenAccent/25"
-              >
+              <tr key={item.id} className="font-normal hover:bg-greenAccent/25">
                 <td className=" justify-start p-2">
                   {item.reforiginal ?? "N/A"}
                 </td>
                 <td className=" justify-start p-2">{item.tbase.description}</td>
                 <td className=" justify-start p-2">{item.slang ?? "N/A"}</td>
-                <td className=" justify-start p-2">
-                  <div className="flex gap-2">
-                    <div className="join rounded-full font-semibold">
-                      <span className="join-item badge-error px-1">P1</span>
-                      <span className="join-item badge-neutral px-1">
-                        {` ${item.tbase.peso1?.toString()} lb`}
-                      </span>
-                    </div>
-                    <div className="join rounded-full font-semibold">
-                      <span className="badge join-item bg-orange-400 px-1">
-                        P2
-                      </span>
-                      <span className="join-item badge-neutral px-1">
-                        {` ${item.tbase.peso2?.toString()} lb`}
-                      </span>
-                    </div>
-                    <div className="join rounded-full font-semibold">
-                      <span className="badge join-item bg-warning px-1">
-                        P3
-                      </span>
-                      <span className="join-item badge-neutral px-1">
-                        {` ${item.tbase.peso3?.toString()} lb`}
-                      </span>
-                    </div>
-                    <div className="join rounded-full font-semibold">
-                      <span className="join-item badge-info px-1">P4</span>
-                      <span className="join-item badge-neutral px-1">
-                        {` ${item.tbase.peso4?.toString()} lb`}
-                      </span>
-                    </div>
-                    <div className="join rounded-full font-semibold">
-                      <span className="join-item badge-accent px-1">P5</span>
-                      <span className="join-item badge-neutral px-1">
-                        {` ${item.tbase.peso5?.toString()} lb`}
-                      </span>
-                    </div>
-                  </div>
-                </td>
+
                 <td>
                   <span className="badge">{formatDate(item.updatedAt)}</span>
                 </td>

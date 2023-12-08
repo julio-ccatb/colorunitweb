@@ -78,7 +78,7 @@ export default function BaseCreateForm() {
             errors.slang ? "input-error" : "focus:input-accent"
           }`}
         />
-        <div className="flex">
+        <div className="sm:flex">
           <input
             autoComplete="off"
             type="text"
@@ -102,7 +102,7 @@ export default function BaseCreateForm() {
               setValue("tbaseId", selectedId);
               setSelected(selectedItem);
             }}
-            className={`select select-accent w-full max-w-xs ${
+            className={`select select-accent my-2 w-full max-w-xs sm:m-0${
               errors.tbaseId ? "select-error" : ""
             } `}
           >

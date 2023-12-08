@@ -15,9 +15,11 @@ const SettingUserPage = () => {
         />
         <div
           role="tabpanel"
-          className="tab-content rounded-box border-base-300 bg-base-100 p-6"
+          className="tab-content max-w-[380px] rounded-box border-base-300 bg-base-100 p-6 sm:max-w-full"
         >
-          <UserTable />
+          <div className="overflow-x-auto">
+            <UserTable />
+          </div>
         </div>
         <div role="tablist" className="tabs tabs-lifted">
           <input

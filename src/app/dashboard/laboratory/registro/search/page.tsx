@@ -129,16 +129,16 @@ export default function Registropage() {
           {/* head */}
           <thead>
             <tr className="">
-              <th>
+              <th className="hidden sm:table-cell">
                 <label>
                   <input type="checkbox" className="checkbox" />
                 </label>
               </th>
               <th>Distancia</th>
               <th>Nombre / RGB</th>
-              <th>Calidad</th>
-              <th>Actualizado</th>
-              <th>Peso / Cubeta</th>
+              <th className="hidden sm:table-cell">Calidad</th>
+              <th className="hidden sm:table-cell">Actualizado</th>
+              <th className="hidden sm:table-cell">Peso / Cubeta</th>
               <th></th>
             </tr>
           </thead>
@@ -153,7 +153,7 @@ export default function Registropage() {
                       className="items-center justify-center align-middle"
                       key={color.id}
                     >
-                      <th>
+                      <th className="hidden sm:table-cell">
                         <label>
                           <input type="checkbox" className="checkbox" />
                         </label>
@@ -175,23 +175,50 @@ export default function Registropage() {
                             <div className="text-sm opacity-50">
                               [{color.R},{color.G},{color.B}]
                             </div>
+                            <p className="block sm:hidden">
+                              {color.tbase?.description ?? (
+                                <>
+                                  <span className="badge badge-warning hidden md:block">
+                                    NP
+                                  </span>
+                                </>
+                              )}
+                              <span className="block sm:hidden">
+                                {formatDate(color.updatedAt)}
+                              </span>
+                            </p>
+
+                            <button
+                              className="btn btn-md my-1 underline-offset-1 sm:hidden"
+                              onMouseEnter={() => setCompareTo(color)}
+                              onClick={() => {
+                                const dialog = document.getElementById(
+                                  "my_modal_1",
+                                ) as HTMLDialogElement;
+                                dialog.showModal();
+                              }}
+                            >
+                              details
+                            </button>
                           </div>
                         </div>
                       </td>
-                      <td>
+                      <td className="hidden sm:table-cell">
                         {color.tbase?.description ?? (
                           <span className="badge badge-warning">NP</span>
                         )}
                       </td>
-                      <td>
+                      <td className="hidden sm:table-cell">
                         <span className="badge badge-ghost badge-sm p-2">
                           {formatDate(color.updatedAt)}
                         </span>
                       </td>
-                      <td>{color.pesopromedio?.toString()} LB</td>
-                      <th>
+                      <td className="hidden sm:table-cell">
+                        {color.pesopromedio?.toString()} LB
+                      </td>
+                      <th className="hidden sm:table-cell">
                         <button
-                          className="btn btn-ghost btn-xs"
+                          className="btn-ghost btn-xs hidden sm:btn"
                           onMouseEnter={() => setCompareTo(color)}
                           onClick={() => {
                             const dialog = document.getElementById(
@@ -202,17 +229,17 @@ export default function Registropage() {
                         >
                           details
                         </button>
-                        <DetalleRegistroModal
-                          key={compareTo?.id}
-                          RGB={RGB}
-                          bases={bases ?? []}
-                          colorantes={coloantes ?? []}
-                          color={compareTo}
-                        />
                       </th>
                     </tr>
                   );
                 })}
+              <DetalleRegistroModal
+                key={compareTo?.id}
+                RGB={RGB}
+                bases={bases ?? []}
+                colorantes={coloantes ?? []}
+                color={compareTo}
+              />
             </Suspense>
           </tbody>
         </table>
