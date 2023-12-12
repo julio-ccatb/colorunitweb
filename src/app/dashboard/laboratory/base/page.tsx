@@ -1,9 +1,10 @@
 "use client";
-import { ClipboardEdit, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowLeft, ClipboardEdit, Trash } from "lucide-react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import BaseCreateForm from "~/app/_components/forms/bases/BaseCreateForm";
 import HandleStatus from "~/app/_components/handleStatus";
+import LoadingTableRows from "~/app/_components/tables/loadingTable";
 import { formatDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
 
@@ -12,12 +13,8 @@ export default function BasesPage() {
   const itemsPerPage = 5;
 
   const { mutate } = api.base.delete.useMutation();
-  const { data: result, status, refetch } = api.base.list.useQuery();
+  const { data: result, status, refetch, isLoading } = api.base.list.useQuery();
   const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    console.log("x");
-  }, []);
 
   // Calculate the starting and ending indices for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -31,9 +28,6 @@ export default function BasesPage() {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
-
-  if (status != "success") return HandleStatus({ status: "loading" });
-  if (result === undefined) return <>No Data</>;
 
   return (
     <div className="flex flex-col rounded-md bg-white p-4 shadow-sm">
@@ -53,65 +47,77 @@ export default function BasesPage() {
             </tr>
           </thead>
           <tbody className="">
-            {itemsToDisplay.map((item) => (
-              <tr key={item.id} className="font-normal hover:bg-greenAccent/25">
-                <td className=" justify-start p-2">
-                  {item.reforiginal ?? "N/A"}
-                </td>
-                <td className=" justify-start p-2">{item.tbase.description}</td>
-                <td className=" justify-start p-2">{item.slang ?? "N/A"}</td>
+            {!isLoading ? (
+              itemsToDisplay.map((item) => (
+                <tr key={item.id} className=" hover:bg-greenAccent/25">
+                  <td className=" justify-start ">
+                    {item.reforiginal ?? "N/A"}
+                  </td>
+                  <td className=" justify-start ">{item.tbase.description}</td>
+                  <td className=" justify-start ">{item.slang ?? "N/A"}</td>
 
-                <td>
-                  <span className="badge">{formatDate(item.updatedAt)}</span>
-                </td>
-                <td className="mt-4 flex gap-2">
-                  <button className="btn btn-info rounded-md text-white">
-                    <ClipboardEdit size={15} />
-                  </button>
-                  <button
-                    onClick={() =>
-                      mutate(
-                        { where: { id: item.id } },
-                        {
-                          onSuccess: () => {
-                            {
-                              toast.success(
-                                `Tipo base ${item.reforiginal} se a eliminado correctamente`,
-                              );
-                              void refetch();
-                            }
+                  <td>
+                    <span className="badge">{formatDate(item.updatedAt)}</span>
+                  </td>
+                  <td className=" flex gap-2">
+                    <button className="btn btn-info rounded-md text-white">
+                      <ClipboardEdit size={15} />
+                    </button>
+                    <button
+                      onClick={() =>
+                        mutate(
+                          { where: { id: item.id } },
+                          {
+                            onSuccess: () => {
+                              {
+                                toast.success(
+                                  `Tipo base ${item.reforiginal} se a eliminado correctamente`,
+                                );
+                                void refetch();
+                              }
+                            },
+                            onError: (error) =>
+                              toast.error(`Error ${error.data?.code}`),
                           },
-                          onError: (error) =>
-                            toast.error(`Error ${error.data?.code}`),
-                        },
-                      )
-                    }
-                    className="btn btn-error rounded-md text-white"
-                  >
-                    <Trash size={15} />
-                  </button>
-                </td>
-              </tr>
-            ))}
+                        )
+                      }
+                      className="btn btn-error rounded-md text-white"
+                    >
+                      <Trash size={15} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <>
+                <LoadingTableRows columns={5} numeric={5} />
+              </>
+            )}
           </tbody>
         </table>
       </div>
-      <div className="mt-4 flex justify-center">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary  hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-        >
-          Previous Page
-        </button>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={endIndex >= result.length}
-          className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-        >
-          Next Page
-        </button>
-      </div>
+      {result !== undefined && (
+        <div className="mt-4 flex justify-center">
+          <div className="join grid grid-cols-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="btn btn-outline join-item"
+            >
+              <ArrowLeft />
+              Previous Page
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={endIndex >= result.length}
+              className="btn btn-outline join-item"
+            >
+              Next Page
+              <ArrowLeft className="rotate-180" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

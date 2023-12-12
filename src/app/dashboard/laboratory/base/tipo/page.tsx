@@ -1,12 +1,13 @@
 "use client";
 import { type Tbase } from "@prisma/client";
-import { ClipboardEdit, Trash } from "lucide-react";
+import { ArrowLeft, ClipboardEdit, Trash } from "lucide-react";
 import { useState } from "react";
 import TbaseCreateForm from "~/app/_components/forms/tbases/TbaseCreateForm";
 import TbaseUpdateForm from "~/app/_components/forms/tbases/TbaseUpdateForm";
 import { api } from "~/trpc/react";
 import HandleStatus from "../../../../_components/handleStatus";
 import { toast } from "react-toastify";
+import LoadingTableRows from "../../../../_components/tables/loadingTable";
 
 export default function TipoDeBasePage() {
   const itemsPerPage = 5; // Number of items to display per page
@@ -30,9 +31,7 @@ export default function TipoDeBasePage() {
 
   const { mutate } = api.base.deleteTypeBase.useMutation();
 
-  if (status != "success") return HandleStatus({ status });
-
-  if (result === undefined) return <h1>No Data</h1>;
+  if (status === "error") return HandleStatus({ status });
 
   return (
     <div className="  rounded-md border bg-white p-4">
@@ -64,7 +63,7 @@ export default function TipoDeBasePage() {
         />
         <div
           role="tabpanel"
-          className="tab-content rounded-box border-base-300 bg-base-100 p-6"
+          className="tab-content rounded-box border-base-300 bg-base-100"
         >
           <TbaseUpdateForm
             initialData={selected ?? ({} as Tbase)}
@@ -78,72 +77,106 @@ export default function TipoDeBasePage() {
             <tr>
               <th className="">Codigo</th>
               <th className="">Descripccion</th>
-
+              <th className="">Pesos</th>
               <th className="">Actions</th>
             </tr>
           </thead>
           <tbody className="">
-            {itemsToDisplay.map((item) => (
-              <tr key={item.id} className="  hover:bg-greenAccent/25">
-                <td className=" p-2">{item.shortcode}</td>
-                <td className=" p-2">{item.description}</td>
-                <td className="flex justify-start p-2">
-                  <button
-                    className="btn btn-info mr-2 rounded-md text-white"
-                    onClick={() => setSelected(item)}
-                  >
-                    <ClipboardEdit size={15} />
-                  </button>
-                  <button
-                    onClick={() =>
-                      mutate(
-                        { where: { id: item.id } },
-                        {
-                          onSuccess: () => {
-                            // Refetch the data to get the updated listColorantes
-                            toast.success(
-                              `${item.description} fue eliminado correctamente`,
-                            );
-                            void refetch();
-                          },
-                          onError: (error) => {
-                            // Refetch the data to get the updated listColorantes
-                            toast.error(
-                              `${item.description} no pudo ser eliminado 
+            {status === "success" ? (
+              itemsToDisplay.map((item) => (
+                <tr key={item.id} className="  hover:bg-greenAccent/25">
+                  <td className="p-2">{item.shortcode}</td>
+                  <td className="p-2">{item.description}</td>
+                  <td className="p-2">
+                    <div className="join join-vertical min-w-max sm:join-horizontal">
+                      <p className="badge join-item badge-sm w-24 justify-start bg-graySecondary p-2 py-3 font-semibold text-white hover:cursor-pointer">
+                        <span className="pr-1 text-info">P1</span>
+                        {item.peso1?.toString()} lb
+                      </p>
+                      <p className="badge join-item  badge-sm w-24 justify-start bg-graySecondary p-2 py-3 font-semibold text-white hover:cursor-pointer">
+                        <span className="pr-1 text-info">P2</span>
+                        {item.peso2?.toString()} lb
+                      </p>
+                      <p className="badge join-item badge-sm  w-24 justify-start bg-graySecondary p-2 py-3 font-semibold text-white hover:cursor-pointer">
+                        <span className="pr-1 text-info">P3</span>
+                        {item.peso3?.toString()} lb
+                      </p>
+                      <p className="badge join-item  badge-sm w-24 justify-start bg-graySecondary p-2 py-3 font-semibold text-white hover:cursor-pointer">
+                        <span className="pr-1 text-info">P4</span>
+                        {item.peso4?.toString()} lb
+                      </p>
+                      <p className="badge join-item badge-sm  w-24 justify-start bg-graySecondary p-2 py-3 font-semibold text-white hover:cursor-pointer">
+                        <span className="pr-1 text-info">P5</span>
+                        {item.peso5?.toString()} lb
+                      </p>
+                    </div>
+                  </td>
+                  <td className="flex flex-col justify-start p-2 sm:flex-row">
+                    <button
+                      className="btn btn-info mr-2 rounded-md text-white"
+                      onClick={() => setSelected(item)}
+                    >
+                      <ClipboardEdit size={15} />
+                    </button>
+                    <button
+                      onClick={() =>
+                        mutate(
+                          { where: { id: item.id } },
+                          {
+                            onSuccess: () => {
+                              // Refetch the data to get the updated listColorantes
+                              toast.success(
+                                `${item.description} fue eliminado correctamente`,
+                              );
+                              void refetch();
+                            },
+                            onError: (error) => {
+                              // Refetch the data to get the updated listColorantes
+                              toast.error(
+                                `${item.description} no pudo ser eliminado 
                               Error: ${error.message}
                               `,
-                            );
-                            void refetch();
+                              );
+                              void refetch();
+                            },
                           },
-                        },
-                      )
-                    }
-                    className="btn btn-error rounded-md  text-white"
-                  >
-                    <Trash size={15} />
-                  </button>
-                </td>
-              </tr>
-            ))}
+                        )
+                      }
+                      className="btn btn-error rounded-md  text-white"
+                    >
+                      <Trash size={15} />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <LoadingTableRows columns={3} numeric={itemsPerPage} />
+            )}
           </tbody>
         </table>
       </div>
-      <div className="mt-4 flex justify-center">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary  hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-        >
-          Previous Page
-        </button>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={endIndex >= result.length}
-          className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-        >
-          Next Page
-        </button>
-      </div>
+      {result !== undefined && (
+        <div className="mt-4 flex justify-center">
+          <div className="join grid grid-cols-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="btn btn-outline join-item"
+            >
+              <ArrowLeft />
+              Previous Page
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={endIndex >= result.length}
+              className="btn btn-outline join-item"
+            >
+              Next Page
+              <ArrowLeft className="rotate-180" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

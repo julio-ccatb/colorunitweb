@@ -15,6 +15,7 @@ import HandleStatus from "~/app/_components/handleStatus";
 import { formatDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
 import DetalleRegistroModal from "../../../../_components/modals/DetallesModal";
+import { ArrowLeft } from "lucide-react";
 
 export type RegColWithDistance = {
   distancia: number;
@@ -244,23 +245,27 @@ export default function Registropage() {
           </tbody>
         </table>
         <div className="mt-4 flex justify-center">
-          {colors && (
-            <>
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary  hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-              >
-                Previous Page
-              </button>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={endIndex >= colors.length}
-                className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-              >
-                Next Page
-              </button>
-            </>
+          {colors !== undefined && (
+            <div className="mt-4 flex justify-center">
+              <div className="join grid grid-cols-2">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="btn btn-outline join-item"
+                >
+                  <ArrowLeft />
+                  Previous Page
+                </button>
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={endIndex >= colors.length}
+                  className="btn btn-outline join-item"
+                >
+                  Next Page
+                  <ArrowLeft className="rotate-180" />
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </div>

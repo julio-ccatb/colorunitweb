@@ -167,7 +167,7 @@ export default function RegistroCreateForm() {
         onSuccess: () => {
           {
             toast.success(
-              `Colorante ${parsed.description} se a guardado correctamente`,
+              `Color ${parsed.description} se a guardado correctamente`,
             );
             reset();
             setBaseSelectedArray([]);

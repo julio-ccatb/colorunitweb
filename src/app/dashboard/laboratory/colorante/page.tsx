@@ -1,4 +1,5 @@
 "use client";
+import { ArrowLeft, Droplet, Droplets } from "lucide-react";
 import { type Colorant } from "pg/generated/zod";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -66,8 +67,16 @@ export default function ColorantePage() {
               <tr>
                 <th className="">Codigo</th>
                 <th className="">Descripccion</th>
-                <th className="">Up</th>
-                <th className="">Ug</th>
+                <th className="">
+                  <p className="flex ">
+                    Up <Droplet className="ml-1 text-secondary" size={15} />
+                  </p>
+                </th>
+                <th className="">
+                  <p className="flex ">
+                    Ug <Droplets className="ml-1 text-primary" size={15} />
+                  </p>
+                </th>
                 <th className="">Creado</th>
                 <th className="">Actualizado</th>
                 <th className="">Status</th>
@@ -105,22 +114,28 @@ export default function ColorantePage() {
             </tbody>
           </table>
         </div>
-        <div className="mt-4 flex justify-center">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="border-1 mr-2 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary  hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-          >
-            Previous Page
-          </button>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={endIndex >= listColorantes.length}
-            className="border-1 rounded-md border border-greenAccent bg-greenAccent px-4 py-2 font-semibold text-greenLight shadow-md transition-colors duration-200 hover:bg-whitePrimary hover:text-greenAccent disabled:cursor-not-allowed disabled:border-gray-500 disabled:bg-gray-300 disabled:text-gray-500 disabled:hover:bg-white"
-          >
-            Next Page
-          </button>
-        </div>
+        {listColorantes !== undefined && (
+          <div className="mt-4 flex justify-center">
+            <div className="join grid grid-cols-2">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="btn btn-outline join-item"
+              >
+                <ArrowLeft />
+                Previous Page
+              </button>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={endIndex >= listColorantes.length}
+                className="btn btn-outline join-item"
+              >
+                Next Page
+                <ArrowLeft className="rotate-180" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
