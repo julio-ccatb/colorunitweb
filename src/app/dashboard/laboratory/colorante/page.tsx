@@ -123,14 +123,14 @@ export default function ColorantePage() {
                 className="btn btn-outline join-item"
               >
                 <ArrowLeft />
-                Previous Page
+                Previous
               </button>
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={endIndex >= listColorantes.length}
                 className="btn btn-outline join-item"
               >
-                Next Page
+                Next
                 <ArrowLeft className="rotate-180" />
               </button>
             </div>
