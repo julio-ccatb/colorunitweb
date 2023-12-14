@@ -47,7 +47,7 @@ export default function TipoDeBasePage() {
         />
         <div
           role="tabpanel"
-          className="tab-content rounded-box border-base-300 bg-base-100 p-6"
+          className="tab-content rounded-box border-base-300 bg-base-100 px-6 pt-6"
         >
           <TbaseCreateForm />
         </div>
@@ -63,7 +63,7 @@ export default function TipoDeBasePage() {
         />
         <div
           role="tabpanel"
-          className="tab-content rounded-box border-base-300 bg-base-100"
+          className="tab-content rounded-box border-base-300 bg-base-100 px-6 pt-6"
         >
           <TbaseUpdateForm
             initialData={selected ?? ({} as Tbase)}
