@@ -22,6 +22,21 @@ export const coloranteRouter = createTRPCRouter({
       throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
     }
   }),
+  listActive: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const listColorantes = await ctx.db.colorant.findMany({
+        where: { active: true },
+        orderBy: { shortcode: "desc" },
+      });
+      return listColorantes;
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        const errorResponse = mapPrismaErrorToTrpcError(error);
+        throw new TRPCError(errorResponse);
+      }
+      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    }
+  }),
 
   create: protectedProcedure
     .input(ColorantUncheckedCreateWithoutRegcolcolorantsInputSchema)

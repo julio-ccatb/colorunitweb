@@ -196,10 +196,9 @@ export default function DetalleRegistroModal({
                   <h4 className="font-semibold">Bases</h4>
                   <div className="justify-between">
                     {color.regcolbases.map((base) => {
-                      const total = Decimal.mul(
-                        base.amount,
-                        cantidad,
-                      ).toString();
+                      const total = Decimal.mul(base.amount, cantidad).toFixed(
+                        2,
+                      );
 
                       return (
                         <p className="font-normal " key={base.id}>
@@ -242,7 +241,7 @@ export default function DetalleRegistroModal({
                               data-tip={`${margen.toFixed(2).toString()} GR`}
                             >
                               <span className="badge join-item">
-                                {`${total.toString()} GR`}
+                                {`${total.toFixed(2)} GR`}
                               </span>
                             </div>
                             <div

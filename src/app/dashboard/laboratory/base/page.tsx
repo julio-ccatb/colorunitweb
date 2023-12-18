@@ -1,5 +1,5 @@
 "use client";
-import { ArrowLeft, ClipboardEdit, Trash } from "lucide-react";
+import { ArrowLeft, ClipboardEdit, Trash, Weight } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import BaseCreateForm from "~/app/_components/forms/bases/BaseCreateForm";
@@ -41,6 +41,7 @@ export default function BasesPage() {
               <th>Ref</th>
               <th>Tipo</th>
               <th>Slang</th>
+              <th>Peso</th>
               <th>Actualizado</th>
               <th>Actions</th>
             </tr>
@@ -54,13 +55,20 @@ export default function BasesPage() {
                   </td>
                   <td className=" justify-start ">{item.tbase.description}</td>
                   <td className=" justify-start ">{item.slang ?? "N/A"}</td>
-
+                  <td>
+                    <p className="badge badge-sm w-20 justify-start bg-graySecondary p-2 py-3 font-semibold text-white hover:cursor-pointer">
+                      <span className="pr-1 text-info">
+                        <Weight size={12} />
+                      </span>
+                      {item.peso.toString()} lb
+                    </p>
+                  </td>
                   <td>
                     <span className="badge">{formatDate(item.updatedAt)}</span>
                   </td>
                   <td className=" flex gap-2">
                     <button className="btn btn-info rounded-md text-white">
-                      <ClipboardEdit size={15} />
+                      <ClipboardEdit />
                     </button>
                     <button
                       onClick={() =>

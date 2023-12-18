@@ -39,7 +39,7 @@ export default function RegistroCreateForm() {
   //load needed
   const { data: Listbase, status: baseStatus } = api.base.list.useQuery();
   const { data: Listcolorante, status: coloranteStatus } =
-    api.colorante.list.useQuery();
+    api.colorante.listActive.useQuery();
 
   // const { mutate, isLoading } = api.registro.create.useMutation();
   const { mutate, isLoading } = api.registro.create.useMutation();
