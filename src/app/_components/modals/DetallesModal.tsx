@@ -140,7 +140,7 @@ export default function DetalleRegistroModal({
                       } catch {
                         value = new Decimal(1);
                       }
-                      setCantidad(value);
+                      setCantidad(value.div(5));
                     }}
                     placeholder="Cantidad GL"
                     className={`join-item w-28 border p-2 text-center focus:input-accent`}

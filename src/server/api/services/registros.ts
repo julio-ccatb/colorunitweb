@@ -37,9 +37,13 @@ export const processRegCol = async (id: number) => {
   if (record.process) return;
 
   let totalPeso = new Decimal(0);
+  let totalBasesProcess = new Decimal(0);
   let pesoBasesBlancas = new Decimal(0);
   let pesoBasesNoBlancas = new Decimal(0);
   let pesoColorantes = new Decimal(0);
+  let procentajeBases = new Decimal(0);
+  let procentajeColorantes = new Decimal(0);
+  let PesoEstimado = new Decimal(0);
 
   recordsBasesBlancas.map((record) => {
     pesoBasesBlancas = Decimal.sum(record.amount, pesoBasesBlancas);
@@ -61,45 +65,58 @@ export const processRegCol = async (id: number) => {
     tipo = recordsBasesBlancas[0]?.base.tbaseId ?? 0;
   if (tipo == 0) tipo = recordsBasesNoBlancas[0]?.base.tbaseId ?? 0;
 
-  const porcentaje = pesoBasesBlancas.div(totalPeso).mul(100);
-
-  const tipoBase = await db.tbase.findFirst({ where: { id: tipo } });
-
-  let selectedPeso;
-
-  if (porcentaje.greaterThanOrEqualTo(95)) {
-    selectedPeso = tipoBase?.peso1;
-  } else if (porcentaje.greaterThanOrEqualTo(85)) {
-    selectedPeso = tipoBase?.peso2;
-  } else if (porcentaje.greaterThanOrEqualTo(75)) {
-    selectedPeso = tipoBase?.peso3;
-  } else if (porcentaje.greaterThanOrEqualTo(65)) {
-    selectedPeso = tipoBase?.peso4;
-  } else {
-    selectedPeso = tipoBase?.peso5;
-  }
-
-  const coeficienteG = selectedPeso?.div(totalPeso) ?? 1;
-
   const updateBaseNoBlanca = recordsBasesBlancas.map((record) => {
+    const peso = record.base.peso;
+    const porcent = record.amount.div(totalPeso);
+
+    procentajeBases = procentajeBases.plus(porcent);
+    const value = record.amount.div(totalPeso).mul(peso);
+    totalBasesProcess = totalBasesProcess.plus(value);
+
     return db.regcolbases.update({
       where: { id: record.id },
-      data: { amount: record.amount.mul(coeficienteG).div(5) },
+      data: { amount: value },
     });
   });
 
   const updateBaseBlanca = recordsBasesNoBlancas.map((record) => {
+    const peso = record.base.peso;
+    const porcent = record.amount.div(totalPeso);
+
+    procentajeBases = procentajeBases.plus(porcent);
+    const value = record.amount.div(totalPeso).mul(peso);
+
+    totalBasesProcess = totalBasesProcess.plus(value);
     return db.regcolbases.update({
       where: { id: record.id },
-      data: { amount: record.amount.mul(coeficienteG).div(5) },
+      data: { amount: value },
     });
   });
+
+  PesoEstimado = totalBasesProcess.div(procentajeBases);
+
   const updateColorant = record.regcolcolorants.map((record) => {
+    const porcent = record.amount.mul(0.0022).div(totalPeso);
+    const value = PesoEstimado.mul(porcent).div(0.0022);
+
+    procentajeColorantes = procentajeColorantes.plus(porcent);
+
     return db.regcolcolorants.update({
       where: { id: record.id },
-      data: { amount: record.amount.mul(coeficienteG).div(5) },
+      data: { amount: value },
     });
   });
+
+  // console.log(
+  //   // updateBaseBlanca, updateBaseNoBlanca, updateColorant,
+  //   [
+  //     { totalBasesProcess },
+  //     { procentajeBases },
+  //     { procentajeColorantes },
+  //     { PesoEstimado },
+  //     { total: procentajeBases.plus(procentajeColorantes) },
+  //   ],
+  // );
 
   await db.$transaction(updateBaseBlanca);
   await db.$transaction(updateBaseNoBlanca);
@@ -109,10 +126,8 @@ export const processRegCol = async (id: number) => {
     where: { id },
     data: {
       tbaseId: tipo,
-      pesopromedio: selectedPeso,
+      pesopromedio: PesoEstimado,
       active: true,
-      coeficienteG:
-        coeficienteG !== new Decimal(1) ? record.coeficienteG : coeficienteG,
       process: true,
     },
     include: { regcolbases: true, regcolcolorants: true, tbase: true },
