@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `base` ADD COLUMN `peso` DECIMAL(65, 30) NOT NULL DEFAULT 0;

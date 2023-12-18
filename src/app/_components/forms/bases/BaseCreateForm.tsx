@@ -90,6 +90,16 @@ export default function BaseCreateForm() {
                 errors.reforiginal ? "input-error" : "focus:input-accent"
               }`}
             />
+            <input
+              autoComplete="off"
+              type="text"
+              id="peso"
+              {...register("peso")}
+              placeholder="Peso"
+              className={`mr-2  rounded-md border p-2 ${
+                errors.reforiginal ? "input-error" : "focus:input-accent"
+              }`}
+            />
 
             <select
               id="tbaseId"
