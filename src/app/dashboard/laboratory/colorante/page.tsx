@@ -20,7 +20,7 @@ export default function ColorantePage() {
   const endIndex = startIndex + itemsPerPage;
 
   const { mutate } = api.colorante.update.useMutation();
-  const [colorant, setColorant] = useState<Colorant>({} as Colorant);
+  const [, setColorant] = useState<Colorant>({} as Colorant);
 
   // Get the items to display on the current page
   const itemsToDisplay =
@@ -85,7 +85,18 @@ export default function ColorantePage() {
             <tbody className="">
               {itemsToDisplay.map((item) => (
                 <tr key={item.id} className=" hover:bg-greenAccent/25">
-                  <td className=" justify-start p-2">{item.shortcode}</td>
+                  <td>
+                    <div
+                      className={` badge justify-start p-2 font-semibold ${
+                        item.pure
+                          ? " badge-primary text-white"
+                          : "badge badge-outline"
+                      } 
+                    }`}
+                    >
+                      {item.shortcode}
+                    </div>
+                  </td>
                   <td className=" justify-start p-2">{item.description}</td>
                   <td className=" justify-start p-2">
                     {item.gramUP.toString()}g

@@ -69,6 +69,18 @@ export default function ColorantesCreateForm() {
               }`}
             />
           </div>
+          <div className="">
+            <label className="label cursor-pointer">
+              <span className="label-text pr-1 italic">Es puro? </span>
+              <input
+                type="checkbox"
+                id="pure"
+                {...register("pure")}
+                defaultChecked={false}
+                className="checkbox-accent checkbox"
+              />
+            </label>
+          </div>
         </div>
         <p className="flex gap-2 pb-2 pt-2 font-light italic ">
           <span className="text-info">

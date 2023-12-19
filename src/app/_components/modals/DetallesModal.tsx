@@ -4,6 +4,7 @@ import {
   Droplet,
   Droplets,
   ServerCrash,
+  Star,
   Weight,
 } from "lucide-react";
 import { type Base, type Colorant } from "pg/generated/zod";
@@ -224,6 +225,28 @@ export default function DetalleRegistroModal({
                       );
                       // console.log(colorante_scope);
                       if (!colorante_scope) return <>N</>;
+                      if (colorante_scope.pure)
+                        return (
+                          <p className="py-1 font-normal " key={colorante.id}>
+                            {colorante_scope.shortcode}{" "}
+                            <div className="join ">
+                              <div
+                                className="tooltip tooltip-right tooltip-info sm:tooltip-left"
+                                data-tip="Colorante puro en gramos"
+                              >
+                                <div className="tooltip tooltip-right  sm:tooltip-left">
+                                  <span className="badge join-item bg-grayPrimary py-3 text-white">
+                                    {`${total.toFixed(2)} GR`}
+                                    <Star
+                                      size={12}
+                                      className="ml-1 animate-[spin_1s_ease-in] fill-current text-yellow-400"
+                                    />
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </p>
+                        );
 
                       const { unidadesGrandes, unidadesPequeñas, margen } =
                         calcularUnidades(
@@ -245,7 +268,7 @@ export default function DetalleRegistroModal({
                               </span>
                             </div>
                             <div
-                              className="tooltip tooltip-left"
+                              className="tooltip tooltip-right sm:tooltip-left"
                               data-tip="Unindades grandes"
                             >
                               <span className="badge join-item">

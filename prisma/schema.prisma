@@ -57,6 +57,7 @@ model Colorant {
   shortcode       String            @unique()
   gramUP          Decimal           @db.Decimal(65, 2)
   gramUG          Decimal           @db.Decimal(65, 2)
+  pure Boolean @default(false)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
   active          Boolean           @default(true)
