@@ -60,7 +60,7 @@ export default function ColorantePage() {
     <div className="flex flex-col rounded-md bg-white p-4 shadow-sm">
       <div>
         <h1 className="mb-4 text-2xl font-bold">Colorantes</h1>
-        <ColorantesCreateForm />
+        <ColorantesCreateForm refetch={refetch} />
         <div className="overflow-x-auto">
           <table className="table">
             <thead className="text-left">
