@@ -9,8 +9,18 @@ import { type Tbase } from "../../../../../prisma/generated/zod/modelSchema/Tbas
 import { useState } from "react";
 import HandleStatus from "../../handleStatus";
 import { toast } from "react-toastify";
+import {
+  type RefetchOptions,
+  type RefetchQueryFilters,
+} from "@tanstack/react-query";
 
-export default function BaseCreateForm() {
+export default function BaseCreateForm({
+  refetch,
+}: {
+  refetch?: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined,
+  ) => Promise<unknown>;
+}) {
   type Input = z.infer<typeof BaseUncheckedCreateWithoutRegcolbasesInputSchema>;
   const resolver = zodResolver(
     BaseUncheckedCreateWithoutRegcolbasesInputSchema,
@@ -53,6 +63,7 @@ export default function BaseCreateForm() {
               toast.success(
                 `Base ${data.reforiginal} se a guardado correctamente`,
               );
+              if (refetch) void refetch();
               reset();
             }
           },

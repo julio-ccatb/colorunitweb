@@ -69,7 +69,7 @@ export default function ColorantesCreateForm({
               errors.shortcode ? "input-error" : "focus:input-accent"
             }`}
           />
-          <div className="flex">
+          <div className="sm:flex">
             <input
               type="text"
               id="description"
@@ -79,18 +79,18 @@ export default function ColorantesCreateForm({
                 errors.description ? "input-error" : "focus:input-accent"
               }`}
             />
-          </div>
-          <div className="">
-            <label className="label cursor-pointer">
-              <span className="label-text pr-1 italic">Es puro? </span>
-              <input
-                type="checkbox"
-                id="pure"
-                {...register("pure")}
-                defaultChecked={false}
-                className="checkbox-accent checkbox"
-              />
-            </label>
+            <div className="">
+              <label className="label cursor-pointer">
+                <span className="label-text mr-2 italic">Es puro? </span>
+                <input
+                  type="checkbox"
+                  id="pure"
+                  {...register("pure")}
+                  defaultChecked={false}
+                  className="checkbox-accent checkbox  checked:[--chkfg:white]"
+                />
+              </label>
+            </div>
           </div>
         </div>
         <p className="flex gap-2 pb-2 pt-2 font-light italic ">

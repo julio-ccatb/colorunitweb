@@ -114,7 +114,7 @@ export default function ColorantePage() {
                     <input
                       type="checkbox"
                       className="toggle toggle-success"
-                      onClick={() => {
+                      onChange={() => {
                         ToggleActivate(item);
                       }}
                       checked={item.active}

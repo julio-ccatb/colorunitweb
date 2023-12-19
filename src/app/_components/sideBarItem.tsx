@@ -11,8 +11,8 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
     <li>
       <details open={expanded}>
         <summary
-          className={` group menu-title relative my-1 flex cursor-pointer items-center justify-center
-          rounded-md  px-3 py-2
+          className={`group menu-title relative flex cursor-pointer items-center 
+          rounded-md py-2
           font-medium text-greenLight transition-colors 
           ${
             Item.active
@@ -33,7 +33,7 @@ export default function SidebarItem(Item: TYPE_ROUTE) {
             <div
               className={`
             invisible absolute left-full z-50 ml-6 -translate-x-3 rounded-md
-            bg-greenLight px-2 py-1
+            bg-greenLight py-1
             text-sm text-greenAccent opacity-20 transition-all
             group-hover:visible group-hover:translate-x-0 group-hover:opacity-100
         `}

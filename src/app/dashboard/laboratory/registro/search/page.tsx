@@ -117,7 +117,7 @@ export default function Registropage() {
   if (coloantesStatus != "success") HandleStatus({ status });
 
   return (
-    <div className="rounded-md bg-white p-4 shadow-md ">
+    <section className="rounded-md bg-white p-4 shadow-md ">
       <h1 className="mb-4 text-2xl font-bold">Registros</h1>
       <SeachColorForm
         setRGB={setRGB}
@@ -148,7 +148,7 @@ export default function Registropage() {
               fallback={<div className="bg-accent text-white">Loading...</div>}
             >
               {colors &&
-                itemsToDisplay?.map((color) => {
+                itemsToDisplay.map((color) => {
                   return (
                     <tr
                       className="items-center justify-center align-middle"
@@ -269,6 +269,6 @@ export default function Registropage() {
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

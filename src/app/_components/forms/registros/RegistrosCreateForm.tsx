@@ -143,6 +143,11 @@ export default function RegistroCreateForm() {
   }
 
   const onSubmit: SubmitHandler<Input> = (data) => {
+    if (baseSelectedArray.length <= 0) {
+      toast.error("Debe agregar al menos una base");
+      return;
+    }
+
     const bases = baseSelectedArray.map((item): FormatedBase => {
       return {
         baseId: item.baseId,
@@ -283,7 +288,7 @@ export default function RegistroCreateForm() {
                       onChange={(e) =>
                         handleAmountChange({
                           colorantId: item.colorantId,
-                          amount: new Decimal(e.target.value),
+                          amount: new Decimal(e.target.value ?? 0.0),
                         })
                       }
                       placeholder="0.0"
