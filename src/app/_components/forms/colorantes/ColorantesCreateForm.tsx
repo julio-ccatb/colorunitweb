@@ -1,6 +1,9 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RefetchOptions, RefetchQueryFilters } from "@tanstack/react-query";
+import {
+  type RefetchOptions,
+  type RefetchQueryFilters,
+} from "@tanstack/react-query";
 import { FilePlus2, InfoIcon, Loader2 } from "lucide-react";
 import { ColorantUncheckedCreateWithoutRegcolcolorantsInputSchema } from "pg/generated/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
