@@ -56,7 +56,7 @@ export default function BasesPage() {
                   <td className=" justify-start ">{item.tbase.description}</td>
                   <td className=" justify-start ">{item.slang ?? "N/A"}</td>
                   <td>
-                    <p className="badge badge-sm w-20 justify-start bg-graySecondary p-2 py-3 font-semibold text-white hover:cursor-pointer">
+                    <p className="badge badge-sm w-24 justify-start bg-graySecondary p-2 py-3 font-semibold text-white hover:cursor-pointer">
                       <span className="pr-1 text-info">
                         <Weight size={12} />
                       </span>
