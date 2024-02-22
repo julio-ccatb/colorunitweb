@@ -1,93 +1,47 @@
 import Decimal from "decimal.js";
-import {
-  AlertTriangle,
-  Droplet,
-  Droplets,
-  ServerCrash,
-  Star,
-  Weight,
-} from "lucide-react";
+import { Droplet, Droplets, Pipette, Star, Weight } from "lucide-react";
 import { type Base, type Colorant } from "pg/generated/zod";
 import { type RegColWithDistance } from "~/app/dashboard/laboratory/registro/search/page";
-import { api } from "~/trpc/react";
-import { useRef, useState } from "react";
 import { calcularUnidades } from "~/app/_utils/dispensador";
-import PrintReg from "../print/PrintReg";
-import { useReactToPrint } from "react-to-print";
-export default function DetalleRegistroModal({
+import Image from "next/image";
+import Icon from "/public/logo.svg";
+
+export default function PrintReg({
   color,
   bases,
   colorantes,
-  RGB,
+  cantidad,
 }: {
   color: RegColWithDistance;
   bases: Base[];
   colorantes: Colorant[];
-  RGB?: { R: number; G: number; B: number };
+  cantidad: Decimal;
 }) {
-  const { mutate, isLoading, error } = api.registro.process.useMutation();
-  const [cantidad, setCantidad] = useState(new Decimal(1));
-
-  const componentRef = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
   return (
-    <dialog id="my_modal_1" className="modal">
-      {/* <PrintReg
-        key={color.id}
-        bases={bases ?? []}
-        colorantes={colorantes ?? []}
-        color={color}
-        cantidad={cantidad}
-      /> */}
-
-      <div className="modal-box max-w-xl">
+    <div className="w-full bg-white">
+      <div
+        className={`flex items-center justify-between px-6 py-4 text-grayPrimary`}
+      >
+        <div className="flex items-center justify-center ">
+          <Image
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            src={Icon}
+            className={`w-16 overflow-hidden`}
+            alt=""
+          />
+          <span
+            className={`text-md ml-3 flex w-16 flex-col overflow-hidden border-l-2 border-solid border-l-graySecondary pl-2 font-extrabold tracking-tight transition-all`}
+          >
+            Color <span className="text-greenAccent">Unit</span>
+          </span>
+        </div>
+      </div>
+      <div className="p-8">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}
-          <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
-            ✕
-          </button>
         </form>
-        <h3 className="my-2 text-lg font-bold">Detalles</h3>
+        <h3 className="my-2 flex gap-2 text-lg font-bold">Detalles</h3>
 
-        <div className="diff h-28  w-full rounded-btn border">
-          <div className="diff-item-1">
-            <div
-              style={{
-                backgroundColor: `rgb(${color.R},${color.G},${color.B})`,
-              }}
-              className="grid place-content-center  text-7xl font-extrabold"
-            >
-              <span
-                style={{
-                  color: `rgb(${RGB?.R},${RGB?.G},${RGB?.B})`,
-                }}
-              >
-                {RGB?.R},{RGB?.G},{RGB?.B}
-              </span>
-            </div>
-          </div>
-          <div className="diff-item-2">
-            <div
-              className="grid place-content-center  text-7xl font-extrabold"
-              style={{
-                backgroundColor: `rgb(${RGB?.R},${RGB?.G},${RGB?.B})`,
-              }}
-            >
-              <span
-                style={{
-                  color: `rgb(${color.R},${color.G},${color.B})`,
-                }}
-              >
-                {color.R},{color.G},{color.B}
-              </span>
-            </div>
-          </div>
-          <div className="grid place-content-center text-xl lg:text-9xl"></div>
-
-          <div className="diff-resizer" />
-        </div>
         <div className="divider divider-vertical">
           <p className="badge badge-outline cursor-pointer font-semibold">
             Resumen
@@ -97,7 +51,7 @@ export default function DetalleRegistroModal({
           <div className="w-full text-sm font-normal sm:w-1/2">
             <div className="flex flex-col sm:flex-1 ">
               <div className="font-semibold">
-                <h4>Comparacion</h4>
+                <h4 className="pb-1">Comparacion</h4>
               </div>
               <span>
                 Nombre:{" "}
@@ -124,9 +78,9 @@ export default function DetalleRegistroModal({
                 </span>
               </span>
               <span>
-                Desviacion:{" "}
+                Cantidad:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.distancia.toFixed(2)} uD
+                  {cantidad.toFixed(2)} GL
                 </span>
               </span>
               <span>
@@ -138,70 +92,6 @@ export default function DetalleRegistroModal({
               </span>
             </div>
           </div>
-          <div className="flex w-full flex-col gap-2 font-bold sm:w-1/2">
-            {color.process ? (
-              <>
-                <h4 className="font-semibold" onClick={handlePrint}>
-                  Ordenar
-                </h4>
-                <input
-                  type="text"
-                  id="GL"
-                  autoComplete="off"
-                  onChange={(e) => {
-                    let value = new Decimal(1);
-                    try {
-                      value = new Decimal(e.target.value) ?? new Decimal(1);
-                    } catch {
-                      value = new Decimal(1);
-                    }
-                    setCantidad(value.div(5));
-                  }}
-                  placeholder="Cantidad GL"
-                  className={`join-item w-28 border p-2 text-center focus:input-accent`}
-                />
-                <button
-                  className="btn btn-accent text-white"
-                  onClick={handlePrint}
-                >
-                  Ordenar
-                </button>
-              </>
-            ) : (
-              <>
-                <h4 className="font-semibold">Estado</h4>
-
-                {error ? (
-                  <div className="alert alert-error text-sm">
-                    <ServerCrash size={20} />
-                    <span className="text-xs">{error.message}</span>
-                  </div>
-                ) : (
-                  <div className="alert alert-warning text-sm">
-                    <AlertTriangle />
-                    <span>
-                      El color {color.description} no ha sido procesado.
-                    </span>
-                  </div>
-                )}
-
-                <button
-                  disabled={isLoading && !error}
-                  onClick={() => mutate(color.id)}
-                  className="btn btn-accent text-white"
-                >
-                  {isLoading ? (
-                    <>
-                      <span className="loading loading-spinner" />
-                      ... Procesando
-                    </>
-                  ) : (
-                    <>Procesar</>
-                  )}
-                </button>
-              </>
-            )}
-          </div>
         </div>
         <div className="divider divider-vertical">
           <p className="badge badge-outline cursor-pointer font-semibold">
@@ -211,9 +101,9 @@ export default function DetalleRegistroModal({
         <div className="card w-full">
           <div className="flex justify-center gap-4"></div>
           <div className="card-body p-0">
-            <div className="sm:flex">
+            <div className="">
               <div className="card max-w-sm items-start rounded-box py-2 ">
-                <h4 className="font-semibold">Bases</h4>
+                <h4 className="pb-1 font-semibold">Bases</h4>
                 <div className="justify-between">
                   {color.regcolbases.map((base) => {
                     const total = Decimal.mul(base.amount, cantidad).toFixed(2);
@@ -232,7 +122,7 @@ export default function DetalleRegistroModal({
               </div>
               <div className="sm:devider-vertical divider md:divider-horizontal"></div>
               <div className="card grid items-start rounded-box  py-2 ">
-                <h4 className="font-semibold">Colorantes</h4>
+                <h4 className="pb-1 font-semibold">Colorantes</h4>
                 <div className="justify-between">
                   {color.regcolcolorants.map((colorante) => {
                     const total = Decimal.mul(colorante.amount, cantidad);
@@ -246,12 +136,12 @@ export default function DetalleRegistroModal({
                       return (
                         <p className="py-1 font-normal " key={colorante.id}>
                           {colorante_scope.shortcode}{" "}
-                          <div className="join ">
-                            <div
+                          <span className="join ">
+                            <span
                               className="tooltip tooltip-right tooltip-info sm:tooltip-left"
                               data-tip="Colorante puro en gramos"
                             >
-                              <div className="tooltip tooltip-right  sm:tooltip-left">
+                              <span className="tooltip tooltip-right  sm:tooltip-left">
                                 <span className="badge join-item bg-grayPrimary py-3 text-white">
                                   {`${total.toFixed(2)} GR`}
                                   <Star
@@ -259,9 +149,9 @@ export default function DetalleRegistroModal({
                                     className="ml-1 animate-[spin_1s_ease-in] fill-current text-yellow-400"
                                   />
                                 </span>
-                              </div>
-                            </div>
-                          </div>
+                              </span>
+                            </span>
+                          </span>
                         </p>
                       );
 
@@ -275,16 +165,16 @@ export default function DetalleRegistroModal({
                     return (
                       <p className="py-1 font-normal " key={colorante.id}>
                         {colorante_scope.shortcode}{" "}
-                        <div className="join ">
-                          <div
+                        <span className="join ">
+                          <span
                             className="tooltip tooltip-right sm:tooltip-left"
                             data-tip={`${margen.toFixed(2).toString()} GR`}
                           >
                             <span className="badge join-item">
                               {`${total.toFixed(2)} GR`}
                             </span>
-                          </div>
-                          <div
+                          </span>
+                          <span
                             className="tooltip tooltip-right sm:tooltip-left"
                             data-tip="Unindades grandes"
                           >
@@ -295,8 +185,8 @@ export default function DetalleRegistroModal({
                                 size={15}
                               />
                             </span>
-                          </div>
-                          <div
+                          </span>
+                          <span
                             className="tooltip tooltip-left"
                             data-tip="Unindades pequeñas"
                           >
@@ -307,8 +197,20 @@ export default function DetalleRegistroModal({
                                 size={15}
                               />
                             </span>
-                          </div>
-                        </div>
+                          </span>
+                          <span
+                            className="tooltip tooltip-left"
+                            data-tip="Unindades pequeñas"
+                          >
+                            <span className="badge join-item">
+                              {margen.abs().toString()}
+                              <Pipette
+                                className="ml-1 text-secondary"
+                                size={15}
+                              />
+                            </span>
+                          </span>
+                        </span>
                       </p>
                     );
                   })}
@@ -318,6 +220,6 @@ export default function DetalleRegistroModal({
           </div>
         </div>
       </div>
-    </dialog>
+    </div>
   );
 }
