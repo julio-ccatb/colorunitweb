@@ -3,6 +3,8 @@ export enum ROUTES {
   HOME = "/dashboard/home",
   LABORATORY = "/dashboard/laboratory",
   LABORATORY_BASE = "/dashboard/laboratory/base",
+  LABORATORY_ORDER = "/dashboard/laboratory/order",
+  LABORATORY_ORDER_ID = "/dashboard/laboratory/order/",
   LABORATORY_BASE_TIPO = "/dashboard/laboratory/base/tipo",
   LABORATORY_COLORANTE = "/dashboard/laboratory/colorante",
   LABORATORY_REGISTRO = "/dashboard/laboratory/registro",

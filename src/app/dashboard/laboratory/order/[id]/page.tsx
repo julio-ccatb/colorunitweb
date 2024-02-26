@@ -1,12 +1,12 @@
 "use client";
-import Decimal from "decimal.js";
 import PrintReg from "~/app/_components/print/PrintReg";
 import { api } from "~/trpc/react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import { type OrderWithRelations } from "pg/generated/zod";
 
 const OrderPrint = ({ params }: { params: { id: string } }) => {
-  const { data, mutate } = api.registro.findColor.useMutation();
+  const { data } = api.order.findUnique.useQuery(params.id);
   const { data: bases } = api.base.list.useQuery();
   const { data: colorantes } = api.colorante.list.useQuery();
 
@@ -15,22 +15,18 @@ const OrderPrint = ({ params }: { params: { id: string } }) => {
     content: () => componentRef.current,
   });
 
-  useEffect(() => {
-    console.log(params.id);
-    mutate({});
-  }, []);
-
-  if (!data?.[2] || !bases || !colorantes) return;
+  if (!data || !bases || !colorantes) return;
+  console.log(data);
 
   return (
     <>
       <div ref={componentRef}>
         <PrintReg
-          key={data[2].id}
+          key={data.id}
           bases={bases}
           colorantes={colorantes}
-          color={data[2]}
-          cantidad={new Decimal(5)}
+          color={data as OrderWithRelations}
+          cantidad={data.amaunt}
         />
       </div>
       <button className="btn" onClick={handlePrint}>

@@ -57,7 +57,7 @@ model Colorant {
   shortcode       String            @unique()
   gramUP          Decimal           @db.Decimal(65, 2)
   gramUG          Decimal           @db.Decimal(65, 2)
-  pure Boolean @default(false)
+  pure            Boolean           @default(false)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
   active          Boolean           @default(true)
@@ -82,6 +82,7 @@ model Regcol {
   tbase           Tbase?            @relation(fields: [tbaseId], references: [id])
   regcolbases     Regcolbases[]
   regcolcolorants Regcolcolorants[]
+  orders          Order[]
 
   @@index([tbaseId])
 }
@@ -162,4 +163,14 @@ model Verificationtoken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Order {
+  id       String  @id @default(cuid())
+  regcolId Int
+  amaunt   Decimal
+  status   Int     @default(0)
+  regcol   Regcol  @relation(fields: [regcolId], references: [id])
+
+  @@index([regcolId])
 }

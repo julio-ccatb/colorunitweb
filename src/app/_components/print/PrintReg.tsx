@@ -1,7 +1,10 @@
 import Decimal from "decimal.js";
 import { Droplet, Droplets, Pipette, Star, Weight } from "lucide-react";
-import { type Base, type Colorant } from "pg/generated/zod";
-import { type RegColWithDistance } from "~/app/dashboard/laboratory/registro/search/page";
+import {
+  type OrderWithRelations,
+  type Base,
+  type Colorant,
+} from "pg/generated/zod";
 import { calcularUnidades } from "~/app/_utils/dispensador";
 import Image from "next/image";
 import Icon from "/public/logo.svg";
@@ -12,7 +15,7 @@ export default function PrintReg({
   colorantes,
   cantidad,
 }: {
-  color: RegColWithDistance;
+  color: OrderWithRelations;
   bases: Base[];
   colorantes: Colorant[];
   cantidad: Decimal;
@@ -37,14 +40,29 @@ export default function PrintReg({
         </div>
       </div>
       <div className="p-8">
-        <form method="dialog">
-          {/* if there is a button in form, it will close the modal */}
-        </form>
-        <h3 className="my-2 flex gap-2 text-lg font-bold">Detalles</h3>
-
         <div className="divider divider-vertical">
           <p className="badge badge-outline cursor-pointer font-semibold">
-            Resumen
+            Detalles
+          </p>
+        </div>
+        <div className="flex flex-col gap-4 sm:w-full sm:flex-row">
+          <div className="w-full text-sm font-normal sm:w-1/2">
+            <div className="flex flex-col sm:flex-1 ">
+              <span>
+                Cliente: <span className="badge m-1 rounded-md p-1">N/A</span>
+              </span>
+              <span>
+                Cantidad:{" "}
+                <span className="badge m-1 rounded-md p-1">
+                  {!color.amaunt ? "N/A" : color.amaunt.toString()} GL
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="divider divider-vertical">
+          <p className="badge badge-outline cursor-pointer font-semibold">
+            Resumen de color
           </p>
         </div>
         <div className="flex flex-col gap-4 sm:w-full sm:flex-row">
@@ -56,37 +74,32 @@ export default function PrintReg({
               <span>
                 Nombre:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {!color.description ? "N/A" : color.description}
+                  {!color.regcol.description ? "N/A" : color.regcol.description}
                 </span>
               </span>
               <span>
                 Calidad:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.tbase?.description ?? "N/A"}
+                  {color.regcol.tbase?.description ?? "N/A"}
                 </span>
               </span>
               <span>
                 RGB:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.R},{color.G},{color.B}
+                  {color.regcol.R},{color.regcol.G},{color.regcol.B}
                 </span>
               </span>
               <span>
                 Brillo:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.brillo?.toString() ?? "N/A"}
+                  {color.regcol.brillo?.toString() ?? "N/A"}
                 </span>
               </span>
-              <span>
-                Cantidad:{" "}
-                <span className="badge m-1 rounded-md p-1">
-                  {cantidad.toFixed(2)} GL
-                </span>
-              </span>
+
               <span>
                 Peso Cubeta:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {color.pesopromedio?.toString()} LB{" "}
+                  {color.regcol.pesopromedio?.toString()} LB{" "}
                   <Weight size={15} className="ml-1" />
                 </span>
               </span>
@@ -105,7 +118,7 @@ export default function PrintReg({
               <div className="card max-w-sm items-start rounded-box py-2 ">
                 <h4 className="pb-1 font-semibold">Bases</h4>
                 <div className="justify-between">
-                  {color.regcolbases.map((base) => {
+                  {color.regcol.regcolbases.map((base) => {
                     const total = Decimal.mul(base.amount, cantidad).toFixed(2);
 
                     return (
@@ -124,7 +137,7 @@ export default function PrintReg({
               <div className="card grid items-start rounded-box  py-2 ">
                 <h4 className="pb-1 font-semibold">Colorantes</h4>
                 <div className="justify-between">
-                  {color.regcolcolorants.map((colorante) => {
+                  {color.regcol.regcolcolorants.map((colorante) => {
                     const total = Decimal.mul(colorante.amount, cantidad);
 
                     const colorante_scope = colorantes.find(

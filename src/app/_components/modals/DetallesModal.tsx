@@ -14,6 +14,8 @@ import { useRef, useState } from "react";
 import { calcularUnidades } from "~/app/_utils/dispensador";
 import PrintReg from "../print/PrintReg";
 import { useReactToPrint } from "react-to-print";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "~/app/_utils/routesEnum";
 export default function DetalleRegistroModal({
   color,
   bases,
@@ -27,6 +29,27 @@ export default function DetalleRegistroModal({
 }) {
   const { mutate, isLoading, error } = api.registro.process.useMutation();
   const [cantidad, setCantidad] = useState(new Decimal(1));
+  const router = useRouter();
+
+  const {
+    mutate: createOrder,
+    isLoading: isLoadinOrder,
+    error: errorOrder,
+    data: order,
+  } = api.order.create.useMutation();
+
+  const CreateOrder = () => {
+    createOrder(
+      {
+        amaunt: cantidad.mul(5),
+        regcol: { connect: { id: color.id } },
+      },
+      {
+        onSuccess: (data) =>
+          router.push(`${ROUTES.LABORATORY_ORDER_ID}${data.id}`),
+      },
+    );
+  };
 
   const componentRef = useRef(null);
   const handlePrint = useReactToPrint({
@@ -162,7 +185,7 @@ export default function DetalleRegistroModal({
                 />
                 <button
                   className="btn btn-accent text-white"
-                  onClick={handlePrint}
+                  onClick={CreateOrder}
                 >
                   Ordenar
                 </button>
