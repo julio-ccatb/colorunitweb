@@ -2,17 +2,13 @@ import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { Prisma } from "@prisma/client";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
-import OrderFindUniqueArgsSchema from "../../../../prisma/generated/zod/outputTypeSchemas/OrderFindUniqueArgsSchema";
-import {
-  OrderCreateInputSchema,
-  OrderWithRelationsSchema,
-} from "pg/generated/zod";
+import { OrderCreateInputSchema } from "pg/generated/zod";
 import { z } from "zod";
 
 export const orderRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
     try {
-      const orders = await ctx.db.order.findMany({});
+      const orders = await ctx.db.order.findMany({ include: { regcol: true } });
 
       return orders;
     } catch (error) {

@@ -166,11 +166,14 @@ model Verificationtoken {
 }
 
 model Order {
-  id       String  @id @default(cuid())
-  regcolId Int
-  amaunt   Decimal
-  status   Int     @default(0)
-  regcol   Regcol  @relation(fields: [regcolId], references: [id])
+  id        String    @id @default(cuid())
+  regcolId  Int
+  amaunt    Decimal
+  status    Int       @default(0)
+  regcol    Regcol    @relation(fields: [regcolId], references: [id])
+  createdAt DateTime  @default(now())
+  processAt DateTime?
+  closedAt  DateTime?
 
   @@index([regcolId])
 }
