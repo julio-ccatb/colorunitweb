@@ -1,9 +1,9 @@
 "use client";
-import PrintReg from "~/app/_components/print/PrintReg";
-import { api } from "~/trpc/react";
+import { type OrderWithRelations } from "pg/generated/zod";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import { type OrderWithRelations } from "pg/generated/zod";
+import PrintReg from "~/app/_components/print/PrintReg";
+import { api } from "~/trpc/react";
 
 const OrderPrint = ({ params }: { params: { id: string } }) => {
   const { data } = api.order.findUnique.useQuery(params.id);

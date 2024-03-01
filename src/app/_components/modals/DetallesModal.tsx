@@ -7,15 +7,14 @@ import {
   Star,
   Weight,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { type Base, type Colorant } from "pg/generated/zod";
+import { useRef, useState } from "react";
+import { useReactToPrint } from "react-to-print";
+import { calcularUnidades } from "~/app/_utils/dispensador";
+import { ROUTES } from "~/app/_utils/routesEnum";
 import { type RegColWithDistance } from "~/app/dashboard/laboratory/registro/search/page";
 import { api } from "~/trpc/react";
-import { useRef, useState } from "react";
-import { calcularUnidades } from "~/app/_utils/dispensador";
-import PrintReg from "../print/PrintReg";
-import { useReactToPrint } from "react-to-print";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "~/app/_utils/routesEnum";
 export default function DetalleRegistroModal({
   color,
   bases,
@@ -45,8 +44,7 @@ export default function DetalleRegistroModal({
         regcol: { connect: { id: color.id } },
       },
       {
-        onSuccess: (data) =>
-          router.push(`${ROUTES.LABORATORY_ORDER_ID}${data.id}`),
+        onSuccess: (data) => router.push(`${ROUTES.ORDER_ID}${data.id}`),
       },
     );
   };
@@ -57,14 +55,6 @@ export default function DetalleRegistroModal({
   });
   return (
     <dialog id="my_modal_1" className="modal">
-      {/* <PrintReg
-        key={color.id}
-        bases={bases ?? []}
-        colorantes={colorantes ?? []}
-        color={color}
-        cantidad={cantidad}
-      /> */}
-
       <div className="modal-box max-w-xl">
         <form method="dialog">
           {/* if there is a button in form, it will close the modal */}

@@ -1,10 +1,10 @@
 "use client";
-import { api } from "~/trpc/react";
+import { useRouter } from "next/navigation";
+import { type OrderWithRelations } from "pg/generated/zod";
 import { useState } from "react";
 import { formatDate } from "~/app/_utils/dateFunctions";
-import { type OrderWithRelations } from "pg/generated/zod";
-import { useRouter } from "next/navigation";
 import { ROUTES } from "~/app/_utils/routesEnum";
+import { api } from "~/trpc/react";
 
 const OrderPage = () => {
   const { data: orders } = api.order.list.useQuery();
@@ -278,9 +278,7 @@ const OrderTableRow = ({ order }: { order: OrderWithRelations }) => {
       <th>
         <button
           className="btn btn-ghost btn-xs"
-          onClick={() =>
-            router.push(`${ROUTES.LABORATORY_ORDER_ID}${order.id}`)
-          }
+          onClick={() => router.push(`${ROUTES.ORDER_ID}${order.id}`)}
         >
           details
         </button>
