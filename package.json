@@ -26,7 +26,7 @@
     "@types/lodash": "^4.14.200",
     "decimal.js": "^10.4.3",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.292.0",
+    "lucide-react": "^0.344.0",
     "next": "^14.0.3",
     "next-auth": "^4.23.0",
     "react": "18.2.0",

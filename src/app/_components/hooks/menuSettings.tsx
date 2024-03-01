@@ -7,6 +7,7 @@ import {
   Pipette,
   Settings,
   UserCog,
+  NotebookPen,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { ROUTES } from "~/app/_utils/routesEnum";
@@ -50,6 +51,12 @@ export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
             active: false,
           },
         ],
+      },
+      {
+        icon: <NotebookPen size={15} />,
+        text: "Ordenes",
+        href: ROUTES.LABORATORY_ORDER,
+        active: false,
       },
       {
         icon: <Pipette size={15} />,

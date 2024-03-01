@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
 import useSidebarItems, { type TYPE_ROUTE } from "../hooks/menuSettings";
-import { ROUTES } from "~/app/_utils/routesEnum";
+import { type ROUTES } from "~/app/_utils/routesEnum";
 
 interface SidebarContextProps {
   expanded: boolean;
