@@ -4,7 +4,7 @@ import {
   FlaskConical,
   FlaskRound,
   Home,
-  NotebookPen,
+  NotebookPenIcon,
   Pipette,
   Settings,
   UserCog,
@@ -29,7 +29,7 @@ export const MENU_INITIAL_STATE: TYPE_ROUTE[] = [
     active: false,
   },
   {
-    icon: <NotebookPen size={20} />,
+    icon: <NotebookPenIcon size={20} />,
     text: "Ordenes",
     href: ROUTES.ORDER,
     active: false,

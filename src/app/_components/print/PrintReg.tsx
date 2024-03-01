@@ -8,6 +8,7 @@ import {
 import { calcularUnidades } from "~/app/_utils/dispensador";
 import Image from "next/image";
 import Icon from "/public/logo.svg";
+import { formatDate } from "~/app/_utils/dateFunctions";
 
 export default function PrintReg({
   color,
@@ -21,30 +22,48 @@ export default function PrintReg({
   cantidad: Decimal;
 }) {
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white p-4">
       <div
         className={`flex items-center justify-between px-6 py-4 text-grayPrimary`}
       >
-        <div className="flex items-center justify-center ">
-          <Image
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            src={Icon}
-            className={`w-16 overflow-hidden`}
-            alt=""
-          />
-          <span
-            className={`text-md ml-3 flex w-16 flex-col overflow-hidden border-l-2 border-solid border-l-graySecondary pl-2 font-extrabold tracking-tight transition-all`}
-          >
-            Color <span className="text-greenAccent">Unit</span>
-          </span>
+        <div className=" flex  w-full justify-between ">
+          <div className="flex items-center justify-center">
+            <Image
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              src={Icon}
+              className={`w-16 overflow-hidden `}
+              alt=""
+            />
+            <span
+              className={`text-md ml-3 flex w-16 flex-col overflow-hidden border-l-2 border-solid border-l-graySecondary pl-2 font-extrabold tracking-tight transition-all`}
+            >
+              Color <span className="text-greenAccent">Unit</span>
+            </span>
+          </div>
+          <div className="pb-4">
+            <h3 className="text-lg font-bold">Orden: {color.id}</h3>
+            <h3 className="text-lg font-bold">
+              Fecha:{" "}
+              {formatDate(color.createdAt, {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </h3>
+          </div>
         </div>
       </div>
-      <div className="p-8">
-        <div className="divider divider-vertical">
-          <p className="badge badge-outline cursor-pointer font-semibold">
-            Detalles
-          </p>
-        </div>
+      <div className="p-4">
+        <h2 className=" font-semibold">
+          Ozono Quimicos Y Especialidades
+          <span className="font-normal">
+            , <br />
+            C. Tunti Cáceres, Santo Domingo
+          </span>
+        </h2>
+        <div className="divider divider-vertical"></div>
         <div className="flex flex-col gap-4 sm:w-full sm:flex-row">
           <div className="w-full text-sm font-normal sm:w-1/2">
             <div className="flex flex-col sm:flex-1 ">
@@ -68,9 +87,6 @@ export default function PrintReg({
         <div className="flex flex-col gap-4 sm:w-full sm:flex-row">
           <div className="w-full text-sm font-normal sm:w-1/2">
             <div className="flex flex-col sm:flex-1 ">
-              <div className="font-semibold">
-                <h4 className="pb-1">Comparacion</h4>
-              </div>
               <span>
                 Nombre:{" "}
                 <span className="badge m-1 rounded-md p-1">

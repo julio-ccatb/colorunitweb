@@ -1,4 +1,5 @@
 "use client";
+import { PrinterIcon } from "lucide-react";
 import { type OrderWithRelations } from "pg/generated/zod";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
@@ -29,8 +30,9 @@ const OrderPrint = ({ params }: { params: { id: string } }) => {
           cantidad={data.amaunt}
         />
       </div>
-      <button className="btn" onClick={handlePrint}>
-        Print this out!
+      <button className="btn btn-outline w-full " onClick={handlePrint}>
+        <PrinterIcon size={20} />
+        Imprimir orden
       </button>
     </>
   );
