@@ -203,55 +203,23 @@ export default function PrintReg({
                       );
 
                     return (
-                      <p className="py-1 font-normal " key={colorante.id}>
+                      <div className="py-1 font-normal " key={colorante.id}>
                         {colorante_scope.shortcode}{" "}
-                        <span className="join ">
-                          <span
-                            className="tooltip tooltip-right sm:tooltip-left"
-                            data-tip={`${margen.toFixed(2).toString()} GR`}
-                          >
-                            <span className="badge join-item">
-                              {`${total.toFixed(2)} GR`}
-                            </span>
+                        <span className=" join space-x-1">
+                          <span className=" join-item">
+                            {`${total.toFixed(2)} GR |`}
                           </span>
-                          <span
-                            className="tooltip tooltip-right sm:tooltip-left"
-                            data-tip="Unindades grandes"
-                          >
-                            <span className="badge join-item">
-                              {unidadesGrandes.toString()}
-                              <Droplets
-                                className="ml-1 text-primary"
-                                size={15}
-                              />
-                            </span>
+                          <span className=" join-item">
+                            {unidadesGrandes.toString()} UG |
                           </span>
-                          <span
-                            className="tooltip tooltip-left"
-                            data-tip="Unindades pequeñas"
-                          >
-                            <span className="badge join-item">
-                              {unidadesPequeñas.toString()}
-                              <Droplet
-                                className="ml-1 text-secondary"
-                                size={15}
-                              />
-                            </span>
+                          <span className=" join-item">
+                            {unidadesPequeñas.toString()} UP |
                           </span>
-                          <span
-                            className="tooltip tooltip-left"
-                            data-tip="Unindades pequeñas"
-                          >
-                            <span className="badge join-item">
-                              {margen.abs().toString()}
-                              <Pipette
-                                className="ml-1 text-secondary"
-                                size={15}
-                              />
-                            </span>
+                          <span className=" join-item">
+                            {margen.abs().toString()} G |
                           </span>
                         </span>
-                      </p>
+                      </div>
                     );
                   })}
                 </div>
