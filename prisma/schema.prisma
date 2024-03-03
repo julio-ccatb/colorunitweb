@@ -37,6 +37,25 @@ model Account {
   @@index([userId])
 }
 
+model Role {
+  roleId String
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([roleId, userId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique()
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
 model Base {
   id          Int           @id @default(autoincrement())
   reforiginal String
@@ -65,24 +84,25 @@ model Colorant {
 }
 
 model Regcol {
-  id              Int               @id @default(autoincrement())
+  id              Int                @id @default(autoincrement())
   description     String?
   carta           Int?
   R               Int /// @zod.number.lte(255).gte(0); 
   G               Int /// @zod.number.lte(255).gte(0);
   B               Int /// @zod.number.lte(255).gte(0);
-  pesopromedio    Decimal?          @db.Decimal(65, 2)
-  brillo          Decimal?          @db.Decimal(65, 2)
+  pesopromedio    Decimal?           @db.Decimal(65, 2)
+  brillo          Decimal?           @db.Decimal(65, 2)
   active          Boolean?
-  coeficienteG    Decimal?          @db.Decimal(65, 2)
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
+  coeficienteG    Decimal?           @db.Decimal(65, 2)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @default(now()) @updatedAt
   tbaseId         Int?
-  process         Boolean           @default(false)
-  tbase           Tbase?            @relation(fields: [tbaseId], references: [id])
+  process         Boolean            @default(false)
+  tbase           Tbase?             @relation(fields: [tbaseId], references: [id])
   regcolbases     Regcolbases[]
   regcolcolorants Regcolcolorants[]
   orders          Order[]
+  extended        ExtendedOnRegCol[]
 
   @@index([tbaseId])
 }
@@ -111,38 +131,73 @@ model Regcolcolorants {
   @@index([regColId])
 }
 
-model Role {
-  roleId String
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+model Order {
+  id        String    @id @default(cuid())
+  regcolId  Int
+  amaunt    Decimal
+  status    Int       @default(0)
+  regcol    Regcol    @relation(fields: [regcolId], references: [id])
+  createdAt DateTime  @default(now())
+  processAt DateTime?
+  closedAt  DateTime?
 
-  @@unique([roleId, userId])
-  @@index([userId])
+  @@index([regcolId])
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique()
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Customer {
+  id        String     @id
+  firstName String
+  lastName  String
+  email     String     @unique
+  isCompany Boolean
+  createdAt DateTime   @default(now())
+  extended  Extended[]
+}
 
-  @@index([userId])
+model Extended {
+  id         Int                @id @default(autoincrement())
+  createdAt  DateTime           @default(now())
+  name       String
+  brillo     Decimal?           @db.Decimal(65, 2)
+  R          Decimal            @db.Decimal(65, 2)
+  G          Decimal            @db.Decimal(65, 2)
+  B          Decimal            @db.Decimal(65, 2)
+  HEX        String?
+  tbaseId    Int?
+  tbase      Tbase?             @relation(fields: [tbaseId], references: [id])
+  regcols    ExtendedOnRegCol[]
+  customerId String
+  customer   Customer           @relation(fields: [customerId], references: [id])
+
+  @@index([tbaseId])
+  @@index([customerId])
+}
+
+model ExtendedOnRegCol {
+  id         Int      @id
+  regcolId   Int
+  regcol     Regcol   @relation(fields: [regcolId], references: [id])
+  extendedId Int
+  extended   Extended @relation(fields: [extendedId], references: [id])
+
+  @@index([regcolId])
+  @@index([extendedId])
 }
 
 model Tbase {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   description String /// @zod.string.min(4)
-  shortcode   String   @unique() /// @zod.string.min(2)
-  peso1       Decimal? @db.Decimal(65, 2)
-  peso2       Decimal? @db.Decimal(65, 2)
-  peso3       Decimal? @db.Decimal(65, 2)
-  peso4       Decimal? @db.Decimal(65, 2)
-  peso5       Decimal? @db.Decimal(65, 2)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  shortcode   String     @unique() /// @zod.string.min(2)
+  peso1       Decimal?   @db.Decimal(65, 2)
+  peso2       Decimal?   @db.Decimal(65, 2)
+  peso3       Decimal?   @db.Decimal(65, 2)
+  peso4       Decimal?   @db.Decimal(65, 2)
+  peso5       Decimal?   @db.Decimal(65, 2)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt
   base        Base[]
   regcol      Regcol[]
+  extended    Extended[]
 }
 
 model User {
@@ -163,17 +218,4 @@ model Verificationtoken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-model Order {
-  id        String    @id @default(cuid())
-  regcolId  Int
-  amaunt    Decimal
-  status    Int       @default(0)
-  regcol    Regcol    @relation(fields: [regcolId], references: [id])
-  createdAt DateTime  @default(now())
-  processAt DateTime?
-  closedAt  DateTime?
-
-  @@index([regcolId])
 }
