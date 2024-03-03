@@ -27,7 +27,7 @@ const OrderPrint = ({ params }: { params: { id: string } }) => {
           bases={bases}
           colorantes={colorantes}
           color={data as OrderWithRelations}
-          cantidad={data.amaunt}
+          amaunt={data.amaunt}
         />
       </div>
       <button className="btn btn-outline w-full " onClick={handlePrint}>

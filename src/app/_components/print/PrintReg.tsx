@@ -1,3 +1,4 @@
+"use client";
 import Decimal from "decimal.js";
 import { Droplet, Droplets, Pipette, Star, Weight } from "lucide-react";
 import {
@@ -9,18 +10,22 @@ import { calcularUnidades } from "~/app/_utils/dispensador";
 import Image from "next/image";
 import Icon from "/public/logo.svg";
 import { formatDate } from "~/app/_utils/dateFunctions";
+import { api } from "~/trpc/react";
 
 export default function PrintReg({
   color,
   bases,
   colorantes,
-  cantidad,
+  amaunt,
 }: {
   color: OrderWithRelations;
   bases: Base[];
   colorantes: Colorant[];
-  cantidad: Decimal;
+  amaunt: Decimal;
 }) {
+  const { data: tbases } = api.base.listTypeBase.useQuery();
+  const cantidad = Decimal.div(amaunt, 5);
+
   return (
     <div className="w-full bg-white p-4">
       <div
@@ -139,7 +144,13 @@ export default function PrintReg({
 
                     return (
                       <p className="font-normal " key={base.id}>
-                        {bases?.find((x) => x.id == base.baseId)?.reforiginal}{" "}
+                        {
+                          tbases?.find(
+                            (x) =>
+                              x.id ==
+                              bases?.find((x) => x.id == base.baseId)?.tbaseId,
+                          )?.shortcode
+                        }{" "}
                         {bases?.find((x) => x.id == base.baseId)?.slang}{" "}
                         <span className="badge m-1 rounded-md p-1">
                           {total} LB

@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { type Base, type Colorant } from "pg/generated/zod";
 import { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
+import { toast } from "react-toastify";
 import { calcularUnidades } from "~/app/_utils/dispensador";
 import { ROUTES } from "~/app/_utils/routesEnum";
 import { type RegColWithDistance } from "~/app/dashboard/laboratory/registro/search/page";
@@ -30,12 +31,7 @@ export default function DetalleRegistroModal({
   const [cantidad, setCantidad] = useState(new Decimal(1));
   const router = useRouter();
 
-  const {
-    mutate: createOrder,
-    isLoading: isLoadinOrder,
-    error: errorOrder,
-    data: order,
-  } = api.order.create.useMutation();
+  const { mutate: createOrder } = api.order.create.useMutation();
 
   const CreateOrder = () => {
     createOrder(
@@ -44,7 +40,10 @@ export default function DetalleRegistroModal({
         regcol: { connect: { id: color.id } },
       },
       {
-        onSuccess: (data) => router.push(`${ROUTES.ORDER_ID}${data.id}`),
+        onSuccess: (data) => {
+          toast.success("Orden creada");
+          router.push(`${ROUTES.ORDER_ID}${data.id}`);
+        },
       },
     );
   };
