@@ -27,6 +27,7 @@ export type RegColWithDistance = {
 const initialRegColWithDistance: RegColWithDistance = {
   process: false,
   distancia: 0,
+  note: "",
   regcolbases: [
     {
       id: 1,
@@ -104,6 +105,7 @@ export default function Registropage() {
 
   useEffect(() => {
     mutate({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [RGB, setRGB] = useState<{ R: number; G: number; B: number }>({

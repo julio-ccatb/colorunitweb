@@ -3,6 +3,7 @@ import {
   AlertTriangle,
   Droplet,
   Droplets,
+  NotebookTextIcon,
   ServerCrash,
   Star,
   Weight,
@@ -114,7 +115,17 @@ export default function DetalleRegistroModal({
               <span>
                 Nombre:{" "}
                 <span className="badge m-1 rounded-md p-1">
-                  {!color.description ? "N/A" : color.description}
+                  {!color.description ? "N/A" : color.description}{" "}
+                  {color.note ? (
+                    <div className="tooltip" data-tip={color.note}>
+                      <NotebookTextIcon
+                        className="m-1 animate-[pulse_1s_ease-in] cursor-help text-info"
+                        size={15}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </span>
               </span>
               <span>

@@ -378,6 +378,12 @@ Bases
           </div>
         </div>
       </div>
+      <textarea
+        className="textarea input-bordered w-full max-w-screen-sm focus:input-accent"
+        id="note"
+        placeholder="Añadir nota"
+        {...register("note")}
+      />
       <button
         disabled={isLoading}
         type="submit"

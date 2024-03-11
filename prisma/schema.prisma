@@ -94,6 +94,7 @@ model Regcol {
   brillo          Decimal?           @db.Decimal(65, 2)
   active          Boolean?
   coeficienteG    Decimal?           @db.Decimal(65, 2)
+  note            String?            @db.Text()
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @default(now()) @updatedAt
   tbaseId         Int?
