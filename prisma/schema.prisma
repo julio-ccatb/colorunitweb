@@ -146,10 +146,10 @@ model Order {
 }
 
 model Customer {
-  id        String     @id
-  firstName String
-  lastName  String
-  email     String     @unique
+  id        String     @id /// @zod.string.min(10)
+  firstName String /// @zod.string.min(2)
+  lastName  String /// @zod.string.min(2)
+  email     String     @unique() /// @zod.string.min(2)
   isCompany Boolean
   createdAt DateTime   @default(now())
   extended  Extended[]
