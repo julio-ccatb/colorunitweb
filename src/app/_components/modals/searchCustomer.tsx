@@ -29,7 +29,8 @@ const SearchCustomerModal = ({
     { header: "ID", accessorKey: "id" },
     {
       header: "Nombre Completo / Empresa",
-      accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+      accessorFn: (row) =>
+        `${row.firstName} ${row.isCompany == null ? row.lastName : ""}`,
     },
     { header: "Email", accessorKey: "email" },
     {
@@ -45,7 +46,7 @@ const SearchCustomerModal = ({
           <input
             className="checkbox justify-center"
             type="checkbox"
-            checked={cell.getValue() as boolean}
+            defaultChecked={cell.getValue() as boolean}
           />
         );
       },
