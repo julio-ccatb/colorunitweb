@@ -10,6 +10,7 @@ generator zod {
   createPartialTypes        = "true"
   createRelationValuesTypes = "true"
   useMultipleFiles          = "true"
+  writeNullishInModelTypes  = true
 }
 
 datasource db {
@@ -148,7 +149,7 @@ model Order {
 model Customer {
   id        String     @id /// @zod.string.min(10)
   firstName String /// @zod.string.min(2)
-  lastName  String /// @zod.string.min(2)
+  lastName  String?
   email     String     @unique() /// @zod.string.min(2)
   isCompany Boolean
   createdAt DateTime   @default(now())

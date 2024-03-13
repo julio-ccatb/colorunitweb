@@ -1,9 +1,5 @@
 "use client";
-import {
-  CustomerCreateInputSchema,
-  type Customer,
-  CustomerSchema,
-} from "pg/generated/zod";
+import { CustomerCreateInputSchema, type Customer } from "pg/generated/zod";
 import { type Dispatch, type SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -17,26 +13,26 @@ const CreateCustomerModal = ({
 }) => {
   type Input = Customer;
 
-  const resolver = zodResolver(CustomerCreateInputSchema);
+  // const resolver = zodResolver(CustomerCreateInputSchema);
 
-  // const resolver = async (data: any, context: any, options: any) => {
-  //   // you can debug your validation schema here
-  //   console.log("formData", data);
-  //   console.log(
-  //     "validation result",
-  //     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  //     await zodResolver(CustomerCreateInputSchema)(data, context, options),
-  //   );
-  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  //   return zodResolver(CustomerCreateInputSchema)(data, context, options);
-  // };
+  const resolver = async (data: any, context: any, options: any) => {
+    // you can debug your validation schema here
+    console.log("formData", data);
+    console.log(
+      "validation result",
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      await zodResolver(CustomerCreateInputSchema)(data, context, options),
+    );
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return zodResolver(CustomerCreateInputSchema)(data, context, options);
+  };
   const {
     register,
     handleSubmit,
     reset,
     trigger,
     watch,
-    resetField,
+    setValue,
     formState: { errors },
   } = useForm<Input>({
     resolver,
@@ -87,17 +83,16 @@ const CreateCustomerModal = ({
                   errors.firstName ? "input-error" : "focus:input-accent"
                 }`}
               />
-              {watch().isCompany || (
-                <input
-                  type="text"
-                  id="lastName"
-                  {...register("lastName")}
-                  placeholder="Apellido"
-                  className={`join-item my-2 w-full   border p-2 sm:my-0 ${
-                    errors.lastName ? "input-error" : "focus:input-accent"
-                  }`}
-                />
-              )}
+
+              <input
+                type="text"
+                id="lastName"
+                {...register("lastName")}
+                placeholder="Apellido"
+                className={`join-item my-2 w-full   border p-2 sm:my-0 ${
+                  errors.lastName ? "input-error" : "focus:input-accent"
+                } ${watch().isCompany || "hidden"}`}
+              />
             </div>
             <div className="flex w-full flex-col gap-2">
               <input
@@ -126,7 +121,7 @@ const CreateCustomerModal = ({
                   id="isCompany"
                   {...register("isCompany", {
                     onChange() {
-                      resetField("lastName");
+                      setValue("lastName", "  ");
                     },
                   })}
                 />
