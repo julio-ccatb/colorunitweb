@@ -160,9 +160,9 @@ model Extended {
   createdAt  DateTime           @default(now())
   name       String
   brillo     Decimal?           @db.Decimal(65, 2)
-  R          Decimal            @db.Decimal(65, 2)
-  G          Decimal            @db.Decimal(65, 2)
-  B          Decimal            @db.Decimal(65, 2)
+  R          Int /// @zod.number.lte(255).gte(0); 
+  G          Int /// @zod.number.lte(255).gte(0);
+  B          Int /// @zod.number.lte(255).gte(0);
   HEX        String?
   tbaseId    Int?
   tbase      Tbase?             @relation(fields: [tbaseId], references: [id])
