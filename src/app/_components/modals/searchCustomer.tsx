@@ -1,17 +1,16 @@
 import {
-  type ColumnDef,
-  type SortingState,
-  useReactTable,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  useReactTable,
+  type ColumnDef,
+  type SortingState,
 } from "@tanstack/react-table";
-import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { type Customer } from "pg/generated/zod";
-import { type Dispatch, type SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { formatDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
 

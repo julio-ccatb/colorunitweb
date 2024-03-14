@@ -1,10 +1,10 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomerCreateInputSchema, type Customer } from "pg/generated/zod";
 import { type Dispatch, type SetStateAction } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { api } from "~/trpc/react";
 import { toast } from "react-toastify";
+import { api } from "~/trpc/react";
 
 const CreateCustomerModal = ({
   setCustomer,

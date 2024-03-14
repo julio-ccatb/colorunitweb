@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
 import { PlusCircleIcon, SearchIcon } from "lucide-react";
 import { type Customer } from "pg/generated/zod";
-import CreateCustomerModal from "../../_components/modals/createCustomer";
+import { useState } from "react";
 import SearchCustomerModal from "~/app/_components/modals/searchCustomer";
+import CreateCustomerModal from "../../_components/modals/createCustomer";
 
 // In your main component or page file
 const CustomerPage = () => {
