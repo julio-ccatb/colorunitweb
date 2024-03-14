@@ -52,6 +52,7 @@ const CreateCustomerModal = ({
           render: `Se a creado correctamente ${_data.firstName}`,
         });
         setCustomer(_data);
+        Exit();
       },
       onError: (err) => {
         toast.update(111, { type: "error", render: err.message });
