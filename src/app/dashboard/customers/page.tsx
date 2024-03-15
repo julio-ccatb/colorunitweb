@@ -1,5 +1,5 @@
 "use client";
-import { PlusCircleIcon, SearchIcon } from "lucide-react";
+import { PlusCircleIcon, SearchIcon, TestTube2Icon } from "lucide-react";
 import { type Customer } from "pg/generated/zod";
 import { useState } from "react";
 import SearchCustomerModal from "~/app/_components/modals/searchCustomer";
@@ -48,25 +48,27 @@ const CustomerPage = () => {
           >
             <PlusCircleIcon size={25} />
           </button>
+          <button
+            className="join-item flex items-center justify-center gap-1 !rounded-r-md border px-2 disabled:cursor-not-allowed disabled:bg-gray-200"
+            disabled={!customer}
+            onClick={() => {
+              const dialog = document.getElementById(
+                "createExtended",
+              ) as HTMLDialogElement;
+              dialog.showModal();
+            }}
+          >
+            Crear Extendido <TestTube2Icon size={20} />
+          </button>
           <CreateCustomerModal setCustomer={setCustomer} />
           <SearchCustomerModal setCustomer={setCustomer} />
         </div>
         {customer && (
-          <>
-            <button
-              className="join-item flex items-center justify-center border px-1 transition-all duration-150 hover:text-accent focus:text-accent "
-              onClick={() => {
-                const dialog = document.getElementById(
-                  "createExtended",
-                ) as HTMLDialogElement;
-                dialog.showModal();
-              }}
-            >
-              <PlusCircleIcon size={25} />
-            </button>
+          <div>
             <CreateExtendedModal customer={customer} />
+
             <ExtendedTable customer={customer} />
-          </>
+          </div>
         )}
       </div>
     </div>

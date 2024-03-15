@@ -73,8 +73,8 @@ const SearchCustomerModal = ({
 
   return (
     <dialog id="seachCustomer" className="modal ">
-      <div className="modal-box h-5/6 max-w-none">
-        <h3 className="py-4 text-lg font-bold">Buscar cliente</h3>
+      <div className="modal-box h-min max-w-5xl">
+        <h3 className="py-2 text-lg font-bold">Buscar cliente</h3>
         <div className="overflow-x-auto">
           <input
             className="my-2 rounded-md border p-2 focus:input-accent sm:my-0 "
@@ -84,7 +84,7 @@ const SearchCustomerModal = ({
             onChange={(e) => setFiltering(e.target.value)}
           />
 
-          <table className="table">
+          <table className="table overflow-x-scroll">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
