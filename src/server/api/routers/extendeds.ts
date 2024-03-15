@@ -56,7 +56,7 @@ export const extendedRouter = createTRPCRouter({
       }
     }),
   create: protectedProcedure
-    .input(ExtendedSchema)
+    .input(ExtendedCreateInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const extended = await ctx.db.extended.create({ data: input });
