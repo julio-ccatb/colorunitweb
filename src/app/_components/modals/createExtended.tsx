@@ -13,25 +13,6 @@ const CreateExtendedModal = ({ customer }: { customer: Customer }) => {
 
   const resolver = zodResolver(ExtendedCreateWithoutCustomerInputSchema);
 
-  // const resolver = async (data: any, context: any, options: any) => {
-  //   // you can debug your validation schema here
-  //   console.log("formData", data);
-  //   console.log(
-  //     "validation result",
-  //     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  //     await zodResolver(ExtendedCreateWithoutCustomerInputSchema)(
-  //       data,
-  //       context,
-  //       options,
-  //     ),
-  //   );
-  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  //   return zodResolver(ExtendedCreateWithoutCustomerInputSchema)(
-  //     data,
-  //     context,
-  //     options,
-  //   );
-  // };
   const {
     register,
     handleSubmit,

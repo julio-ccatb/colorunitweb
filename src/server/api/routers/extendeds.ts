@@ -1,10 +1,9 @@
-import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { Prisma } from "@prisma/client";
-import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
+import { TRPCError } from "@trpc/server";
+import { ExtendedCreateInputSchema } from "pg/generated/zod";
 import { z } from "zod";
-import { ExtendedCreateInputSchema, ExtendedSchema } from "pg/generated/zod";
-import ExtendedFindManyArgsSchema from "../../../../prisma/generated/zod/outputTypeSchemas/ExtendedFindManyArgsSchema";
+import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const extendedRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
