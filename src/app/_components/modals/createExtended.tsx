@@ -64,7 +64,7 @@ const CreateExtendedModal = ({ customer }: { customer: Customer }) => {
   return (
     <dialog id="createExtended" className="modal">
       <div className="modal-box max-w-xl">
-        <h3 className="py-4 text-lg font-bold">Nuevo Cliente</h3>
+        <h3 className="py-4 text-lg font-bold">Nuevo extendido</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full">
             <input

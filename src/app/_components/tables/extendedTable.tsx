@@ -8,40 +8,54 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowLeft } from "lucide-react";
-import { type Customer } from "pg/generated/zod";
+import { ArrowLeft, RefreshCwIcon } from "lucide-react";
+import { formatDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
 
-const ExtendedTable = ({ customer }: { customer: Customer }) => {
-  const { data } = api.exteded.findByCustomerId.useQuery(customer.id);
+const ExtendedTable = ({ customerId }: { customerId: string }) => {
+  const { data, refetch } = api.exteded.findByCustomerId.useQuery(customerId);
+  const { data: types } = api.base.listTypeBase.useQuery();
 
   const mock: Extended[] = [];
   const columns: ColumnDef<Extended>[] = [
     { header: "ID", accessorKey: "id" },
-    { header: "Nombre", accessorKey: "name" },
     {
-      header: "Color",
+      header: "Nombre / RGB",
       accessorFn: (row) => {
-        return {
-          R: row.R,
-          G: row.G,
-          B: row.B,
-        };
+        return { ...row };
       },
       cell: ({ cell }) => {
+        const extended = cell.getValue<Extended>();
+
         return (
-          <div className="avatar">
-            <div
-              style={{
-                backgroundColor: `rgb(${cell.getValue<{ R: string }>().R},${
-                  cell.getValue<{ G: string }>().G
-                },${cell.getValue<{ B: string }>().B})`,
-              }}
-              className="mask mask-circle h-12 w-12 shadow-md"
-            ></div>
+          <div className="flex items-center gap-3">
+            <div className="avatar">
+              <div
+                key={extended.id}
+                style={{
+                  backgroundColor: `rgb(${extended.R},${extended.G},${extended.B})`,
+                }}
+                className="mask mask-circle h-12 w-12 shadow-md"
+              ></div>
+            </div>
+            <div>
+              <div className="font-bold">{extended.name}</div>
+              <div className="text-sm opacity-50">
+                [{extended.R},{extended.G},{extended.B}]
+              </div>
+            </div>
           </div>
         );
       },
+    },
+    {
+      header: "Tipo",
+      accessorFn: (row) =>
+        types?.find((t) => t.id === row.tbaseId)?.description,
+    },
+    {
+      header: "Fecha",
+      accessorFn: (row) => formatDate(row.createdAt),
     },
   ];
 
@@ -56,40 +70,55 @@ const ExtendedTable = ({ customer }: { customer: Customer }) => {
 
   return (
     <div className="">
-      <div className="join flex py-4">
-        <input
-          className="join-item my-2 rounded-md border p-2 focus:input-accent sm:my-0 "
-          placeholder="Buscar"
-          type="text"
-        />
-        <input
-          className="join-item my-2 w-16 rounded-md border p-2 text-center focus:input-accent sm:my-0 "
-          placeholder="R"
-          type="text"
-        />
-        <input
-          className="join-item my-2 w-16 rounded-md border p-2 text-center focus:input-accent sm:my-0 "
-          placeholder="G"
-          type="text"
-        />
-        <input
-          className="join-item my-2 w-16 rounded-md border p-2 text-center focus:input-accent sm:my-0 "
-          placeholder="B"
-          type="text"
-        />
+      <div className="mb-4 flex items-center justify-between">
+        <div className="join join-vertical flex py-4 sm:join-horizontal">
+          <input
+            className="join-item my-0 rounded-md border p-2 focus:input-accent sm:my-2  "
+            placeholder="Buscar"
+            type="text"
+          />
+          <div className="flex sm:join-item">
+            <input
+              className="join-item my-0 w-16 rounded-md border p-2 text-center focus:input-accent sm:my-2  "
+              placeholder="R"
+              type="text"
+            />
+            <input
+              className="join-item my-0 w-16 rounded-md border p-2 text-center focus:input-accent sm:my-2"
+              placeholder="G"
+              type="text"
+            />
+            <input
+              className="join-item my-0 w-16 rounded-md border p-2 text-center focus:input-accent sm:my-2  "
+              placeholder="B"
+              type="text"
+            />
+          </div>
 
-        <input
-          id="from"
-          className="join-item my-2 rounded-md border p-2 focus:input-accent placeholder:!text-red-500 sm:my-0"
-          type="date"
-        />
-        <input
-          id="to"
-          className="join-item my-2 rounded-md border p-2 focus:input-accent placeholder:!text-red-500 sm:my-0"
-          type="date"
-        />
+          <div className="join py-2 sm:join-item sm:flex">
+            <input
+              id="from"
+              className="join-item my-2 rounded-md border p-2 uppercase  focus:input-accent  sm:my-0"
+              type="date"
+            />
+            <input
+              id="to"
+              className="join-item my-2 rounded-md border p-2 uppercase  focus:input-accent  sm:my-0"
+              type="date"
+            />
+          </div>
+        </div>
+
+        <button
+          className="r-2 btn btn-outline hidden sm:inline-flex"
+          onClick={() => {
+            void refetch();
+          }}
+        >
+          <RefreshCwIcon />
+          <span>Refrescar</span>
+        </button>
       </div>
-
       <table className="table overflow-x-scroll">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
