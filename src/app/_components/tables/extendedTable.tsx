@@ -8,7 +8,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowLeft, RefreshCwIcon } from "lucide-react";
+import { format, isAfter, isBefore } from "date-fns";
+import { ArrowLeft, NotebookPenIcon, RefreshCwIcon } from "lucide-react";
+import { useState } from "react";
 import { formatDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
 
@@ -16,7 +18,11 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
   const { data, refetch } = api.exteded.findByCustomerId.useQuery(customerId);
   const { data: types } = api.base.listTypeBase.useQuery();
 
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+
   const mock: Extended[] = [];
+
   const columns: ColumnDef<Extended>[] = [
     { header: "ID", accessorKey: "id" },
     {
@@ -56,14 +62,35 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
     {
       header: "Fecha",
       accessorFn: (row) => formatDate(row.createdAt),
+      enableColumnFilter: true,
+      filterFn: (row) => {
+        const itemDate = row.getValue("createdAt");
+
+        console.log(itemDate);
+        return (
+          (!startDate || isAfter(itemDate as Date, startDate)) &&
+          (!endDate || isBefore(itemDate as Date, endDate))
+        );
+      },
+    },
+    {
+      header: "",
+      id: "ordenes",
+      cell: () => {
+        return (
+          <button className="btn btn-outline btn-sm hidden sm:inline-flex ">
+            <NotebookPenIcon size={20} />
+          </button>
+        );
+      },
     },
   ];
 
   const table = useReactTable({
-    data: data ? data : mock,
+    data: data ?? mock,
     columns,
     getCoreRowModel: getCoreRowModel<Extended>(),
-    getFilteredRowModel: getFilteredRowModel<Extended>(),
+    getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel<Extended>(),
     getSortedRowModel: getSortedRowModel<Extended>(),
   });
@@ -100,11 +127,15 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
               id="from"
               className="join-item my-2 rounded-md border p-2 uppercase  focus:input-accent  sm:my-0"
               type="date"
+              value={startDate ? format(startDate, "yyyy-MM-dd") : ""}
+              onChange={(e) => setStartDate(new Date(e.target.value))}
             />
             <input
               id="to"
               className="join-item my-2 rounded-md border p-2 uppercase  focus:input-accent  sm:my-0"
               type="date"
+              value={endDate ? format(endDate, "yyyy-MM-dd") : ""}
+              onChange={(e) => setEndDate(new Date(e.target.value))}
             />
           </div>
         </div>
