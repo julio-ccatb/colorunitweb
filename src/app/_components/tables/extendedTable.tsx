@@ -8,20 +8,29 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { format, isAfter, isBefore } from "date-fns";
+import { format } from "date-fns";
+import { random } from "lodash";
 import { ArrowLeft, NotebookPenIcon, RefreshCwIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
 
 const ExtendedTable = ({ customerId }: { customerId: string }) => {
-  const { data, refetch } = api.exteded.findByCustomerId.useQuery(customerId);
   const { data: types } = api.base.listTypeBase.useQuery();
 
   const [startDate, setStartDate] = useState<Date>();
+  const { data, mutate } = api.exteded.findByCustomerId.useMutation();
   const [endDate, setEndDate] = useState<Date>();
 
   const mock: Extended[] = [];
+
+  useEffect(
+    () =>
+      void mutate({
+        customerId,
+      }),
+    [customerId],
+  );
 
   const columns: ColumnDef<Extended>[] = [
     { header: "ID", accessorKey: "id" },
@@ -37,7 +46,6 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
           <div className="flex items-center gap-3">
             <div className="avatar">
               <div
-                key={extended.id}
                 style={{
                   backgroundColor: `rgb(${extended.R},${extended.G},${extended.B})`,
                 }}
@@ -62,16 +70,6 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
     {
       header: "Fecha",
       accessorFn: (row) => formatDate(row.createdAt),
-      enableColumnFilter: true,
-      filterFn: (row) => {
-        const itemDate = row.getValue("createdAt");
-
-        console.log(itemDate);
-        return (
-          (!startDate || isAfter(itemDate as Date, startDate)) &&
-          (!endDate || isBefore(itemDate as Date, endDate))
-        );
-      },
     },
     {
       header: "",
@@ -86,7 +84,7 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
     },
   ];
 
-  const table = useReactTable({
+  const table = useReactTable<Extended>({
     data: data ?? mock,
     columns,
     getCoreRowModel: getCoreRowModel<Extended>(),
@@ -127,15 +125,31 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
               id="from"
               className="join-item my-2 rounded-md border p-2 uppercase  focus:input-accent  sm:my-0"
               type="date"
-              value={startDate ? format(startDate, "yyyy-MM-dd") : ""}
-              onChange={(e) => setStartDate(new Date(e.target.value))}
+              value={
+                startDate
+                  ? format(startDate, "yyyy-MM-dd")
+                  : format(new Date("2019-01-01"), "yyyy-MM-dd")
+              }
+              onChange={(e) => {
+                setStartDate(
+                  new Date(e.target.value) || new Date("2019-01-01"),
+                );
+                console.log(setStartDate);
+              }}
             />
             <input
               id="to"
               className="join-item my-2 rounded-md border p-2 uppercase  focus:input-accent  sm:my-0"
               type="date"
-              value={endDate ? format(endDate, "yyyy-MM-dd") : ""}
-              onChange={(e) => setEndDate(new Date(e.target.value))}
+              value={
+                endDate
+                  ? format(endDate, "yyyy-MM-dd")
+                  : format(new Date("2025-01-01"), "yyyy-MM-dd")
+              }
+              onChange={(e) => {
+                setEndDate(new Date(e.target.value) || new Date("2025-01-01"));
+                console.log(endDate);
+              }}
             />
           </div>
         </div>
@@ -143,7 +157,11 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
         <button
           className="r-2 btn btn-outline hidden sm:inline-flex"
           onClick={() => {
-            void refetch();
+            void mutate({
+              customerId,
+              startDate: startDate,
+              endDate: endDate,
+            });
           }}
         >
           <RefreshCwIcon />

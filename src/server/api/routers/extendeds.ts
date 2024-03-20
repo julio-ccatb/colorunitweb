@@ -4,6 +4,7 @@ import { ExtendedCreateInputSchema } from "pg/generated/zod";
 import { z } from "zod";
 import { mapPrismaErrorToTrpcError } from "~/server/utils/prismaErrorHandler";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { isAfter, isBefore } from "date-fns";
 
 export const extendedRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
@@ -20,15 +21,34 @@ export const extendedRouter = createTRPCRouter({
     }
   }),
   findByCustomerId: protectedProcedure
-    .input(z.string())
-    .query(async ({ ctx, input }) => {
+    .input(
+      z.object({
+        customerId: z.string(),
+        startDate: z.coerce.date().optional(),
+        endDate: z.coerce.date().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
       try {
-        const customerId = input;
+        const customerId = input.customerId;
         const extendeds = await ctx.db.extended.findMany({
-          where: { customerId },
+          where: {
+            customerId,
+          },
         });
 
-        return extendeds;
+        const filteredData = extendeds.filter((item) => {
+          const itemDate = item.createdAt;
+
+          // Check if the item's date is within the selected date range
+          return (
+            (!input.startDate || isAfter(itemDate, input.startDate)) &&
+            (!input.endDate || isBefore(itemDate, input.endDate))
+          );
+        });
+        console.log(filteredData, input);
+
+        return filteredData;
       } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
           const errorResponse = mapPrismaErrorToTrpcError(error);
