@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { random } from "lodash";
 import { ArrowLeft, NotebookPenIcon, RefreshCwIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { formatDate } from "~/app/_utils/dateFunctions";
+import { formatDate, isValidDate } from "~/app/_utils/dateFunctions";
 import { api } from "~/trpc/react";
 
 const ExtendedTable = ({ customerId }: { customerId: string }) => {
@@ -126,15 +126,18 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
               className="join-item my-2 rounded-md border p-2 uppercase  focus:input-accent  sm:my-0"
               type="date"
               value={
-                startDate
+                isValidDate(startDate) && startDate
                   ? format(startDate, "yyyy-MM-dd")
-                  : format(new Date("2019-01-01"), "yyyy-MM-dd")
+                  : format(new Date("2023-01-02"), "yyyy-MM-dd")
               }
               onChange={(e) => {
-                setStartDate(
-                  new Date(e.target.value) || new Date("2019-01-01"),
-                );
-                console.log(setStartDate);
+                try {
+                  setStartDate(
+                    new Date(e.target.value) || new Date("2023-01-02"),
+                  );
+                } catch {
+                  setStartDate(new Date("2023-01-02"));
+                }
               }}
             />
             <input
@@ -142,12 +145,18 @@ const ExtendedTable = ({ customerId }: { customerId: string }) => {
               className="join-item my-2 rounded-md border p-2 uppercase  focus:input-accent  sm:my-0"
               type="date"
               value={
-                endDate
+                isValidDate(endDate) && endDate
                   ? format(endDate, "yyyy-MM-dd")
-                  : format(new Date("2025-01-01"), "yyyy-MM-dd")
+                  : format(new Date("2025-01-02"), "yyyy-MM-dd")
               }
               onChange={(e) => {
-                setEndDate(new Date(e.target.value) || new Date("2025-01-01"));
+                try {
+                  setEndDate(
+                    new Date(e.target.value) || new Date("2025-01-02"),
+                  );
+                } catch {
+                  setEndDate(new Date("2025-01-02"));
+                }
                 console.log(endDate);
               }}
             />

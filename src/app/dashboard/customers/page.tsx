@@ -19,13 +19,9 @@ const CustomerPage = () => {
           <h1 className="mb-4 text-2xl font-bold">Clientes y Extendidos</h1>
         </div>
         <div className="join join-vertical p-1 sm:join-horizontal">
-          <input
-            value={customer && `${customer?.firstName} ${customer?.lastName}`}
-            className=" input join-item input-bordered input-sm capitalize focus:input-accent "
-            type="text"
-            id="cliente"
-            placeholder="Cliente"
-          />
+          <h3 className="w-60 rounded-md border px-2">
+            {customer && `${customer?.firstName} ${customer?.lastName}`}
+          </h3>
           <div className="join join-item">
             <button
               className="join-item flex items-center justify-center border px-1 transition-all duration-150 hover:text-accent focus:text-accent "

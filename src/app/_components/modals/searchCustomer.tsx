@@ -8,6 +8,7 @@ import {
   type ColumnDef,
   type SortingState,
 } from "@tanstack/react-table";
+import { random } from "lodash";
 import { ArrowLeft } from "lucide-react";
 import { type Customer } from "pg/generated/zod";
 import { useState, type Dispatch, type SetStateAction } from "react";
@@ -110,7 +111,7 @@ const SearchCustomerModal = ({
             <tbody>
               {table.getRowModel().rows.map((row) => (
                 <tr
-                  key={row.id}
+                  key={row.id + random()}
                   className="cursor-pointer hover:bg-accent/20"
                   onClick={() => {
                     setCustomer(row.original);
