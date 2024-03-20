@@ -9,7 +9,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { random } from "lodash";
 import { ArrowLeft, NotebookPenIcon, RefreshCwIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { formatDate, isValidDate } from "~/app/_utils/dateFunctions";
